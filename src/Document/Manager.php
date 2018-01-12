@@ -37,4 +37,12 @@ class Manager implements ManagerInterface
     {
         return $this->connection;
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function selectDatabase(string $name): void
+    {
+        $this->connection->selectDatabase($name);
+    }
 }

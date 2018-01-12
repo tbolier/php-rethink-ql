@@ -18,7 +18,7 @@ class Registry implements RegistryInterface
     {
         if ($connections) {
             foreach ($connections as $name => $options) {
-                if (!$option instanceof OptionsInterface) {
+                if (!$options instanceof OptionsInterface) {
                     continue;
                 }
 

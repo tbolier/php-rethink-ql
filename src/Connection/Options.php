@@ -18,6 +18,11 @@ class Options implements OptionsInterface
     /**
      * @var string
      */
+    private $defaultDatabase;
+
+    /**
+     * @var string
+     */
     private $user;
 
     /**
@@ -42,6 +47,7 @@ class Options implements OptionsInterface
     {
         $this->host = $options['host'] ?? 'localhost';
         $this->port = $options['port'] ?? 28015;
+        $this->defaultDatabase = $options['default_db'] ?? '';
         $this->user = $options['user'] ?? '';
         $this->password = $options['password'] ?? '';
         $this->timeout = $options['timeout'] ?? 5;
@@ -61,6 +67,14 @@ class Options implements OptionsInterface
     public function getPort(): int
     {
         return $this->port;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDefaultDatabase(): string
+    {
+        return $this->defaultDatabase;
     }
 
     /**

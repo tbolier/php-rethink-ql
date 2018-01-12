@@ -17,4 +17,9 @@ interface ManagerInterface
      * @return ConnectionInterface
      */
     public function getConnection(): ConnectionInterface;
+
+    /**
+     * @param string $name
+     */
+    public function selectDatabase(string $name): void;
 }

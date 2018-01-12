@@ -4,7 +4,7 @@ WIP: An ODM approach to RethinkDB.
 
 # Usage
 
-```php
+```PHP
 <?php
 
 use TBolier\RethinkConnect\Connection\Registry;
@@ -14,6 +14,7 @@ $connections = [
     'default_connection' => [
         'host' => 'localhost',
         'port' => 28015,
+        'default_db' => 'demoDB',
         'user' => 'demo',
         'password' => 'demo',
         'timeout' => 5, 
@@ -32,4 +33,7 @@ $manager->createQueryBuilder()
             'description' => 'My first document.'  
         ],    
     ]);
+
+# You can also change from the default database
+$manager->selectDatabase('demoDB-2');
 ```
