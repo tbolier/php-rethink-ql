@@ -39,6 +39,10 @@ class Connection implements ConnectionInterface
         } else {
             $this->socket = stream_socket_client('tcp://' . $this->options->getHost() . ':' . $this->options->getPort(), $errno, $errstr);
         }
+
+        if ($this->options->getDefaultDatabase()) {
+            $this->selectDatabase($this->options->getDefaultDatabase());
+        }
     }
 
     /**

@@ -18,6 +18,11 @@ interface OptionsInterface
     /**
      * @return string
      */
+    public function getDefaultDatabase(): string;
+
+    /**
+     * @return string
+     */
     public function getUser(): string;
 
     /**
