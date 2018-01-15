@@ -49,6 +49,11 @@ class Connection implements ConnectionInterface
         }
     }
 
+    public function execute()
+    {
+
+    }
+
     /**
      * @inheritdoc
      */
@@ -70,6 +75,6 @@ class Connection implements ConnectionInterface
      */
     public function isConnected(): bool
     {
-        return($this->socket) ? true : false;
+        return $this->socket ? true : false;
     }
 }
