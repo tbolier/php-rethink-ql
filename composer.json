@@ -9,5 +9,15 @@
         }
     ],
     "minimum-stability": "dev",
-    "require": {}
+    "require": {},
+    "require-dev": {
+        "mockery/mockery": "^1.0@dev",
+        "phpunit/phpunit": "^7.0@dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "TBolier\\RethinkConnect\\": "src/",
+            "TBolier\\RethinkConnect\\Test\\": "test/"
+        }
+    }
 }
