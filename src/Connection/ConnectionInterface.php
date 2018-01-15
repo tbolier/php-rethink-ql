@@ -5,6 +5,14 @@ namespace TBolier\RethinkConnect\Connection;
 
 interface ConnectionInterface
 {
+    /**
+     * @return bool
+     */
+    public function isConnected(): bool;
+
+    /**
+     * @return void
+     */
     public function connect(): void;
 
     /**

@@ -51,6 +51,7 @@ class Options implements OptionsInterface
         $this->user = $options['user'] ?? '';
         $this->password = $options['password'] ?? '';
         $this->timeout = $options['timeout'] ?? 5;
+        $this->ssl = $options['ssl'] ?? false;
     }
 
     /**
