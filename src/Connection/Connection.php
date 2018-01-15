@@ -13,7 +13,7 @@ class Connection implements ConnectionInterface
     /**
      * @var bool|resource
      */
-    private $socket;
+    public $socket;
 
     /**
      * @param OptionsInterface $options
@@ -28,6 +28,10 @@ class Connection implements ConnectionInterface
      */
     public function connect(): void
     {
+        if ($this->isConnected()) {
+            return;
+        }
+
         if ($this->options->isSsl()) {
             $this->socket = stream_socket_client(
                 'ssl://' . $this->options->getHost() . ':' . $this->options->getPort(),
@@ -59,5 +63,13 @@ class Connection implements ConnectionInterface
     public function selectTable($name): void
     {
         // TODO: Implement selectTable() method.
+    }
+
+    /**
+     * @return bool
+     */
+    public function isConnected(): bool
+    {
+        return($this->socket) ? true : false;
     }
 }

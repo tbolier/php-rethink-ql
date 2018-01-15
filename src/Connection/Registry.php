@@ -56,7 +56,7 @@ class Registry implements RegistryInterface
      */
     public function getConnection(string $name): ConnectionInterface
     {
-        if ($this->connections[$name]) {
+        if (!$this->connections[$name]) {
             throw new Exception("The connection {$name} does not exist.", 400);
         }
 
