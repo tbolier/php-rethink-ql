@@ -113,4 +113,22 @@ class TableTest extends BaseTestCase
 
         static::assertEquals($status, $res);
     }
+
+    public function testUpdate()
+    {
+        $this->manager->createQueryBuilder()
+                      ->table('testTable')
+                      ->get([
+                          'documentId'  => 1,
+                          'title'       => 'Test document',
+                          'description' => 'My first document.',
+                      ])
+                      ->update([
+                          [
+                              'documentId'  => 1,
+                              'title'       => 'Test new document',
+                              'description' => 'My second document.',
+                          ],
+                      ]);
+    }
 }
