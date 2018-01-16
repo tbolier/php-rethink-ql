@@ -7,6 +7,8 @@ use TBolier\RethinkConnect\Document\ManagerInterface;
 
 class Table implements TableInterface
 {
+    public $string;
+
     /**
      * @var ManagerInterface
      */
@@ -14,7 +16,7 @@ class Table implements TableInterface
 
     /**
      * @param ManagerInterface $manager
-     * @param string $name
+     * @param string           $name
      */
     public function __construct(ManagerInterface $manager, string $name)
     {
@@ -25,8 +27,40 @@ class Table implements TableInterface
     /**
      * @inheritdoc
      */
+    public function count(): int
+    {
+        // TODO: Implement count() method.
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function get(array $documents): array
+    {
+        // TODO: Implement get() method.
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function insert(array $documents): bool
     {
         // TODO: Implement insert() method.
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function update(array $documents): bool
+    {
+        // TODO: Implement upsert() method.
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function remove(array $documents): bool
+    {
+        // TODO: Implement remove() method.
     }
 }
