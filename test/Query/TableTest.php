@@ -39,8 +39,6 @@ class TableTest extends BaseTestCase
 
     public function testInsert()
     {
-        $this->manager->selectDatabase('testDB');
-
         $this->manager->createQueryBuilder()
                       ->table('testTable')
                       ->insert([
