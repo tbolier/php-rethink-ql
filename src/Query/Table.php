@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace TBolier\RethinkConnect\Query;
 
+use TBolier\RethinkConnect\Connection\Connection;
 use TBolier\RethinkConnect\Document\ManagerInterface;
 
 class Table implements TableInterface
@@ -62,5 +63,10 @@ class Table implements TableInterface
     public function remove(array $documents): bool
     {
         // TODO: Implement remove() method.
+    }
+
+    public function execute(Connection $connection): array
+    {
+        return $connection->execute();
     }
 }

@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace TBolier\RethinkConnect\Query;
 
+use TBolier\RethinkConnect\Connection\Connection;
+
 interface TableInterface
 {
     /**
@@ -37,4 +39,11 @@ interface TableInterface
      * @return bool
      */
     public function remove(array $documents): bool;
+
+    /**
+     * @param Connection $connection
+     *
+     * @return array
+     */
+    public function execute(Connection $connection): array;
 }
