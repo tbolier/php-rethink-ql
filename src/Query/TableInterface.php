@@ -13,9 +13,9 @@ interface TableInterface
     /**
      * @param array $documents
      *
-     * @return array
+     * @return TableInterface
      */
-    public function get(array $documents): array;
+    public function get(array $documents): TableInterface;
 
     /**
      * @param array $documents
