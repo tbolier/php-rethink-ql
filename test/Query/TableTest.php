@@ -37,7 +37,7 @@ class TableTest extends BaseTestCase
         $this->manager = new Manager($this->connection);
     }
 
-    public function testCustomConflict()
+    public function testInsert()
     {
         $this->manager->selectDatabase('testDB');
 
