@@ -35,7 +35,7 @@ class Table implements TableInterface
     /**
      * @inheritdoc
      */
-    public function get(array $documents): array
+    public function get(array $documents): TableInterface
     {
         // TODO: Implement get() method.
     }
