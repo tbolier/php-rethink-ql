@@ -7,6 +7,7 @@ interface BuilderInterface
 {
     /**
      * @param string $name
+     *
      * @return TableInterface
      */
     public function table(string $name): TableInterface;
