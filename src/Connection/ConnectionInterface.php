@@ -22,10 +22,10 @@ interface ConnectionInterface
     public function noReplyWait(): void;
 
     /**
+     * @param array $query
      * @return array
-     * @throws Exception
      */
-    public function execute(): array;
+    public function execute(array $query): array;
 
     /**
      * @param string $name

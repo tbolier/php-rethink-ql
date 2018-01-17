@@ -7,6 +7,7 @@ use Mockery;
 use Mockery\MockInterface;
 use TBolier\RethinkQL\Connection\OptionsInterface;
 use TBolier\RethinkQL\Test\BaseTestCase;
+use TBolier\RethinkQL\Types\Query\QueryType;
 
 class ConnectionTest extends BaseTestCase
 {
@@ -24,6 +25,11 @@ class ConnectionTest extends BaseTestCase
 
     public function testConnect()
     {
-        $this->assertTrue(\is_array($this->createConnection('phpunit_default')->connect()->execute()));
+        $this->assertTrue(\is_array($this->createConnection('phpunit_default')->connect()->execute(
+            array(
+                QueryType::START,
+                'foo'
+            )
+        )));
     }
 }

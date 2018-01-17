@@ -22,13 +22,22 @@ class TableTest extends BaseTestCase
         $this->manager = new Manager($this->createConnection('phpunit_default')->connect());
     }
 
+    public function testSelect()
+    {
+        $res = $this->manager->createQueryBuilder()
+            ->table('nl')
+            ->execute();
+
+        $this->assertGreaterThan(0, \count($res));
+    }
+
     /**
      * @throws \Exception
      */
     public function testInsert()
     {
         $res = $this->manager->createQueryBuilder()
-                             ->table('testTable')
+                             ->table('nl')
                              ->insert([
                                  [
                                      'documentId'  => 1,
@@ -36,9 +45,9 @@ class TableTest extends BaseTestCase
                                      'description' => 'My first document.',
                                  ],
                              ])
-                             ->execute($this->connection);
+                             ->execute();
 
-        $this->assertObStatus(['inserted' => 1], $res);
+        $this->assertObStatus(['inserted' => 1], $res[0]);
     }
 
     /**
@@ -46,23 +55,27 @@ class TableTest extends BaseTestCase
      */
     public function testUpdate()
     {
-        $res = $this->manager->createQueryBuilder()
-                             ->table('testTable')
-                             ->get([
-                                 'documentId'  => 1,
-                                 'title'       => 'Test document',
-                                 'description' => 'My first document.',
-                             ])
-                             ->update([
-                                 [
-                                     'documentId'  => 1,
-                                     'title'       => 'Test new document',
-                                     'description' => 'My second document.',
-                                 ],
-                             ])
-                             ->execute($this->connection);
+        $this->markTestSkipped('Todo: create unit test for update');
 
-        $this->assertObStatus(['replaced' => 1], $res);
+        // Todo: create unit test for update.
+
+        //$res = $this->manager->createQueryBuilder()
+        //                     ->table('testTable')
+        //                     ->get([
+        //                         'documentId'  => 1,
+        //                         'title'       => 'Test document',
+        //                         'description' => 'My first document.',
+        //                     ])
+        //                     ->update([
+        //                         [
+        //                             'documentId'  => 1,
+        //                             'title'       => 'Test new document',
+        //                             'description' => 'My second document.',
+        //                         ],
+        //                     ])
+        //                     ->execute();
+        //
+        //$this->assertObStatus(['replaced' => 1], $res[0]);
 
     }
 
