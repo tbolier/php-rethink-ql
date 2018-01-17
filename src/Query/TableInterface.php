@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace TBolier\RethinkConnect\Query;
+namespace TBolier\RethinkQL\Query;
 
-use TBolier\RethinkConnect\Connection\Connection;
+use TBolier\RethinkQL\Connection\ConnectionInterface;
 
 interface TableInterface
 {
@@ -21,29 +21,25 @@ interface TableInterface
 
     /**
      * @param array $documents
-     *
-     * @return bool
+     * @return self
      */
-    public function insert(array $documents): bool;
+    public function insert(array $documents): self;
 
     /**
      * @param array $documents
-     *
-     * @return bool
+     * @return self
      */
-    public function update(array $documents): bool;
+    public function update(array $documents): self;
 
     /**
      * @param array $documents
-     *
-     * @return bool
+     * @return self
      */
-    public function remove(array $documents): bool;
+    public function remove(array $documents): self;
 
     /**
-     * @param Connection $connection
-     *
+     * @param ConnectionInterface $connection
      * @return array
      */
-    public function execute(Connection $connection): array;
+    public function execute(ConnectionInterface $connection): array;
 }

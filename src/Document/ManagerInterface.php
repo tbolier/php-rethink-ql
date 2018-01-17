@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace TBolier\RethinkConnect\Document;
+namespace TBolier\RethinkQL\Document;
 
-use TBolier\RethinkConnect\Connection\ConnectionInterface;
-use TBolier\RethinkConnect\Query\BuilderInterface;
+use TBolier\RethinkQL\Connection\ConnectionInterface;
+use TBolier\RethinkQL\Query\BuilderInterface;
 
 interface ManagerInterface
 {

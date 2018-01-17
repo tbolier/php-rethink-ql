@@ -1,33 +1,29 @@
 <?php
 declare(strict_types=1);
 
-namespace TBolier\RethinkConnect\Test\Connection;
+namespace TBolier\RethinkQL\Test\Connection;
 
 use Mockery;
-use TBolier\RethinkConnect\Connection\Connection;
-use TBolier\RethinkConnect\Connection\ConnectionInterface;
-use TBolier\RethinkConnect\Connection\OptionsInterface;
-use TBolier\RethinkConnect\Test\BaseTestCase;
+use Mockery\MockInterface;
+use TBolier\RethinkQL\Connection\OptionsInterface;
+use TBolier\RethinkQL\Test\BaseTestCase;
 
 class ConnectionTest extends BaseTestCase
 {
     /**
-     * @var ConnectionInterface
+     * @var MockInterface
      */
-    private $connection;
+    private $optionsMock;
 
     public function setUp()
     {
         parent::setUp();
 
-        /** @var  OptionsInterface $optionsMock */
-        $optionsMock = Mockery::mock(OptionsInterface::class);
-
-        $this->connection = new Connection($optionsMock);
+        $this->optionsMock = Mockery::mock(OptionsInterface::class);
     }
 
     public function testConnect()
     {
-        $this->connection->connect();
+        $this->assertTrue(\is_array($this->createConnection('phpunit_default')->connect()->execute()));
     }
 }

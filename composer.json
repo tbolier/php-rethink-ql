@@ -16,8 +16,8 @@
     },
     "autoload": {
         "psr-4": {
-            "TBolier\\RethinkConnect\\": "src/",
-            "TBolier\\RethinkConnect\\Test\\": "test/"
+            "TBolier\\RethinkQL\\": "src/",
+            "TBolier\\RethinkQL\\Test\\": "test/"
         }
     }
 }

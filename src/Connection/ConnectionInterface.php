@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace TBolier\RethinkConnect\Connection;
+namespace TBolier\RethinkQL\Connection;
 
 interface ConnectionInterface
 {
@@ -13,7 +13,19 @@ interface ConnectionInterface
     /**
      * @return void
      */
-    public function connect(): void;
+    public function connect();
+
+    /**
+     * @throws Exception
+     * @throws \Exception
+     */
+    public function noReplyWait(): void;
+
+    /**
+     * @return array
+     * @throws Exception
+     */
+    public function execute(): array;
 
     /**
      * @param string $name
@@ -26,4 +38,10 @@ interface ConnectionInterface
      * @return void
      */
     public function selectTable($name): void;
+
+    /**
+     * @param bool $noReplyWait
+     * @return void
+     */
+    public function close($noReplyWait = true): void;
 }

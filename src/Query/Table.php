@@ -1,15 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace TBolier\RethinkConnect\Query;
+namespace TBolier\RethinkQL\Query;
 
-use TBolier\RethinkConnect\Connection\Connection;
-use TBolier\RethinkConnect\Document\ManagerInterface;
+use TBolier\RethinkQL\Connection\ConnectionInterface;
+use TBolier\RethinkQL\Connection\Exception;
+use TBolier\RethinkQL\Document\ManagerInterface;
 
 class Table implements TableInterface
 {
-    public $string;
-
     /**
      * @var ManagerInterface
      */
@@ -17,7 +16,7 @@ class Table implements TableInterface
 
     /**
      * @param ManagerInterface $manager
-     * @param string           $name
+     * @param string $name
      */
     public function __construct(ManagerInterface $manager, string $name)
     {
@@ -39,33 +38,42 @@ class Table implements TableInterface
     public function get(array $documents): TableInterface
     {
         // TODO: Implement get() method.
+        return $this;
     }
 
     /**
      * @inheritdoc
      */
-    public function insert(array $documents): bool
+    public function insert(array $documents): TableInterface
     {
         // TODO: Implement insert() method.
+        return $this;
     }
 
     /**
      * @inheritdoc
      */
-    public function update(array $documents): bool
+    public function update(array $documents): TableInterface
     {
         // TODO: Implement upsert() method.
+        return $this;
     }
 
     /**
      * @inheritdoc
      */
-    public function remove(array $documents): bool
+    public function remove(array $documents): TableInterface
     {
         // TODO: Implement remove() method.
+        return $this;
     }
 
-    public function execute(Connection $connection): array
+    /**
+     * @param ConnectionInterface $connection
+     * @return array
+     * @throws Exception
+     */
+    public function execute(ConnectionInterface $connection): array
     {
         return $connection->execute();
     }

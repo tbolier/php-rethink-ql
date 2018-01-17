@@ -4,21 +4,12 @@ declare(strict_types=1);
 namespace TBolier\RethinkConnect\Test\Connection;
 
 use ArrayObject;
-use Mockery;
-use TBolier\RethinkConnect\Connection\Connection;
-use TBolier\RethinkConnect\Connection\ConnectionInterface;
-use TBolier\RethinkConnect\Connection\OptionsInterface;
-use TBolier\RethinkConnect\Document\Manager;
-use TBolier\RethinkConnect\Document\ManagerInterface;
-use TBolier\RethinkConnect\Test\BaseTestCase;
+use TBolier\RethinkQL\Document\Manager;
+use TBolier\RethinkQL\Document\ManagerInterface;
+use TBolier\RethinkQL\Test\BaseTestCase;
 
 class TableTest extends BaseTestCase
 {
-    /**
-     * @var ConnectionInterface
-     */
-    private $connection;
-
     /**
      * @var ManagerInterface
      */
@@ -28,14 +19,7 @@ class TableTest extends BaseTestCase
     {
         parent::setUp();
 
-        /** @var  OptionsInterface $optionsMock */
-        $optionsMock = Mockery::mock(OptionsInterface::class);
-
-        $this->connection = new Connection($optionsMock);
-
-        $this->connection->connect();
-
-        $this->manager = new Manager($this->connection);
+        $this->manager = new Manager($this->createConnection('phpunit_default')->connect());
     }
 
     /**
@@ -90,7 +74,7 @@ class TableTest extends BaseTestCase
      */
     protected function assertObStatus($status, $data)
     {
-        $res      = [];
+        $res = [];
         $statuses = [
             'unchanged',
             'skipped',
@@ -102,13 +86,13 @@ class TableTest extends BaseTestCase
         $data = new ArrayObject($data);
 
         foreach ($statuses as $s) {
-            $status[$s] = isset($status[$s]) ? $status[$s] : 0;
+            $status[$s] = $status[$s] ?? 0;
         }
 
         $data->setFlags($data::ARRAY_AS_PROPS);
 
         foreach ($statuses as $s) {
-            $res[$s] = isset($data[$s]) ? $data[$s] : 0;
+            $res[$s] = $data[$s] ?? 0;
         }
 
         static::assertEquals($status, $res);
