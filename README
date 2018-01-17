@@ -1,0 +1,9 @@
+PHP-REQL
+=======
+
+A PHP client driver for the RethinkDB query language (ReQL).
+
+PHP-RQL is licensed under the terms of the Apache License 2.0 http://www.apache.org/licenses/LICENSE-2.0
+
+This library is written from scratch and re-used some parts of code from the php-rql library.
+
