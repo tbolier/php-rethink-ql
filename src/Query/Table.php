@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace TBolier\RethinkQL\Query;
 
-use TBolier\RethinkQL\Connection\ConnectionInterface;
-use TBolier\RethinkQL\Connection\Exception;
 use TBolier\RethinkQL\Document\ManagerInterface;
 use TBolier\RethinkQL\Types\Query\QueryType;
 use TBolier\RethinkQL\Types\Term\TermType;
@@ -39,7 +37,7 @@ class Table implements TableInterface
         $this->query = [
             QueryType::START,
             [TermType::TABLE, [[TermType::DB, ['booking']], $this->name]],
-            (object)[]
+            (object)[],
         ];
 
     }
@@ -49,11 +47,73 @@ class Table implements TableInterface
      */
     public function count(): TableInterface
     {
-        // Todo: Build count query
         $this->query = [
             QueryType::START,
-            [], // Write query here
-            (object)[]
+            [
+                TermType::COUNT,
+                [
+                    [
+                        TermType::TABLE,
+                        [
+                            [
+                                TermType::DB,
+                                ['booking'],
+                                (object)[],
+                            ],
+                            $this->name,
+                        ],
+                        (object)[],
+                    ],
+                ],
+            ],
+            (object)[],
+        ];
+
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function filter(array $documents): TableInterface
+    {
+        $jsonDocuments = [];
+        foreach ($documents as $key => $document) {
+            $jsonDocuments[] = json_encode($documents);
+        }
+
+        $this->query = [
+            QueryType::START,
+            [
+                TermType::FILTER,
+                [
+                    [
+                        TermType::TABLE,
+                        [
+                            [
+                                TermType::DB,
+                                ['booking'],
+                                (object)[],
+                            ],
+                            $this->name,
+                        ],
+                        (object)[],
+                    ],
+                    [
+                        TermType::JSON,
+                        $jsonDocuments,
+                        (object)[],
+                    ],
+                ],
+                (object)[],
+            ],
+            (object)[
+                'db' => [
+                    TermType::DB,
+                    ['booking'],
+                    (object)[],
+                ],
+            ],
         ];
 
         return $this;
@@ -80,7 +140,7 @@ class Table implements TableInterface
                             [
                                 TermType::DB,
                                 ['booking'],
-                                (object)[]
+                                (object)[],
                             ],
                             $this->name,
                         ],
@@ -92,15 +152,15 @@ class Table implements TableInterface
                         (object)[],
                     ],
                 ],
-                (object)[]
+                (object)[],
             ],
             (object)[
                 'db' => [
                     TermType::DB,
                     ['booking'],
-                    (object)[]
+                    (object)[],
                 ],
-            ]
+            ],
         ];
 
         return $this;
@@ -115,7 +175,7 @@ class Table implements TableInterface
         $this->query = [
             QueryType::START,
             [], // Write query here
-            (object)[]
+            (object)[],
         ];
 
         return $this;
@@ -124,13 +184,28 @@ class Table implements TableInterface
     /**
      * @inheritdoc
      */
-    public function remove(array $documents): TableInterface
+    public function delete(): TableInterface
     {
-        // Todo: Build remove query
         $this->query = [
             QueryType::START,
-            [], // Write query here
-            (object)[]
+            [
+                TermType::DELETE,
+                [
+                    [
+                        TermType::TABLE,
+                        [
+                            [
+                                TermType::DB,
+                                ['booking'],
+                                (object)[],
+                            ],
+                            $this->name,
+                        ],
+                        (object)[],
+                    ],
+                ],
+            ],
+            (object)[],
         ];
 
         return $this;

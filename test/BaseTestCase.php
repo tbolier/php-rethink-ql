@@ -29,7 +29,6 @@ class BaseTestCase extends TestCase
      */
     protected function createConnection(string $name): ConnectionInterface
     {
-        // Setup connection.
         $this->connection = new Connection(new Options(PHPUNIT_CONNECTIONS[$name]));
 
         return $this->connection;

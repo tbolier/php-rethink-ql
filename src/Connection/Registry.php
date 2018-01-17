@@ -33,7 +33,7 @@ class Registry implements RegistryInterface
      */
     public function addConnection(string $name, OptionsInterface $options): bool
     {
-        if($this->hasConnection($name)) {
+        if ($this->hasConnection($name)) {
             throw new Exception("The connection {$name} has already been added.", 400);
         }
 

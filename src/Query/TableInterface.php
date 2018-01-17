@@ -14,6 +14,12 @@ interface TableInterface
      * @param array $documents
      * @return self
      */
+    public function filter(array $documents): self;
+
+    /**
+     * @param array $documents
+     * @return self
+     */
     public function insert(array $documents): self;
 
     /**
@@ -23,10 +29,9 @@ interface TableInterface
     public function update(array $documents): self;
 
     /**
-     * @param array $documents
      * @return self
      */
-    public function remove(array $documents): self;
+    public function delete(): self;
 
     /**
      * @return array

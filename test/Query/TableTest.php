@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace TBolier\RethinkConnect\Test\Connection;
 
 use ArrayObject;
+use TBolier\RethinkQL\Connection\ConnectionInterface;
 use TBolier\RethinkQL\Document\Manager;
 use TBolier\RethinkQL\Document\ManagerInterface;
 use TBolier\RethinkQL\Test\BaseTestCase;
@@ -19,16 +20,10 @@ class TableTest extends BaseTestCase
     {
         parent::setUp();
 
-        $this->manager = new Manager($this->createConnection('phpunit_default')->connect());
-    }
+        /** @var ConnectionInterface $connection */
+        $connection = $this->createConnection('phpunit_default')->connect();
 
-    public function testSelect()
-    {
-        $res = $this->manager->createQueryBuilder()
-            ->table('nl')
-            ->execute();
-
-        $this->assertGreaterThan(0, \count($res));
+        $this->manager = new Manager($connection);
     }
 
     /**
@@ -40,8 +35,8 @@ class TableTest extends BaseTestCase
                              ->table('nl')
                              ->insert([
                                  [
-                                     'documentId'  => 1,
-                                     'title'       => 'Test document',
+                                     'documentId' => 1,
+                                     'title' => 'Test document',
                                      'description' => 'My first document.',
                                  ],
                              ])
@@ -53,9 +48,39 @@ class TableTest extends BaseTestCase
     /**
      * @throws \Exception
      */
+    public function testCount()
+    {
+        $res = $this->manager->createQueryBuilder()
+                             ->table('nl')
+                             ->count()
+                             ->execute();
+
+        static::assertInternalType('int', $res[0]);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function testFilter()
+    {
+        $res = $this->manager->createQueryBuilder()
+                             ->table('nl')
+                             ->filter([
+                                 [
+                                     'title' => 'Test document',
+                                 ],
+                             ])
+                             ->execute();
+
+        static::assertInternalType('array', $res[0]);
+    }
+
+    /**
+     * @throws \Exception
+     */
     public function testUpdate()
     {
-        $this->markTestSkipped('Todo: create unit test for update');
+        static::markTestSkipped('Todo: create unit test for update');
 
         // Todo: create unit test for update.
 
@@ -80,9 +105,68 @@ class TableTest extends BaseTestCase
     }
 
     /**
+     * @throws \Exception
+     */
+    public function testEmptyTable()
+    {
+        $count = $this->manager->createQueryBuilder()
+                               ->table('nl')
+                               ->filter([
+                                   [
+                                       'title' => 'Test document',
+                                   ],
+                               ])
+                               ->count()
+                               ->execute();
+
+        $res = $this->manager->createQueryBuilder()
+                             ->table('nl')
+                             ->delete()
+                             ->execute();
+
+        $this->assertObStatus(['deleted' => $count[0]], $res[0]);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function testDeleteDocument()
+    {
+        $this->manager->createQueryBuilder()
+                      ->table('nl')
+                      ->insert([
+                          [
+                              'title' => 'Delete document',
+                          ],
+                      ])
+                      ->execute();
+
+        $count = $this->manager->createQueryBuilder()
+                               ->table('nl')
+                               ->filter([
+                                   [
+                                       'title' => 'Delete document',
+                                   ],
+                               ])
+                               ->count()
+                               ->execute();
+
+        $res = $this->manager->createQueryBuilder()
+                             ->table('nl')
+                             ->filter([
+                                 [
+                                     'title' => 'Delete document',
+                                 ],
+                             ])
+                             ->delete()
+                             ->execute();
+
+        $this->assertObStatus(['deleted' => $count[0]], $res[0]);
+    }
+
+    /**
      * @param $status
      * @param $data
-     *
      * @throws \Exception
      */
     protected function assertObStatus($status, $data)

@@ -5,6 +5,7 @@ namespace TBolier\RethinkQL\Test\Connection;
 
 use Mockery;
 use Mockery\MockInterface;
+use TBolier\RethinkQL\Connection\ConnectionInterface;
 use TBolier\RethinkQL\Connection\OptionsInterface;
 use TBolier\RethinkQL\Test\BaseTestCase;
 use TBolier\RethinkQL\Types\Query\QueryType;
@@ -23,13 +24,19 @@ class ConnectionTest extends BaseTestCase
         $this->optionsMock = Mockery::mock(OptionsInterface::class);
     }
 
+    /**
+     * @throws \Exception
+     */
     public function testConnect()
     {
-        $this->assertTrue(\is_array($this->createConnection('phpunit_default')->connect()->execute(
-            array(
+        /** @var ConnectionInterface $connection */
+        $connection = $this->createConnection('phpunit_default')->connect();
+
+        static::assertInternalType('array', $connection->execute(
+            [
                 QueryType::START,
-                'foo'
-            )
-        )));
+                'foo',
+            ]
+        ));
     }
 }
