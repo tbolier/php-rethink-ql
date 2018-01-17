@@ -7,3 +7,40 @@ PHP-RETHINK-QL is licensed under the terms of the Apache License 2.0 http://www.
 
 This library uses some parts of code of the original PHP-RQL library of Daniel Mewes (https://github.com/danielmewes/php-rql).
 This code have stated the modified changes that can be found in the PHPDoc above those specific classes.
+
+# Example
+
+```PHP
+<?php
+
+use TBolier\RethinkQL\Connection\Registry;
+use TBolier\RethinkQL\Document\Manager;
+
+$connections = [
+    'default_connection' => [
+        'host' => 'localhost',
+        'port' => 28015,
+        'default_db' => 'demoDB',
+        'user' => 'demo',
+        'password' => 'demo',
+        'timeout' => 5,
+        'timeout_stream' => 10,
+    ],
+];
+
+$registry = new Registry($connections);
+
+$manager = new Manager($registry->getConnection('default_connection'));
+$manager->createQueryBuilder()
+    ->table('tableName')
+    ->insert([
+        [
+            'documentId' => 1,
+            'title' => 'Test document',
+            'description' => 'My first document.'  
+        ],    
+    ]);
+
+# You can also change from the default database
+$manager->selectDatabase('demoDB-2');
+```
