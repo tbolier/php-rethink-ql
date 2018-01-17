@@ -1,6 +1,6 @@
 {
-    "name": "tbolier/rethink-connect",
-    "description": "An ODM approach to RethinkDB.",
+    "name": "tbolier/php-rethink-ql",
+    "description": "A clean and solid RethinkDB driver for PHP.",
     "type": "library",
     "authors": [
         {
