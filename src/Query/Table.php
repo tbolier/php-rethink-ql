@@ -6,6 +6,8 @@ namespace TBolier\RethinkQL\Query;
 use TBolier\RethinkQL\Connection\ConnectionInterface;
 use TBolier\RethinkQL\Connection\Exception;
 use TBolier\RethinkQL\Document\ManagerInterface;
+use TBolier\RethinkQL\Types\Query\QueryType;
+use TBolier\RethinkQL\Types\Term\TermType;
 
 class Table implements TableInterface
 {
@@ -15,6 +17,16 @@ class Table implements TableInterface
     private $manager;
 
     /**
+     * @var array
+     */
+    private $query;
+
+    /**
+     * @var string
+     */
+    private $name;
+
+    /**
      * @param ManagerInterface $manager
      * @param string $name
      */
@@ -22,22 +34,28 @@ class Table implements TableInterface
     {
         $this->manager = $manager;
         $this->manager->getConnection()->selectTable($name);
+        $this->name = $name;
+
+        $this->query = [
+            QueryType::START,
+            [TermType::TABLE, [[TermType::DB, ['booking']], $this->name]],
+            (object)[]
+        ];
+
     }
 
     /**
      * @inheritdoc
      */
-    public function count(): int
+    public function count(): TableInterface
     {
-        // TODO: Implement count() method.
-    }
+        // Todo: Build count query
+        $this->query = [
+            QueryType::START,
+            [], // Write query here
+            (object)[]
+        ];
 
-    /**
-     * @inheritdoc
-     */
-    public function get(array $documents): TableInterface
-    {
-        // TODO: Implement get() method.
         return $this;
     }
 
@@ -46,7 +64,45 @@ class Table implements TableInterface
      */
     public function insert(array $documents): TableInterface
     {
-        // TODO: Implement insert() method.
+        $jsonDocuments = [];
+        foreach ($documents as $key => $document) {
+            $jsonDocuments[] = json_encode($documents);
+        }
+
+        $this->query = [
+            QueryType::START,
+            [
+                TermType::INSERT,
+                [
+                    [
+                        TermType::TABLE,
+                        [
+                            [
+                                TermType::DB,
+                                ['booking'],
+                                (object)[]
+                            ],
+                            $this->name,
+                        ],
+                        (object)[],
+                    ],
+                    [
+                        TermType::JSON,
+                        $jsonDocuments,
+                        (object)[],
+                    ],
+                ],
+                (object)[]
+            ],
+            (object)[
+                'db' => [
+                    TermType::DB,
+                    ['booking'],
+                    (object)[]
+                ],
+            ]
+        ];
+
         return $this;
     }
 
@@ -55,7 +111,13 @@ class Table implements TableInterface
      */
     public function update(array $documents): TableInterface
     {
-        // TODO: Implement upsert() method.
+        // Todo: Build upsert query
+        $this->query = [
+            QueryType::START,
+            [], // Write query here
+            (object)[]
+        ];
+
         return $this;
     }
 
@@ -64,17 +126,21 @@ class Table implements TableInterface
      */
     public function remove(array $documents): TableInterface
     {
-        // TODO: Implement remove() method.
+        // Todo: Build remove query
+        $this->query = [
+            QueryType::START,
+            [], // Write query here
+            (object)[]
+        ];
+
         return $this;
     }
 
     /**
-     * @param ConnectionInterface $connection
      * @return array
-     * @throws Exception
      */
-    public function execute(ConnectionInterface $connection): array
+    public function execute(): array
     {
-        return $connection->execute();
+        return $this->manager->getConnection()->execute($this->query);
     }
 }

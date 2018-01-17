@@ -3,21 +3,12 @@ declare(strict_types=1);
 
 namespace TBolier\RethinkQL\Query;
 
-use TBolier\RethinkQL\Connection\ConnectionInterface;
-
 interface TableInterface
 {
     /**
-     * @return int
-     */
-    public function count(): int;
-
-    /**
-     * @param array $documents
-     *
      * @return TableInterface
      */
-    public function get(array $documents): TableInterface;
+    public function count(): self;
 
     /**
      * @param array $documents
@@ -38,8 +29,7 @@ interface TableInterface
     public function remove(array $documents): self;
 
     /**
-     * @param ConnectionInterface $connection
      * @return array
      */
-    public function execute(ConnectionInterface $connection): array;
+    public function execute(): array;
 }

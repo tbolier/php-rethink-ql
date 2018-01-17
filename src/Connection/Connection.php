@@ -19,6 +19,7 @@ namespace TBolier\RethinkQL\Connection;
 
 use TBolier\RethinkQL\Types\Query\QueryType;
 use TBolier\RethinkQL\Types\Response\ResponseType;
+use TBolier\RethinkQL\Types\Term\TermType;
 
 
 class Connection implements ConnectionInterface
@@ -151,10 +152,11 @@ class Connection implements ConnectionInterface
     }
 
     /**
+     * @param array $query
      * @return array
      * @throws Exception
      */
-    public function execute(): array
+    public function execute(array $query): array
     {
         if (!$this->isConnected()) {
             throw new Exception('Not connected.');
@@ -163,13 +165,6 @@ class Connection implements ConnectionInterface
         try {
             // Generate a token for the request
             $token = $this->generateToken();
-
-            // Send the request
-            $query = array(
-                QueryType::START,
-                'foo',
-                (Object)[],
-            );
 
             $query = $this->utf8_converter($query);
             $this->sendQuery($token, $query);
@@ -404,11 +399,11 @@ class Connection implements ConnectionInterface
         }
 
         if ($response['t'] === ResponseType::COMPILE_ERROR) {
-            throw new Exception('Compile error: ' . $response['r'][0], $query);
+            throw new Exception('Compile error: ' . $response['r'][0] . ', jsonQuery: ' . json_encode($query));
         }
 
         if ($response['t'] === ResponseType::RUNTIME_ERROR) {
-            throw new Exception('Runtime error: ' . $response['r'][0], $query);
+            throw new Exception('Runtime error: ' . $response['r'][0] . ', jsonQuery: ' .  json_encode($query));
         }
     }
 
