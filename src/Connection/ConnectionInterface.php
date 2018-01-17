@@ -11,9 +11,9 @@ interface ConnectionInterface
     public function isConnected(): bool;
 
     /**
-     * @return void
+     * @return Connection
      */
-    public function connect();
+    public function connect(): Connection;
 
     /**
      * @throws Exception

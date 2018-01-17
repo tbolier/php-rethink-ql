@@ -39,7 +39,18 @@ $manager->createQueryBuilder()
             'title' => 'Test document',
             'description' => 'My first document.'  
         ],    
-    ]);
+    ])
+    ->execute();;
+
+$manager->createQueryBuilder()
+    ->table('tableName')
+    ->filter([
+        [
+            'title' => 'Test document',
+        ],
+    ])
+    ->count()
+    ->execute();
 
 # You can also change from the default database
 $manager->selectDatabase('demoDB-2');

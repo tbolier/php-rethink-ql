@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * @license http://www.apache.org/licenses/ Apache License 2.0
  * @license https://github.com/danielmewes/php-rql Apache License 2.0
@@ -13,6 +15,7 @@
  * - Abstraction of code to new methods to improve readability.
  * - Removed obsolete code.
  */
+
 namespace TBolier\RethinkQL\Connection;
 
 class Handshake
@@ -30,7 +33,7 @@ class Handshake
     /**
      * @var string
      */
-    private $protocol_version = 0;
+    private $protocolVersion = 0;
 
     /**
      * @var int
@@ -68,7 +71,7 @@ class Handshake
      * @return null|string
      * @throws Exception
      */
-    public function nextMessage(string $response = null):? string
+    public function nextMessage(string $response = null): ? string
     {
         switch ($this->state) {
             case 0:
@@ -98,6 +101,7 @@ class Handshake
             $t = hash_hmac('sha256', $t, $password, true);
             $u ^= $t;
         }
+
         return $u;
     }
 
@@ -115,14 +119,15 @@ class Handshake
         $binaryVersion = pack('V', 0x34c2bdc3); // "V" is little endian, 32 bit unsigned integer
 
         $this->state = 1;
+
         return
             $binaryVersion
             . json_encode(
-                array(
-                    'protocol_version' => $this->protocol_version,
+                [
+                    'protocol_version' => $this->protocolVersion,
                     'authentication_method' => 'SCRAM-SHA-256',
-                    'authentication' => 'n,,' . $this->clientFirstMessage
-                )
+                    'authentication' => 'n,,' . $this->clientFirstMessage,
+                ]
             )
             . \chr(0);
     }
@@ -146,8 +151,8 @@ class Handshake
         if ($json['success'] === false) {
             throw new Exception('Handshake failed: ' . $json["error"]);
         }
-        if ($this->protocol_version > $json['max_protocol_version']
-            || $this->protocol_version < $json['min_protocol_version']) {
+        if ($this->protocolVersion > $json['max_protocol_version']
+            || $this->protocolVersion < $json['min_protocol_version']) {
             throw new Exception('Unsupported protocol version.');
         }
 
@@ -168,7 +173,7 @@ class Handshake
             throw new Exception('Handshake failed: ' . $json['error']);
         }
         $serverFirstMessage = $json['authentication'];
-        $authentication = array();
+        $authentication = [];
         foreach (explode(',', $json['authentication']) as $var) {
             $pair = explode('=', $var);
             $authentication[$pair[0]] = $pair[1];
@@ -197,11 +202,12 @@ class Handshake
         $this->serverSignature = hash_hmac('sha256', $authMessage, $serverKey, true);
 
         $this->state = 3;
+
         return
             json_encode(
-                array(
-                    'authentication' => $clientFinalMessageWithoutProof . ',p=' . base64_encode($clientProof)
-                )
+                [
+                    'authentication' => $clientFinalMessageWithoutProof . ',p=' . base64_encode($clientProof),
+                ]
             )
             . \chr(0);
     }
@@ -217,7 +223,7 @@ class Handshake
         if ($json['success'] === false) {
             throw new Exception('Handshake failed: ' . $json['error']);
         }
-        $authentication = array();
+        $authentication = [];
         foreach (explode(',', $json['authentication']) as $var) {
             $pair = explode('=', $var);
             $authentication[$pair[0]] = $pair[1];

@@ -17,10 +17,7 @@ declare(strict_types=1);
 
 namespace TBolier\RethinkQL\Connection;
 
-use TBolier\RethinkQL\Types\Query\QueryType;
 use TBolier\RethinkQL\Types\Response\ResponseType;
-use TBolier\RethinkQL\Types\Term\TermType;
-
 
 class Connection implements ConnectionInterface
 {
@@ -49,7 +46,7 @@ class Connection implements ConnectionInterface
 
     /**
      * @inheritdoc
-     * @throws \TBolier\RethinkQL\Connection\Exception
+     * @throws Exception
      */
     public function connect(): self
     {
@@ -140,7 +137,7 @@ class Connection implements ConnectionInterface
         // Generate a token for the request
         $token = $this->generateToken();
 
-        $query = array(4);
+        $query = [4];
         $this->sendQuery($token, $query);
 
         // Await the response
@@ -166,7 +163,7 @@ class Connection implements ConnectionInterface
             // Generate a token for the request
             $token = $this->generateToken();
 
-            $query = $this->utf8_converter($query);
+            $query = $this->utf8Converter($query);
             $this->sendQuery($token, $query);
 
             // Await the response
@@ -187,7 +184,7 @@ class Connection implements ConnectionInterface
      * @param array $array
      * @return mixed
      */
-    private function utf8_converter(array $array): array
+    private function utf8Converter(array $array): array
     {
         array_walk_recursive($array, function (&$item) {
             if (is_scalar($item) && !mb_detect_encoding((string)$item, 'utf-8', true)) {
@@ -403,7 +400,7 @@ class Connection implements ConnectionInterface
         }
 
         if ($response['t'] === ResponseType::RUNTIME_ERROR) {
-            throw new Exception('Runtime error: ' . $response['r'][0] . ', jsonQuery: ' .  json_encode($query));
+            throw new Exception('Runtime error: ' . $response['r'][0] . ', jsonQuery: ' . json_encode($query));
         }
     }
 
