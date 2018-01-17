@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace TBolier\RethinkConnect\Connection;
+namespace TBolier\RethinkQL\Connection;
 
 interface RegistryInterface
 {

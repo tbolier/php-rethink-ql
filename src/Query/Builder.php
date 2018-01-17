@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace TBolier\RethinkConnect\Query;
+namespace TBolier\RethinkQL\Query;
 
-use TBolier\RethinkConnect\Document\ManagerInterface;
+use TBolier\RethinkQL\Document\ManagerInterface;
 
 class Builder implements BuilderInterface
 {

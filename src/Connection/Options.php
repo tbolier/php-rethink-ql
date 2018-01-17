@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace TBolier\RethinkConnect\Connection;
+namespace TBolier\RethinkQL\Connection;
 
 class Options implements OptionsInterface
 {
@@ -31,9 +31,14 @@ class Options implements OptionsInterface
     private $password;
 
     /**
-     * @var int
+     * @var float
      */
     private $timeout;
+
+    /**
+     * @var int
+     */
+    private $timeoutStream;
 
     /**
      * @var bool
@@ -50,7 +55,8 @@ class Options implements OptionsInterface
         $this->defaultDatabase = $options['default_db'] ?? '';
         $this->user = $options['user'] ?? '';
         $this->password = $options['password'] ?? '';
-        $this->timeout = $options['timeout'] ?? 5;
+        $this->timeout = $options['timeout'] ?? 1.0;
+        $this->timeoutStream = $options['timeout_stream'] ?? 3;
         $this->ssl = $options['ssl'] ?? false;
     }
 
@@ -95,11 +101,19 @@ class Options implements OptionsInterface
     }
 
     /**
-     * @return int
+     * @return float
      */
-    public function getTimeout(): int
+    public function getTimeout(): float
     {
         return $this->timeout;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTimeoutStream(): int
+    {
+        return $this->timeoutStream;
     }
 
     /**
@@ -108,5 +122,13 @@ class Options implements OptionsInterface
     public function isSsl(): bool
     {
         return $this->ssl;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasDefaultDatabase(): bool
+    {
+        return !empty($this->defaultDatabase);
     }
 }

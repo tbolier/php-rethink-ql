@@ -1,0 +1,18 @@
+<?php
+
+namespace TBolier\RethinkQL\Test;
+
+\define(
+    'PHPUNIT_CONNECTIONS',
+    [
+        'phpunit' => [
+            'host' => 'localhost',
+            'port' => 28015,
+            'default_db' => 'test',
+            'user' => 'admin',
+            'password' => '',
+            'timeout' => 5,
+            'timeout_stream' => 10,
+        ],
+    ]
+);
