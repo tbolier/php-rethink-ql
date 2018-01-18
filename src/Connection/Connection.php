@@ -17,7 +17,10 @@ declare(strict_types=1);
 
 namespace TBolier\RethinkQL\Connection;
 
+
 use TBolier\RethinkQL\Types\Response\ResponseType;
+use TBolier\RethinkQL\Types\VersionDummy\Version;
+
 
 class Connection implements ConnectionInterface
 {
@@ -66,7 +69,7 @@ class Connection implements ConnectionInterface
             stream_set_timeout($this->socket, $this->options->getTimeoutStream());
 
             // Let's shake hands.
-            $handshake = new Handshake($this->options->getUser(), $this->options->getPassword());
+            $handshake = new Handshake($this->options->getUser(), $this->options->getPassword(), Version::V1_0);
 
             try {
                 $handshakeResponse = null;
@@ -74,19 +77,26 @@ class Connection implements ConnectionInterface
                     if (!$this->isConnected()) {
                         throw new Exception('Not connected');
                     }
+
+                    if ($handshakeResponse !== null && preg_match('/^ERROR:\s(.+)$/i', $handshakeResponse, $errorMatch)) {
+                        throw new Exception($errorMatch[1]);
+                    }
+
                     try {
                         $msg = $handshake->nextMessage($handshakeResponse);
                     } catch (Exception $e) {
                         $this->close(false);
                         throw $e;
                     }
-                    if ($msg === null) {
-                        // Handshake is complete
+
+                    if ($msg === 'successful') {
                         break;
                     }
+
                     if ($msg !== '') {
                         $this->sendStr($msg);
                     }
+
                     // Read null-terminated response
                     $handshakeResponse = $this->receiveStr();
                 }
