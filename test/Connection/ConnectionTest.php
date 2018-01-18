@@ -24,9 +24,6 @@ class ConnectionTest extends BaseTestCase
         $this->optionsMock = Mockery::mock(OptionsInterface::class);
     }
 
-    /**
-     * @throws \Exception
-     */
     public function testConnect()
     {
         /** @var ConnectionInterface $connection */

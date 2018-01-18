@@ -56,22 +56,29 @@ class Handshake
     private $serverSignature;
 
     /**
+     * @var int
+     */
+    private $version;
+
+    /**
      * @param string $username
      * @param string $password
+     * @param int $version
      */
-    public function __construct(string $username, string $password)
+    public function __construct(string $username, string $password, int $version)
     {
         $this->username = $username;
         $this->password = $password;
         $this->state = 0;
+        $this->version = $version;
     }
 
     /**
      * @param $response
-     * @return null|string
+     * @return string
      * @throws Exception
      */
-    public function nextMessage(string $response = null): ? string
+    public function nextMessage(string $response = null): ?string
     {
         switch ($this->state) {
             case 0:
@@ -116,7 +123,7 @@ class Handshake
         $this->myR = base64_encode(openssl_random_pseudo_bytes(18));
         $this->clientFirstMessage = 'n=' . $this->username . ',r=' . $this->myR;
 
-        $binaryVersion = pack('V', 0x34c2bdc3); // "V" is little endian, 32 bit unsigned integer
+        $binaryVersion = pack('V', $this->version);
 
         $this->state = 1;
 
@@ -214,10 +221,10 @@ class Handshake
 
     /**
      * @param $response
-     * @return void
+     * @return string
      * @throws Exception
      */
-    private function verifyAuthentication($response)
+    private function verifyAuthentication($response): string
     {
         $json = json_decode($response, true);
         if ($json['success'] === false) {
@@ -238,6 +245,6 @@ class Handshake
 
         $this->state = 4;
 
-        return null;
+        return 'successful';
     }
 }
