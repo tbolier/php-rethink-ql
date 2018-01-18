@@ -37,7 +37,12 @@ class Connection implements ConnectionInterface
     /**
      * @var bool|resource
      */
-    public $socket;
+    private $socket;
+
+    /**
+     * @var string
+     */
+    private $selectedDatabase;
 
     /**
      * @param OptionsInterface $options
@@ -109,7 +114,7 @@ class Connection implements ConnectionInterface
         }
 
         if ($this->options->hasDefaultDatabase()) {
-            $this->selectDatabase($this->options->getDefaultDatabase());
+            $this->selectedDatabase = $this->options->getDefaultDatabase();
         }
 
         return $this;
@@ -419,19 +424,19 @@ class Connection implements ConnectionInterface
      */
     public function selectDatabase(string $name): void
     {
-        // TODO: Implement selectDatabase() method.
+        $this->selectedDatabase = $name;
     }
 
     /**
      * @inheritdoc
      */
-    public function selectTable($name): void
+    public function getSelectedDatabase(): string
     {
-        // TODO: Implement selectTable() method.
+        return $this->selectedDatabase;
     }
 
     /**
-     * @return bool
+     * @inheritdoc
      */
     public function isConnected(): bool
     {

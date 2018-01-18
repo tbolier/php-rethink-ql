@@ -22,7 +22,7 @@ class Table implements TableInterface
     /**
      * @var string
      */
-    private $name;
+    private $table;
 
     /**
      * @param ManagerInterface $manager
@@ -31,15 +31,24 @@ class Table implements TableInterface
     public function __construct(ManagerInterface $manager, string $name)
     {
         $this->manager = $manager;
-        $this->manager->getConnection()->selectTable($name);
-        $this->name = $name;
+        $this->table = $name;
 
         $this->query = [
             QueryType::START,
-            [TermType::TABLE, [[TermType::DB, ['booking']], $this->name]],
-            (object)[],
+            [
+                TermType::TABLE,
+                [
+                    $this->table,
+                ],
+            ],
+            (object)[
+                'db' => [
+                    TermType::DB,
+                    [$this->getSelectedDatabase()],
+                    (object)[],
+                ],
+            ],
         ];
-
     }
 
     /**
@@ -55,18 +64,18 @@ class Table implements TableInterface
                     [
                         TermType::TABLE,
                         [
-                            [
-                                TermType::DB,
-                                ['booking'],
-                                (object)[],
-                            ],
-                            $this->name,
+                            $this->table,
                         ],
-                        (object)[],
                     ],
                 ],
             ],
-            (object)[],
+            (object)[
+                'db' => [
+                    TermType::DB,
+                    [$this->getSelectedDatabase()],
+                    (object)[],
+                ],
+            ],
         ];
 
         return $this;
@@ -90,14 +99,8 @@ class Table implements TableInterface
                     [
                         TermType::TABLE,
                         [
-                            [
-                                TermType::DB,
-                                ['booking'],
-                                (object)[],
-                            ],
-                            $this->name,
+                            $this->table,
                         ],
-                        (object)[],
                     ],
                     [
                         TermType::JSON,
@@ -105,12 +108,11 @@ class Table implements TableInterface
                         (object)[],
                     ],
                 ],
-                (object)[],
             ],
             (object)[
                 'db' => [
                     TermType::DB,
-                    ['booking'],
+                    [$this->getSelectedDatabase()],
                     (object)[],
                 ],
             ],
@@ -137,27 +139,19 @@ class Table implements TableInterface
                     [
                         TermType::TABLE,
                         [
-                            [
-                                TermType::DB,
-                                ['booking'],
-                                (object)[],
-                            ],
-                            $this->name,
+                            $this->table,
                         ],
-                        (object)[],
                     ],
                     [
                         TermType::JSON,
                         $jsonDocuments,
-                        (object)[],
                     ],
                 ],
-                (object)[],
             ],
             (object)[
                 'db' => [
                     TermType::DB,
-                    ['booking'],
+                    [$this->getSelectedDatabase()],
                     (object)[],
                 ],
             ],
@@ -194,18 +188,18 @@ class Table implements TableInterface
                     [
                         TermType::TABLE,
                         [
-                            [
-                                TermType::DB,
-                                ['booking'],
-                                (object)[],
-                            ],
-                            $this->name,
+                            $this->table,
                         ],
-                        (object)[],
                     ],
                 ],
             ],
-            (object)[],
+            (object)[
+                'db' => [
+                    TermType::DB,
+                    [$this->getSelectedDatabase()],
+                    (object)[],
+                ],
+            ],
         ];
 
         return $this;
@@ -217,5 +211,13 @@ class Table implements TableInterface
     public function execute(): array
     {
         return $this->manager->getConnection()->execute($this->query);
+    }
+
+    /**
+     * @return string
+     */
+    private function getSelectedDatabase(): string
+    {
+        return $this->manager->getConnection()->getSelectedDatabase();
     }
 }

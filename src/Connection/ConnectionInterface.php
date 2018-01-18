@@ -34,10 +34,9 @@ interface ConnectionInterface
     public function selectDatabase(string $name): void;
 
     /**
-     * @param string $name
-     * @return void
+     * @return string
      */
-    public function selectTable($name): void;
+    public function getSelectedDatabase(): string;
 
     /**
      * @param bool $noReplyWait
