@@ -17,6 +17,12 @@ interface TableInterface
     public function filter(array $documents): self;
 
     /**
+     * @param mixed $value
+     * @return self
+     */
+    public function get($value): self;
+
+    /**
      * @param array $documents
      * @return self
      */
