@@ -7,9 +7,7 @@ use Mockery;
 use Mockery\MockInterface;
 use TBolier\RethinkQL\Connection\ConnectionInterface;
 use TBolier\RethinkQL\Connection\OptionsInterface;
-use TBolier\RethinkQL\Query\Message;
 use TBolier\RethinkQL\Test\BaseTestCase;
-use TBolier\RethinkQL\Types\Query\QueryType;
 
 class ConnectionTest extends BaseTestCase
 {
@@ -25,6 +23,9 @@ class ConnectionTest extends BaseTestCase
         $this->optionsMock = Mockery::mock(OptionsInterface::class);
     }
 
+    /**
+     * @throws \Exception
+     */
     public function testConnect()
     {
         /** @var ConnectionInterface $connection */
