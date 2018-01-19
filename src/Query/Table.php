@@ -140,10 +140,29 @@ class Table implements TableInterface
      */
     public function update(array $documents): TableInterface
     {
-        // Todo: Build upsert query
+        $jsonDocuments = [];
+        foreach ($documents as $key => $document) {
+            $jsonDocuments[] = json_encode($documents);
+        }
+
         $this->message
             ->setQueryType(QueryType::START)
-            ->setQuery(new Query([]));
+            ->setQuery(new Query(
+                [
+                    TermType::UPDATE,
+                    [
+                        [
+                            TermType::TABLE,
+                            [
+                                $this->table,
+                            ],
+                        ],
+                        [
+                            TermType::JSON,
+                            $jsonDocuments,
+                        ],
+                    ],
+                ]));
 
         return $this;
     }

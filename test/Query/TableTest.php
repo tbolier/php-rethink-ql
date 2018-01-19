@@ -80,28 +80,30 @@ class TableTest extends BaseTestCase
      */
     public function testUpdate()
     {
-        static::markTestSkipped('Todo: create unit test for update');
+        $this->r
+            ->table('nl')
+            ->filter([
+                [
+                    'title' => 'Update document',
+                ],
+            ])
+            ->run();
 
-        // Todo: create unit test for update.
+        $res = $this->r
+            ->table('nl')
+            ->filter([
+                [
+                    'title' => 'Update document',
+                ],
+            ])
+            ->update([
+                [
+                    'title' => 'Updated document',
+                ],
+            ])
+            ->run();
 
-        //$res = $this->manager->createQueryBuilder()
-        //                     ->table('testTable')
-        //                     ->get([
-        //                         'documentId'  => 1,
-        //                         'title'       => 'Test document',
-        //                         'description' => 'My first document.',
-        //                     ])
-        //                     ->update([
-        //                         [
-        //                             'documentId'  => 1,
-        //                             'title'       => 'Test new document',
-        //                             'description' => 'My second document.',
-        //                         ],
-        //                     ])
-        //                     ->execute();
-        //
-        //$this->assertObStatus(['replaced' => 1], $res[0]);
-
+        $this->assertObStatus(['replaced' => 1], $res[0]);
     }
 
     /**
@@ -118,6 +120,8 @@ class TableTest extends BaseTestCase
             ])
             ->count()
             ->run();
+
+        static::assertInternalType('int', $count[0]);
 
         $res = $this->r
             ->table('nl')
@@ -150,6 +154,8 @@ class TableTest extends BaseTestCase
             ])
             ->count()
             ->run();
+
+        static::assertInternalType('int', $count[0]);
 
         $res = $this->r
             ->table('nl')
@@ -184,7 +190,7 @@ class TableTest extends BaseTestCase
             ->get('foo')
             ->run();
 
-        $this->assertEquals([0 => ['id' => 'foo']], $res);
+        static::assertEquals([0 => ['id' => 'foo']], $res);
     }
 
     /**
@@ -198,7 +204,7 @@ class TableTest extends BaseTestCase
             ->get('bar')
             ->run();
 
-        $this->assertEquals([0 => null], $res);
+        static::assertEquals([0 => null], $res);
     }
 
     /**
