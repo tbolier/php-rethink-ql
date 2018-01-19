@@ -163,6 +163,42 @@ class TableTest extends BaseTestCase
 
         $this->assertObStatus(['deleted' => $count[0]], $res[0]);
     }
+    
+    /**
+    * @return void
+    */
+    public function testGet(): void
+    {
+        $this->manager->selectDatabase('test');
+        $res = $this->manager->createQueryBuilder()
+            ->table('nl')
+            ->insert([
+                [
+                    'id' => 'foo',
+                ],
+            ])
+            ->execute();
+
+        $res = $this->manager->createQueryBuilder()
+            ->table('nl')
+            ->get('foo')
+            ->execute();
+
+        $this->assertEquals([0 => ['id' => 'foo']], $res);
+    }
+
+    /**
+     * @return void
+     */
+    public function testGetNonExistingDocument(): void
+    {
+        $res = $this->manager->createQueryBuilder()
+            ->table('nl')
+            ->get('bar')
+            ->execute();
+
+        $this->assertEquals([0 => null], $res);
+    }
 
     /**
      * @param $status

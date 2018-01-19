@@ -206,6 +206,48 @@ class Table implements TableInterface
     }
 
     /**
+     * @param mixed $value
+     * @return TableInterface
+     */
+    public function get($value): TableInterface
+    {
+        $this->query = [
+            QueryType::START,
+            [
+                TermType::GET,
+                [
+                    [
+                        TermType::TABLE,
+                        [
+                            [
+                                TermType::DB,
+                                ['booking'],
+                                (object)[],
+                            ],
+                            $this->name,
+                        ],
+                        (object)[],
+                    ],
+                    [
+                        TermType::DATUM,
+                        $value,
+                    ],
+                ],
+            ],
+
+            (object)[
+                'db' => [
+                    TermType::DB,
+                    ['booking'],
+                    (object)[],
+                ],
+            ],
+        ];
+
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function execute(): array
