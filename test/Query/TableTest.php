@@ -82,7 +82,7 @@ class TableTest extends BaseTestCase
     {
         $this->r
             ->table('nl')
-            ->filter([
+            ->insert([
                 [
                     'title' => 'Update document',
                 ],
