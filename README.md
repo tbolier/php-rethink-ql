@@ -34,9 +34,8 @@ Create multiple document `Manager` per connection.
 
 ```php
 <?php
-
+use TBolier\RethinkQL\Rethink;
 use TBolier\RethinkQL\Connection\Registry;
-use TBolier\RethinkQL\Document\Manager;
 
 $connections = [
     'default_connection' => [
@@ -52,20 +51,19 @@ $connections = [
 
 $registry = new Registry($connections);
 
-$manager = new Manager($registry->getConnection('default_connection'));
+$r = new Rethink($registry->getConnection('default_connection'));
 ```
 
-The document `Manager` has a default database defined in the connection options. However you can always switch database if needed.
+The driver class `Rethink` has a default database defined in the connection options. However you can always switch database if needed.
 ```php
-$manager->selectDatabase('demoDB-2');
+$r->use('demoDB-2');
 ```
 
-The document `Manager` contains a query builder that supports the ReQL domain-specific language (DSL).
+The driver class `Rethink` has an API Interface that supports the ReQL domain-specific language (DSL).
 
 An insert example:
 ```php
-$manager->createQueryBuilder()
-    ->table('tableName')
+$r->table('tableName')
     ->insert([
         [
             'documentId' => 1,
@@ -73,12 +71,12 @@ $manager->createQueryBuilder()
             'description' => 'My first document.'  
         ],    
     ])
-    ->execute();
+    ->run();
 ```
 
 A filter and count example:
 ```php
-$manager->createQueryBuilder()
+$r
     ->table('tableName')
     ->filter([
         [
@@ -86,5 +84,5 @@ $manager->createQueryBuilder()
         ],
     ])
     ->count()
-    ->execute();
+    ->run();
 ```

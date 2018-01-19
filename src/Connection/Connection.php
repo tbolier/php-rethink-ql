@@ -18,7 +18,13 @@ declare(strict_types=1);
 namespace TBolier\RethinkQL\Connection;
 
 
+use TBolier\RethinkQL\Query\Expr;
+use TBolier\RethinkQL\Query\Message;
+use TBolier\RethinkQL\Query\MessageInterface;
+use TBolier\RethinkQL\Query\Query;
+use TBolier\RethinkQL\Types\Query\QueryType;
 use TBolier\RethinkQL\Types\Response\ResponseType;
+use TBolier\RethinkQL\Types\Term\TermType;
 use TBolier\RethinkQL\Types\VersionDummy\Version;
 
 
@@ -42,7 +48,12 @@ class Connection implements ConnectionInterface
     /**
      * @var string
      */
-    private $selectedDatabase;
+    private $dbname;
+
+    /**
+     * @var bool
+     */
+    private $noReply = false;
 
     /**
      * @param OptionsInterface $options
@@ -64,7 +75,7 @@ class Connection implements ConnectionInterface
 
         try {
             $this->socket = stream_socket_client(
-                ($this->options->isSsl() ? 'ssl' : 'tcp') . '://' . $this->options->getHost() . ':' . $this->options->getPort(),
+                ($this->options->isSsl() ? 'ssl' : 'tcp') . '://' . $this->options->getHostname() . ':' . $this->options->getPort(),
                 $errno,
                 $errstr,
                 $this->options->getTimeout(),
@@ -114,7 +125,7 @@ class Connection implements ConnectionInterface
         }
 
         if ($this->options->hasDefaultDatabase()) {
-            $this->selectedDatabase = $this->options->getDefaultDatabase();
+            $this->dbname = $this->options->getDbname();
         }
 
         return $this;
@@ -143,16 +154,15 @@ class Connection implements ConnectionInterface
      * @throws Exception
      * @throws \Exception
      */
-    public function noReplyWait(): void
+    private function noReplyWait(): void
     {
         if (!$this->isConnected()) {
             throw new Exception('Not connected.');
         }
 
-        // Generate a token for the request
         $token = $this->generateToken();
 
-        $query = [4];
+        $query = new Message(QueryType::NOREPLY_WAIT);
         $this->sendQuery($token, $query);
 
         // Await the response
@@ -164,25 +174,31 @@ class Connection implements ConnectionInterface
     }
 
     /**
-     * @param array $query
+     * @param MessageInterface $message
      * @return array
      * @throws Exception
      */
-    public function execute(array $query): array
+    public function run(MessageInterface $message): array
     {
         if (!$this->isConnected()) {
             throw new Exception('Not connected.');
         }
 
         try {
-            // Generate a token for the request
             $token = $this->generateToken();
 
-            $query = $this->utf8Converter($query);
-            $this->sendQuery($token, $query);
+            if ($message instanceof Query) {
+                $message->setQuery($this->utf8Converter($message->getQuery()));
+            }
+
+            $this->sendQuery($token, $message);
+
+            if ($this->noReply) {
+                return [];
+            }
 
             // Await the response
-            $response = $this->receiveResponse($token, $query);
+            $response = $this->receiveResponse($token, $message);
 
             // Todo: support all response types, and decide what the return type should be.
             if ($response['t'] === ResponseType::SUCCESS_PARTIAL) {
@@ -196,18 +212,34 @@ class Connection implements ConnectionInterface
     }
 
     /**
-     * @param array $array
+     * @param MessageInterface $query
+     * @return array
+     * @throws Exception
+     */
+    public function runNoReply(MessageInterface $query): array
+    {
+        $this->noReply = true;
+        $this->run($query);
+        $this->noReply = false;
+    }
+
+    /**
+     * @param MessageInterface $message
      * @return mixed
      */
-    private function utf8Converter(array $array): array
+    private function utf8Converter(MessageInterface $message): MessageInterface
     {
-        array_walk_recursive($array, function (&$item) {
+        if (null !== $message->getQuery()) {
+            return $message;
+        }
+
+        array_walk_recursive($message->getQuery(), function (&$item) {
             if (is_scalar($item) && !mb_detect_encoding((string)$item, 'utf-8', true)) {
                 $item = utf8_encode($item);
             }
         });
 
-        return $array;
+        return $message;
     }
 
     /**
@@ -234,14 +266,22 @@ class Connection implements ConnectionInterface
     }
 
     /**
-     * @param $token
-     * @param $query
+     * @param int $token
+     * @param MessageInterface $message
      * @return int
      * @throws \Exception
      */
-    private function sendQuery($token, $query): int
+    private function sendQuery(int $token, MessageInterface $message): int
     {
-        $request = json_encode($query);
+        $message->setOptions([
+            'db' => [
+                TermType::DB,
+                [$this->dbname],
+                (object)[],
+            ],
+        ]);
+
+        $request = json_encode($message);
 
         switch (json_last_error()) {
             case JSON_ERROR_DEPTH:
@@ -359,12 +399,12 @@ class Connection implements ConnectionInterface
     }
 
     /**
-     * @param $token
-     * @param null $query
-     * @return array|mixed
+     * @param int $token
+     * @param MessageInterface $message
+     * @return array
      * @throws Exception
      */
-    private function receiveResponse($token, $query = null)
+    private function receiveResponse(int $token, MessageInterface $message): array
     {
         $responseHeader = $this->receiveStr(4 + 8);
         $responseHeader = unpack('Vtoken/Vtoken2/Vsize', $responseHeader);
@@ -377,7 +417,7 @@ class Connection implements ConnectionInterface
         $responseBuf = $this->receiveStr($responseSize);
 
         $response = json_decode($responseBuf, true);
-        $this->validateResponse($response, $responseToken, $token, $query);
+        $this->validateResponse($response, $responseToken, $token, $message);
 
         return $response;
     }
@@ -386,10 +426,10 @@ class Connection implements ConnectionInterface
      * @param array $response
      * @param int $responseToken
      * @param int $token
-     * @param array $query
+     * @param MessageInterface $message
      * @throws Exception
      */
-    private function validateResponse(array $response, int $responseToken, int $token, array $query): void
+    private function validateResponse(array $response, int $responseToken, int $token, MessageInterface $message): void
     {
         if (isset($response['error'])) {
             throw new Exception($response['error'], $response['error_code']);
@@ -411,28 +451,20 @@ class Connection implements ConnectionInterface
         }
 
         if ($response['t'] === ResponseType::COMPILE_ERROR) {
-            throw new Exception('Compile error: ' . $response['r'][0] . ', jsonQuery: ' . json_encode($query));
+            throw new Exception('Compile error: ' . $response['r'][0] . ', jsonQuery: ' . json_encode($message));
         }
 
         if ($response['t'] === ResponseType::RUNTIME_ERROR) {
-            throw new Exception('Runtime error: ' . $response['r'][0] . ', jsonQuery: ' . json_encode($query));
+            throw new Exception('Runtime error: ' . $response['r'][0] . ', jsonQuery: ' . json_encode($message));
         }
     }
 
     /**
      * @inheritdoc
      */
-    public function selectDatabase(string $name): void
+    public function use(string $name): void
     {
-        $this->selectedDatabase = $name;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getSelectedDatabase(): string
-    {
-        return $this->selectedDatabase;
+        $this->dbname = $name;
     }
 
     /**
@@ -441,5 +473,36 @@ class Connection implements ConnectionInterface
     public function isConnected(): bool
     {
         return $this->socket ? true : false;
+    }
+
+    /**
+     * @param MessageInterface $query
+     * @return array
+     */
+    public function changes(MessageInterface $query): array
+    {
+        // TODO: Implement changes() method.
+    }
+
+    /**
+     * @return array
+     */
+    public function server(): array
+    {
+        // TODO: Implement server() method.
+    }
+
+    /**
+     * @param string $string
+     * @return array
+     * @throws Exception
+     */
+    public function expr(string $string): array
+    {
+        $message = new Message();
+        $message->setQueryType(QueryType::START)
+            ->setQuery(new Expr($string));
+
+        return $this->run($message);
     }
 }
