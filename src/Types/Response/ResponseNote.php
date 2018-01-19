@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace TBolier\RethinkQL\Types\Response;
 
 class ResponseNote
