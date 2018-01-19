@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace TBolier\RethinkQL\Query;
 
-use TBolier\RethinkQL\Document\ManagerInterface;
+use TBolier\RethinkQL\RethinkInterface;
 
 class Builder implements BuilderInterface
 {
     /**
-     * @var ManagerInterface
+     * @var RethinkInterface
      */
-    private $manager;
+    private $rethink;
 
     /**
      * @var TableInterface
@@ -18,16 +18,22 @@ class Builder implements BuilderInterface
     private $table;
 
     /**
-     * @param ManagerInterface $manager
+     * @var MessageInterface
      */
-    public function __construct(ManagerInterface $manager)
+    private $message;
+
+    /**
+     * @param RethinkInterface $rethink
+     * @param MessageInterface $message
+     */
+    public function __construct(RethinkInterface $rethink, MessageInterface $message)
     {
-        $this->manager = $manager;
+        $this->rethink = $rethink;
+        $this->message = $message;
     }
 
     /**
      * @param string $name
-     *
      * @return TableInterface
      */
     public function table(string $name): TableInterface
@@ -36,7 +42,7 @@ class Builder implements BuilderInterface
             unset($this->table);
         }
 
-        $this->table = new Table($this->manager, $name);
+        $this->table = new Table($name, $this->rethink, $this->message);
 
         return $this->table;
     }

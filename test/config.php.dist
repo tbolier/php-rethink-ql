@@ -7,9 +7,9 @@ namespace TBolier\RethinkQL\Test;
     'PHPUNIT_CONNECTIONS',
     [
         'phpunit_default' => [
-            'host' => 'localhost',
+            'hostname' => 'localhost',
             'port' => 28015,
-            'default_db' => 'test',
+            'dbname' => 'test',
             'user' => 'admin',
             'password' => '',
             'timeout' => 5,

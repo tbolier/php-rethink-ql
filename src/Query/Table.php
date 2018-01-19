@@ -3,21 +3,21 @@ declare(strict_types=1);
 
 namespace TBolier\RethinkQL\Query;
 
-use TBolier\RethinkQL\Document\ManagerInterface;
+use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Query\QueryType;
 use TBolier\RethinkQL\Types\Term\TermType;
 
 class Table implements TableInterface
 {
     /**
-     * @var ManagerInterface
+     * @var RethinkInterface
      */
-    private $manager;
+    private $rethink;
 
     /**
      * @var array
      */
-    private $query;
+    private $message;
 
     /**
      * @var string
@@ -25,30 +25,25 @@ class Table implements TableInterface
     private $table;
 
     /**
-     * @param ManagerInterface $manager
      * @param string $name
+     * @param RethinkInterface $rethink
+     * @param MessageInterface $message
      */
-    public function __construct(ManagerInterface $manager, string $name)
+    public function __construct(string $name, RethinkInterface $rethink, MessageInterface $message)
     {
-        $this->manager = $manager;
+        $this->rethink = $rethink;
         $this->table = $name;
 
-        $this->query = [
-            QueryType::START,
-            [
+        $message
+            ->setQueryType(QueryType::START)
+            ->setQuery(new Query([
                 TermType::TABLE,
                 [
                     $this->table,
                 ],
-            ],
-            (object)[
-                'db' => [
-                    TermType::DB,
-                    [$this->getSelectedDatabase()],
-                    (object)[],
-                ],
-            ],
-        ];
+            ]));
+
+        $this->message = $message;
     }
 
     /**
@@ -56,27 +51,21 @@ class Table implements TableInterface
      */
     public function count(): TableInterface
     {
-        $this->query = [
-            QueryType::START,
-            [
-                TermType::COUNT,
+        $this->message
+            ->setQueryType(QueryType::START)
+            ->setQuery(new Query(
                 [
+                    TermType::COUNT,
                     [
-                        TermType::TABLE,
                         [
-                            $this->table,
+                            TermType::TABLE,
+                            [
+                                $this->table,
+                            ],
                         ],
                     ],
-                ],
-            ],
-            (object)[
-                'db' => [
-                    TermType::DB,
-                    [$this->getSelectedDatabase()],
-                    (object)[],
-                ],
-            ],
-        ];
+                ]
+            ));
 
         return $this;
     }
@@ -91,32 +80,25 @@ class Table implements TableInterface
             $jsonDocuments[] = json_encode($documents);
         }
 
-        $this->query = [
-            QueryType::START,
-            [
-                TermType::FILTER,
+        $this->message
+            ->setQueryType(QueryType::START)
+            ->setQuery(new Query(
                 [
+                    TermType::FILTER,
                     [
-                        TermType::TABLE,
                         [
-                            $this->table,
+                            TermType::TABLE,
+                            [
+                                $this->table,
+                            ],
+                        ],
+                        [
+                            TermType::JSON,
+                            $jsonDocuments,
+                            (object)[],
                         ],
                     ],
-                    [
-                        TermType::JSON,
-                        $jsonDocuments,
-                        (object)[],
-                    ],
-                ],
-            ],
-            (object)[
-                'db' => [
-                    TermType::DB,
-                    [$this->getSelectedDatabase()],
-                    (object)[],
-                ],
-            ],
-        ];
+                ]));
 
         return $this;
     }
@@ -131,31 +113,24 @@ class Table implements TableInterface
             $jsonDocuments[] = json_encode($documents);
         }
 
-        $this->query = [
-            QueryType::START,
-            [
-                TermType::INSERT,
+        $this->message
+            ->setQueryType(QueryType::START)
+            ->setQuery(new Query(
                 [
+                    TermType::INSERT,
                     [
-                        TermType::TABLE,
                         [
-                            $this->table,
+                            TermType::TABLE,
+                            [
+                                $this->table,
+                            ],
+                        ],
+                        [
+                            TermType::JSON,
+                            $jsonDocuments,
                         ],
                     ],
-                    [
-                        TermType::JSON,
-                        $jsonDocuments,
-                    ],
-                ],
-            ],
-            (object)[
-                'db' => [
-                    TermType::DB,
-                    [$this->getSelectedDatabase()],
-                    (object)[],
-                ],
-            ],
-        ];
+                ]));
 
         return $this;
     }
@@ -166,11 +141,9 @@ class Table implements TableInterface
     public function update(array $documents): TableInterface
     {
         // Todo: Build upsert query
-        $this->query = [
-            QueryType::START,
-            [], // Write query here
-            (object)[],
-        ];
+        $this->message
+            ->setQueryType(QueryType::START)
+            ->setQuery(new Query([]));
 
         return $this;
     }
@@ -180,9 +153,9 @@ class Table implements TableInterface
      */
     public function delete(): TableInterface
     {
-        $this->query = [
-            QueryType::START,
-            [
+        $this->message
+            ->setQueryType(QueryType::START)
+            ->setQuery(new Query([
                 TermType::DELETE,
                 [
                     [
@@ -192,15 +165,7 @@ class Table implements TableInterface
                         ],
                     ],
                 ],
-            ],
-            (object)[
-                'db' => [
-                    TermType::DB,
-                    [$this->getSelectedDatabase()],
-                    (object)[],
-                ],
-            ],
-        ];
+            ]));
 
         return $this;
     }
@@ -211,9 +176,9 @@ class Table implements TableInterface
      */
     public function get($value): TableInterface
     {
-        $this->query = [
-            QueryType::START,
-            [
+        $this->message
+            ->setQueryType(QueryType::START)
+            ->setQuery(new Query([
                 TermType::GET,
                 [
                     [
@@ -227,15 +192,7 @@ class Table implements TableInterface
                         $value,
                     ],
                 ],
-            ],
-            (object)[
-                'db' => [
-                    TermType::DB,
-                    [$this->getSelectedDatabase()],
-                    (object)[],
-                ],
-            ],
-        ];
+            ]));
 
         return $this;
     }
@@ -243,16 +200,8 @@ class Table implements TableInterface
     /**
      * @return array
      */
-    public function execute(): array
+    public function run(): array
     {
-        return $this->manager->getConnection()->execute($this->query);
-    }
-
-    /**
-     * @return string
-     */
-    private function getSelectedDatabase(): string
-    {
-        return $this->manager->getConnection()->getSelectedDatabase();
+        return $this->rethink->connection()->run($this->message);
     }
 }

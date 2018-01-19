@@ -8,7 +8,7 @@ class Options implements OptionsInterface
     /**
      * @var string
      */
-    private $host;
+    private $hostname;
 
     /**
      * @var int
@@ -18,7 +18,7 @@ class Options implements OptionsInterface
     /**
      * @var string
      */
-    private $defaultDatabase;
+    private $dbname;
 
     /**
      * @var string
@@ -50,9 +50,9 @@ class Options implements OptionsInterface
      */
     public function __construct($options = [])
     {
-        $this->host = $options['host'] ?? 'localhost';
+        $this->hostname = $options['hostname'] ?? 'localhost';
         $this->port = $options['port'] ?? 28015;
-        $this->defaultDatabase = $options['default_db'] ?? '';
+        $this->dbname = $options['dbname'] ?? '';
         $this->user = $options['user'] ?? '';
         $this->password = $options['password'] ?? '';
         $this->timeout = $options['timeout'] ?? 1.0;
@@ -63,9 +63,9 @@ class Options implements OptionsInterface
     /**
      * @return string
      */
-    public function getHost(): string
+    public function getHostname(): string
     {
-        return $this->host;
+        return $this->hostname;
     }
 
     /**
@@ -79,9 +79,9 @@ class Options implements OptionsInterface
     /**
      * @return string
      */
-    public function getDefaultDatabase(): string
+    public function getDbname(): string
     {
-        return $this->defaultDatabase;
+        return $this->dbname;
     }
 
     /**
@@ -129,6 +129,6 @@ class Options implements OptionsInterface
      */
     public function hasDefaultDatabase(): bool
     {
-        return !empty($this->defaultDatabase);
+        return !empty($this->dbname);
     }
 }

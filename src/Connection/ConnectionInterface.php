@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace TBolier\RethinkQL\Connection;
 
+use TBolier\RethinkQL\Query\MessageInterface;
+
 interface ConnectionInterface
 {
     /**
@@ -16,31 +18,43 @@ interface ConnectionInterface
     public function connect(): Connection;
 
     /**
-     * @throws Exception
-     * @throws \Exception
-     */
-    public function noReplyWait(): void;
-
-    /**
-     * @param array $query
+     * @param MessageInterface $message
      * @return array
      */
-    public function execute(array $query): array;
+    public function run(MessageInterface $message): array;
+
+    /**
+     * @param MessageInterface $query
+     * @return array
+     */
+    public function runNoReply(MessageInterface $query): array;
+
+    /**
+     * @param MessageInterface $query
+     * @return array
+     */
+    public function changes(MessageInterface $query): array;
+
+    /**
+     * @return array
+     */
+    public function server(): array;
 
     /**
      * @param string $name
      * @return void
      */
-    public function selectDatabase(string $name): void;
-
-    /**
-     * @return string
-     */
-    public function getSelectedDatabase(): string;
+    public function use(string $name): void;
 
     /**
      * @param bool $noReplyWait
      * @return void
      */
     public function close($noReplyWait = true): void;
+
+    /**
+     * @param string $string
+     * @return array
+     */
+    public function expr(string $string): array;
 }

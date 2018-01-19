@@ -42,5 +42,5 @@ interface TableInterface
     /**
      * @return array
      */
-    public function execute(): array;
+    public function run(): array;
 }

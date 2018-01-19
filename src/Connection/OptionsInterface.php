@@ -8,7 +8,7 @@ interface OptionsInterface
     /**
      * @return string
      */
-    public function getHost(): string;
+    public function getHostname(): string;
 
     /**
      * @return int
@@ -18,7 +18,7 @@ interface OptionsInterface
     /**
      * @return string
      */
-    public function getDefaultDatabase(): string;
+    public function getDbname(): string;
 
     /**
      * @return string

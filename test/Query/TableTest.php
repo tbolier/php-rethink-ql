@@ -5,16 +5,16 @@ namespace TBolier\RethinkConnect\Test\Connection;
 
 use ArrayObject;
 use TBolier\RethinkQL\Connection\ConnectionInterface;
-use TBolier\RethinkQL\Document\Manager;
-use TBolier\RethinkQL\Document\ManagerInterface;
+use TBolier\RethinkQL\Rethink;
+use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Test\BaseTestCase;
 
 class TableTest extends BaseTestCase
 {
     /**
-     * @var ManagerInterface
+     * @var RethinkInterface
      */
-    private $manager;
+    private $r;
 
     public function setUp()
     {
@@ -23,7 +23,7 @@ class TableTest extends BaseTestCase
         /** @var ConnectionInterface $connection */
         $connection = $this->createConnection('phpunit_default')->connect();
 
-        $this->manager = new Manager($connection);
+        $this->r = new Rethink($connection);
     }
 
     /**
@@ -31,16 +31,16 @@ class TableTest extends BaseTestCase
      */
     public function testInsert()
     {
-        $res = $this->manager->createQueryBuilder()
-                             ->table('nl')
-                             ->insert([
-                                 [
-                                     'documentId' => 1,
-                                     'title' => 'Test document',
-                                     'description' => 'My first document.',
-                                 ],
-                             ])
-                             ->execute();
+        $res = $this->r
+            ->table('nl')
+            ->insert([
+                [
+                    'documentId' => 1,
+                    'title' => 'Test document',
+                    'description' => 'My first document.',
+                ],
+            ])
+            ->run();
 
         $this->assertObStatus(['inserted' => 1], $res[0]);
     }
@@ -50,10 +50,10 @@ class TableTest extends BaseTestCase
      */
     public function testCount()
     {
-        $res = $this->manager->createQueryBuilder()
-                             ->table('nl')
-                             ->count()
-                             ->execute();
+        $res = $this->r
+            ->table('nl')
+            ->count()
+            ->run();
 
         static::assertInternalType('int', $res[0]);
     }
@@ -63,14 +63,14 @@ class TableTest extends BaseTestCase
      */
     public function testFilter()
     {
-        $res = $this->manager->createQueryBuilder()
-                             ->table('nl')
-                             ->filter([
-                                 [
-                                     'title' => 'Test document',
-                                 ],
-                             ])
-                             ->execute();
+        $res = $this->r
+            ->table('nl')
+            ->filter([
+                [
+                    'title' => 'Test document',
+                ],
+            ])
+            ->run();
 
         static::assertInternalType('array', $res[0]);
     }
@@ -109,20 +109,20 @@ class TableTest extends BaseTestCase
      */
     public function testEmptyTable()
     {
-        $count = $this->manager->createQueryBuilder()
-                               ->table('nl')
-                               ->filter([
-                                   [
-                                       'title' => 'Test document',
-                                   ],
-                               ])
-                               ->count()
-                               ->execute();
+        $count = $this->r
+            ->table('nl')
+            ->filter([
+                [
+                    'title' => 'Test document',
+                ],
+            ])
+            ->count()
+            ->run();
 
-        $res = $this->manager->createQueryBuilder()
-                             ->table('nl')
-                             ->delete()
-                             ->execute();
+        $res = $this->r
+            ->table('nl')
+            ->delete()
+            ->run();
 
         $this->assertObStatus(['deleted' => $count[0]], $res[0]);
     }
@@ -132,70 +132,71 @@ class TableTest extends BaseTestCase
      */
     public function testDeleteDocument()
     {
-        $this->manager->createQueryBuilder()
-                      ->table('nl')
-                      ->insert([
-                          [
-                              'title' => 'Delete document',
-                          ],
-                      ])
-                      ->execute();
+        $this->r
+            ->table('nl')
+            ->insert([
+                [
+                    'title' => 'Delete document',
+                ],
+            ])
+            ->run();
 
-        $count = $this->manager->createQueryBuilder()
-                               ->table('nl')
-                               ->filter([
-                                   [
-                                       'title' => 'Delete document',
-                                   ],
-                               ])
-                               ->count()
-                               ->execute();
+        $count = $this->r
+            ->table('nl')
+            ->filter([
+                [
+                    'title' => 'Delete document',
+                ],
+            ])
+            ->count()
+            ->run();
 
-        $res = $this->manager->createQueryBuilder()
-                             ->table('nl')
-                             ->filter([
-                                 [
-                                     'title' => 'Delete document',
-                                 ],
-                             ])
-                             ->delete()
-                             ->execute();
+        $res = $this->r
+            ->table('nl')
+            ->filter([
+                [
+                    'title' => 'Delete document',
+                ],
+            ])
+            ->delete()
+            ->run();
 
         $this->assertObStatus(['deleted' => $count[0]], $res[0]);
     }
-    
+
     /**
-    * @return void
-    */
+     * @return void
+     * @throws \Exception
+     */
     public function testGet(): void
     {
-        $this->manager->selectDatabase('test');
-        $res = $this->manager->createQueryBuilder()
+        $this->r
             ->table('nl')
             ->insert([
                 [
                     'id' => 'foo',
                 ],
             ])
-            ->execute();
+            ->run();
 
-        $res = $this->manager->createQueryBuilder()
+        $res = $this->r
             ->table('nl')
             ->get('foo')
-            ->execute();
+            ->run();
 
         $this->assertEquals([0 => ['id' => 'foo']], $res);
     }
 
     /**
      * @return void
+     * @throws \Exception
      */
     public function testGetNonExistingDocument(): void
     {
-        $res = $this->manager->createQueryBuilder()
+        $res = $this->r
             ->table('nl')
             ->get('bar')
-            ->execute();
+            ->run();
 
         $this->assertEquals([0 => null], $res);
     }
