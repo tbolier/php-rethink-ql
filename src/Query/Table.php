@@ -142,7 +142,7 @@ class Table implements TableInterface
     {
         $jsonDocuments = [];
         foreach ($documents as $key => $document) {
-            $jsonDocuments[] = json_encode($documents);
+            $jsonDocuments[] = json_encode($document);
         }
 
         $this->message

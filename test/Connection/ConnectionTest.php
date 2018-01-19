@@ -8,6 +8,7 @@ use Mockery\MockInterface;
 use TBolier\RethinkQL\Connection\ConnectionInterface;
 use TBolier\RethinkQL\Connection\OptionsInterface;
 use TBolier\RethinkQL\Test\BaseTestCase;
+use TBolier\RethinkQL\Types\Query\QueryType;
 
 class ConnectionTest extends BaseTestCase
 {
