@@ -234,7 +234,6 @@ class Table implements TableInterface
                     ],
                 ],
             ],
-
             (object)[
                 'db' => [
                     TermType::DB,
