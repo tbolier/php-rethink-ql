@@ -22,8 +22,35 @@ class TableTest extends BaseTestCase
 
         /** @var ConnectionInterface $connection */
         $connection = $this->createConnection('phpunit_default')->connect();
+        $connection->connect()->use('test');
 
         $this->r = new Rethink($connection);
+    }
+
+
+    /**
+     * @throws \Exception
+     */
+    public function testEmptyTable()
+    {
+        $count = $this->r
+            ->table('nl')
+            ->filter([
+                [
+                    'title' => 'Test document',
+                ],
+            ])
+            ->count()
+            ->run();
+
+        static::assertInternalType('int', $count[0]);
+
+        $res = $this->r
+            ->table('nl')
+            ->delete()
+            ->run();
+
+        $this->assertObStatus(['deleted' => $count[0]], $res[0]);
     }
 
     /**
@@ -103,32 +130,7 @@ class TableTest extends BaseTestCase
             ])
             ->run();
 
-        $this->assertObStatus(['replaced' => 1], $res[0]);
-    }
-
-    /**
-     * @throws \Exception
-     */
-    public function testEmptyTable()
-    {
-        $count = $this->r
-            ->table('nl')
-            ->filter([
-                [
-                    'title' => 'Test document',
-                ],
-            ])
-            ->count()
-            ->run();
-
-        static::assertInternalType('int', $count[0]);
-
-        $res = $this->r
-            ->table('nl')
-            ->delete()
-            ->run();
-
-        $this->assertObStatus(['deleted' => $count[0]], $res[0]);
+        $this->assertObStatus(['replaced' => 2], $res[0]);
     }
 
     /**
