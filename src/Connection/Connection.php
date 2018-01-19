@@ -94,7 +94,8 @@ class Connection implements ConnectionInterface
                         throw new Exception('Not connected');
                     }
 
-                    if ($handshakeResponse !== null && preg_match('/^ERROR:\s(.+)$/i', $handshakeResponse, $errorMatch)) {
+                    if ($handshakeResponse !== null && preg_match('/^ERROR:\s(.+)$/i', $handshakeResponse,
+                            $errorMatch)) {
                         throw new Exception($errorMatch[1]);
                     }
 
@@ -160,16 +161,20 @@ class Connection implements ConnectionInterface
             throw new Exception('Not connected.');
         }
 
-        $token = $this->generateToken();
+        try {
+            $token = $this->generateToken();
 
-        $query = new Message(QueryType::NOREPLY_WAIT);
-        $this->sendQuery($token, $query);
+            $query = new Message(QueryType::NOREPLY_WAIT);
+            $this->sendQuery($token, $query);
 
-        // Await the response
-        $response = $this->receiveResponse($token, $query);
+            // Await the response
+            $response = $this->receiveResponse($token, $query);
 
-        if ($response['t'] !== 4) {
-            throw new Exception('Unexpected response type to noreplyWait query.');
+            if ($response['t'] !== 4) {
+                throw new Exception('Unexpected response type for noreplyWait query.');
+            }
+        } catch (\Exception $e) {
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
 
@@ -486,10 +491,31 @@ class Connection implements ConnectionInterface
 
     /**
      * @return array
+     * @throws \Exception
      */
     public function server(): array
     {
-        // TODO: Implement server() method.
+        if (!$this->isConnected()) {
+            throw new Exception('Not connected.');
+        }
+
+        try {
+            $token = $this->generateToken();
+
+            $query = new Message(QueryType::SERVER_INFO);
+            $this->sendQuery($token, $query);
+
+            // Await the response
+            $response = $this->receiveResponse($token, $query);
+
+            if ($response['t'] !== 5) {
+                throw new Exception('Unexpected response type for server query.');
+            }
+        } catch (\Exception $e) {
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
+        }
+
+        return $response;
     }
 
     /**

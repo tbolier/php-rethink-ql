@@ -33,4 +33,12 @@ class ConnectionTest extends BaseTestCase
 
         static::assertInternalType('array', $connection->expr('foo'));
     }
+
+    public function testServer()
+    {
+        /** @var ConnectionInterface $connection */
+        $res = $this->createConnection('phpunit_default')->connect()->server();
+
+        $this->assertEquals(QueryType::SERVER_INFO, $res['t']);
+    }
 }
