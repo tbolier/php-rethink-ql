@@ -116,6 +116,16 @@ class TableTest extends BaseTestCase
             ])
             ->run();
 
+        $count = $this->r
+            ->table('nl')
+            ->filter([
+                [
+                    'title' => 'Update document',
+                ],
+            ])
+            ->count()
+            ->run();
+
         $res = $this->r
             ->table('nl')
             ->filter([
@@ -130,7 +140,7 @@ class TableTest extends BaseTestCase
             ])
             ->run();
 
-        $this->assertObStatus(['replaced' => 2], $res[0]);
+        $this->assertObStatus(['replaced' => $count[0]], $res[0]);
     }
 
     /**
