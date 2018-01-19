@@ -219,14 +219,8 @@ class Table implements TableInterface
                     [
                         TermType::TABLE,
                         [
-                            [
-                                TermType::DB,
-                                ['booking'],
-                                (object)[],
-                            ],
-                            $this->name,
+                            $this->table,
                         ],
-                        (object)[],
                     ],
                     [
                         TermType::DATUM,
@@ -237,7 +231,7 @@ class Table implements TableInterface
             (object)[
                 'db' => [
                     TermType::DB,
-                    ['booking'],
+                    [$this->getSelectedDatabase()],
                     (object)[],
                 ],
             ],
