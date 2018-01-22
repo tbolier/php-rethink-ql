@@ -64,28 +64,50 @@ $r->use('demoDB-2');
 
 The driver class `Rethink` has an API Interface that supports the ReQL domain-specific language (DSL).
 
-An insert example:
+A create table example:
+```php
+$r->db()
+  ->tableCreate('Table')
+  ->run();
+```          
+
+An insert example:            
 ```php
 $r->table('tableName')
-    ->insert([
-        [
-            'documentId' => 1,
-            'title' => 'Test document',
-            'description' => 'My first document.'  
-        ],    
-    ])
-    ->run();
+  ->insert([
+      [
+          'documentId' => 1,
+          'title' => 'Test document',
+          'description' => 'My first document.'  
+      ],    
+  ])
+  ->run();
+```
+
+An update example:            
+```php
+$r->table('tableName')
+  ->filter([
+      [
+          'title' => 'Test document',
+      ],    
+  ])
+  ->update([
+      [
+          'title' => 'Updated document',
+      ],    
+  ])
+  ->run();
 ```
 
 A filter and count example:
 ```php
-$r
-    ->table('tableName')
-    ->filter([
-        [
-            'title' => 'Test document',
-        ],
-    ])
-    ->count()
-    ->run();
+$r->table('tableName')
+  ->filter([
+      [
+          'title' => 'Test document',
+      ],
+  ])
+  ->count()
+  ->run();
 ```

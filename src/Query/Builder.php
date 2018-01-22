@@ -18,6 +18,11 @@ class Builder implements BuilderInterface
     private $table;
 
     /**
+     * @var DatabaseInterface
+     */
+    private $database;
+
+    /**
      * @var MessageInterface
      */
     private $message;
@@ -45,5 +50,19 @@ class Builder implements BuilderInterface
         $this->table = new Table($name, $this->rethink, $this->message);
 
         return $this->table;
+    }
+
+    /**
+     * @return DatabaseInterface
+     */
+    public function database(): DatabaseInterface
+    {
+        if ($this->database) {
+            unset($this->database);
+        }
+
+        $this->database = new Database($this->rethink, $this->message);
+
+        return $this->database;
     }
 }

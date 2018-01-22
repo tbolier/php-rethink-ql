@@ -11,4 +11,9 @@ interface BuilderInterface
      * @return TableInterface
      */
     public function table(string $name): TableInterface;
+
+    /**
+     * @return DatabaseInterface
+     */
+    public function database(): DatabaseInterface;
 }
