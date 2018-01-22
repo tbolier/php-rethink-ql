@@ -43,7 +43,7 @@ class TableTest extends BaseTestCase
             ->count()
             ->run();
 
-        static::assertInternalType('int', $count[0]);
+        $this->assertInternalType('int', $count[0]);
 
         $res = $this->r
             ->table('nl')
@@ -82,7 +82,7 @@ class TableTest extends BaseTestCase
             ->count()
             ->run();
 
-        static::assertInternalType('int', $res[0]);
+        $this->assertInternalType('int', $res[0]);
     }
 
     /**
@@ -99,7 +99,7 @@ class TableTest extends BaseTestCase
             ])
             ->run();
 
-        static::assertInternalType('array', $res[0]);
+        $this->assertInternalType('array', $res[0]);
     }
 
     /**
@@ -167,7 +167,7 @@ class TableTest extends BaseTestCase
             ->count()
             ->run();
 
-        static::assertInternalType('int', $count[0]);
+        $this->assertInternalType('int', $count[0]);
 
         $res = $this->r
             ->table('nl')
@@ -202,7 +202,7 @@ class TableTest extends BaseTestCase
             ->get('foo')
             ->run();
 
-        static::assertEquals([0 => ['id' => 'foo']], $res);
+        $this->assertEquals([0 => ['id' => 'foo']], $res);
     }
 
     /**
@@ -216,7 +216,7 @@ class TableTest extends BaseTestCase
             ->get('bar')
             ->run();
 
-        static::assertEquals([0 => null], $res);
+        $this->assertEquals([0 => null], $res);
     }
 
     /**
@@ -247,6 +247,6 @@ class TableTest extends BaseTestCase
             $res[$s] = $data[$s] ?? 0;
         }
 
-        static::assertEquals($status, $res);
+        $this->assertEquals($status, $res);
     }
 }

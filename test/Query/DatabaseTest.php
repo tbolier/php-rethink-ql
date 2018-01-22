@@ -37,7 +37,7 @@ class DatabaseTest extends BaseTestCase
             ->tableList()
             ->run();
 
-        static::assertInternalType('array', $res[0]);
+        $this->assertInternalType('array', $res[0]);
     }
 
     /**
@@ -91,6 +91,6 @@ class DatabaseTest extends BaseTestCase
             $res[$s] = $data[$s] ?? 0;
         }
 
-        static::assertEquals($status, $res);
+        $this->assertEquals($status, $res);
     }
 }
