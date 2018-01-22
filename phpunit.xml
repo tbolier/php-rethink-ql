@@ -1,0 +1,17 @@
+<phpunit bootstrap="test/Bootstrap.php" backupGlobals="false">
+    <php>
+        <ini name="memory_limit" value="4G" />
+    </php>
+    <testsuites>
+        <testsuite name="Worker unit test suite">
+            <directory>test/*</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist addUncoveredFilesFromWhitelist="true" processUncoveredFilesFromWhitelist="false">
+            <directory suffix=".php">src/*</directory>
+            <exclude>
+            </exclude>
+        </whitelist>
+    </filter>
+</phpunit>

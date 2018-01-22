@@ -1,0 +1,23 @@
+{
+    "name": "tbolier/php-rethink-ql",
+    "description": "A clean and solid RethinkDB driver for PHP.",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Timon Bolier",
+            "email": "timonb@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "require-dev": {
+        "mockery/mockery": "^1.0@dev",
+        "phpunit/phpunit": "^7.0@dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "TBolier\\RethinkQL\\": "src/",
+            "TBolier\\RethinkQL\\Test\\": "test/"
+        }
+    }
+}

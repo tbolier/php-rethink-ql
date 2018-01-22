@@ -1,0 +1,5 @@
+.idea/
+vendor/
+rethinkdb_data
+test/config.php
+
