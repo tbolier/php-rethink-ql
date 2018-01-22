@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * @license http://www.apache.org/licenses/ Apache License 2.0
  * @license https://github.com/danielmewes/php-rql Apache License 2.0
@@ -13,10 +15,8 @@
  * - Abstraction of code to new methods to improve readability.
  * - Improved implementation and removed obsolete code.
  */
-declare(strict_types=1);
 
 namespace TBolier\RethinkQL\Connection;
-
 
 use TBolier\RethinkQL\Query\Expr;
 use TBolier\RethinkQL\Query\Message;
@@ -26,7 +26,6 @@ use TBolier\RethinkQL\Types\Query\QueryType;
 use TBolier\RethinkQL\Types\Response\ResponseType;
 use TBolier\RethinkQL\Types\Term\TermType;
 use TBolier\RethinkQL\Types\VersionDummy\Version;
-
 
 class Connection implements ConnectionInterface
 {
