@@ -164,12 +164,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/mockery/mockery.git",
-                "reference": "f4c45ba6dfc052f5e061fa4b1cbf9770498cd2f8"
+                "reference": "7886b297ed4a9a0b29461c9efee366c9b1a0484c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mockery/mockery/zipball/f4c45ba6dfc052f5e061fa4b1cbf9770498cd2f8",
-                "reference": "f4c45ba6dfc052f5e061fa4b1cbf9770498cd2f8",
+                "url": "https://api.github.com/repos/mockery/mockery/zipball/7886b297ed4a9a0b29461c9efee366c9b1a0484c",
+                "reference": "7886b297ed4a9a0b29461c9efee366c9b1a0484c",
                 "shasum": ""
             },
             "require": {
@@ -221,7 +221,7 @@
                 "test double",
                 "testing"
             ],
-            "time": "2018-01-10T09:32:21+00:00"
+            "time": "2018-01-22T09:54:57+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -381,19 +381,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionCommon.git",
-                "reference": "4bd3e3fbae45054ebbe8a2e1aba921aae477742c"
+                "reference": "e8e68dc40f300e50f5a3b254bd7b41eecdc4ddca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionCommon/zipball/4bd3e3fbae45054ebbe8a2e1aba921aae477742c",
-                "reference": "4bd3e3fbae45054ebbe8a2e1aba921aae477742c",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionCommon/zipball/e8e68dc40f300e50f5a3b254bd7b41eecdc4ddca",
+                "reference": "e8e68dc40f300e50f5a3b254bd7b41eecdc4ddca",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.1"
             },
             "require-dev": {
-                "phpstan/phpstan": "^0.9.0",
                 "phpunit/phpunit": "^6.5"
             },
             "type": "library",
@@ -428,7 +427,7 @@
                 "reflection",
                 "static analysis"
             ],
-            "time": "2018-01-12T10:28:45+00:00"
+            "time": "2018-01-18T22:08:35+00:00"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
@@ -594,12 +593,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "6f71fc195a60573380713751ed1fc887b4a4186a"
+                "reference": "58b8739a3f7b8ad4c8b172d517c56f95b8b12a28"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/6f71fc195a60573380713751ed1fc887b4a4186a",
-                "reference": "6f71fc195a60573380713751ed1fc887b4a4186a",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/58b8739a3f7b8ad4c8b172d517c56f95b8b12a28",
+                "reference": "58b8739a3f7b8ad4c8b172d517c56f95b8b12a28",
                 "shasum": ""
             },
             "require": {
@@ -649,7 +648,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-12-29T08:56:48+00:00"
+            "time": "2018-01-19T10:13:46+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -843,12 +842,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "ab0059af6063bc136004d6d09a38455e3540239a"
+                "reference": "367b9ebc724721ee523ab4e4debef28d3542b263"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/ab0059af6063bc136004d6d09a38455e3540239a",
-                "reference": "ab0059af6063bc136004d6d09a38455e3540239a",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/367b9ebc724721ee523ab4e4debef28d3542b263",
+                "reference": "367b9ebc724721ee523ab4e4debef28d3542b263",
                 "shasum": ""
             },
             "require": {
@@ -915,7 +914,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2018-01-16T18:39:16+00:00"
+            "time": "2018-01-21T06:39:07+00:00"
         },
         {
             "name": "phpunit/phpunit-mock-objects",

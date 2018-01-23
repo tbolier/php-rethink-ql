@@ -3,8 +3,8 @@
         <ini name="memory_limit" value="4G" />
     </php>
     <testsuites>
-        <testsuite name="Worker unit test suite">
-            <directory>test/*</directory>
+        <testsuite name="Integration test suite">
+            <directory>test/integration/*</directory>
         </testsuite>
     </testsuites>
     <filter>
