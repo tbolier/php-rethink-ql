@@ -3,6 +3,10 @@ declare(strict_types=1);
 
 namespace TBolier\RethinkQL\Connection;
 
+use TBolier\RethinkQL\Connection\Socket\Socket;
+use TBolier\RethinkQL\Connection\Socket\Handshake;
+use TBolier\RethinkQL\Types\VersionDummy\Version;
+
 class Registry implements RegistryInterface
 {
     /**
@@ -12,7 +16,7 @@ class Registry implements RegistryInterface
 
     /**
      * @param array|null $connections
-     * @throws Exception
+     * @throws ConnectionException
      */
     public function __construct(array $connections = null)
     {
@@ -29,15 +33,23 @@ class Registry implements RegistryInterface
 
     /**
      * @inheritdoc
-     * @throws Exception
+     * @throws ConnectionException
      */
     public function addConnection(string $name, OptionsInterface $options): bool
     {
         if ($this->hasConnection($name)) {
-            throw new Exception("The connection {$name} has already been added.", 400);
+            throw new ConnectionException("The connection {$name} has already been added.", 400);
         }
 
-        $this->connections[$name] = new Connection($options);
+        $this->connections[$name] = new Connection(
+            function () use ($options) {
+                return new Socket(
+                    $options
+                );
+            },
+            new Handshake($options->getUser(), $options->getPassword(), Version::V1_0),
+            $options->getDbname()
+        );
 
         return true;
     }
@@ -52,12 +64,12 @@ class Registry implements RegistryInterface
 
     /**
      * @inheritdoc
-     * @throws Exception
+     * @throws ConnectionException
      */
     public function getConnection(string $name): ConnectionInterface
     {
         if (!$this->connections[$name]) {
-            throw new Exception("The connection {$name} does not exist.", 400);
+            throw new ConnectionException("The connection {$name} does not exist.", 400);
         }
 
         return $this->connections[$name];

@@ -25,8 +25,8 @@ class TableTest extends BaseTestCase
         $connection->connect()->use('test');
 
         $this->r = new Rethink($connection);
+        $this->r->db()->tableCreate('tablename');
     }
-
 
     /**
      * @throws \Exception
@@ -34,7 +34,7 @@ class TableTest extends BaseTestCase
     public function testEmptyTable()
     {
         $count = $this->r
-            ->table('nl')
+            ->table('tablename')
             ->filter([
                 [
                     'title' => 'Test document',
@@ -46,7 +46,7 @@ class TableTest extends BaseTestCase
         $this->assertInternalType('int', $count[0]);
 
         $res = $this->r
-            ->table('nl')
+            ->table('tablename')
             ->delete()
             ->run();
 
@@ -59,7 +59,7 @@ class TableTest extends BaseTestCase
     public function testInsert()
     {
         $res = $this->r
-            ->table('nl')
+            ->table('tablename')
             ->insert([
                 [
                     'documentId' => 1,
@@ -78,7 +78,7 @@ class TableTest extends BaseTestCase
     public function testCount()
     {
         $res = $this->r
-            ->table('nl')
+            ->table('tablename')
             ->count()
             ->run();
 
@@ -91,7 +91,7 @@ class TableTest extends BaseTestCase
     public function testFilter()
     {
         $res = $this->r
-            ->table('nl')
+            ->table('tablename')
             ->filter([
                 [
                     'title' => 'Test document',
@@ -108,7 +108,7 @@ class TableTest extends BaseTestCase
     public function testUpdate()
     {
         $this->r
-            ->table('nl')
+            ->table('tablename')
             ->insert([
                 [
                     'title' => 'Update document',
@@ -117,7 +117,7 @@ class TableTest extends BaseTestCase
             ->run();
 
         $count = $this->r
-            ->table('nl')
+            ->table('tablename')
             ->filter([
                 [
                     'title' => 'Update document',
@@ -127,7 +127,7 @@ class TableTest extends BaseTestCase
             ->run();
 
         $res = $this->r
-            ->table('nl')
+            ->table('tablename')
             ->filter([
                 [
                     'title' => 'Update document',
@@ -149,7 +149,7 @@ class TableTest extends BaseTestCase
     public function testDeleteDocument()
     {
         $this->r
-            ->table('nl')
+            ->table('tablename')
             ->insert([
                 [
                     'title' => 'Delete document',
@@ -158,7 +158,7 @@ class TableTest extends BaseTestCase
             ->run();
 
         $count = $this->r
-            ->table('nl')
+            ->table('tablename')
             ->filter([
                 [
                     'title' => 'Delete document',
@@ -170,7 +170,7 @@ class TableTest extends BaseTestCase
         $this->assertInternalType('int', $count[0]);
 
         $res = $this->r
-            ->table('nl')
+            ->table('tablename')
             ->filter([
                 [
                     'title' => 'Delete document',
@@ -189,7 +189,7 @@ class TableTest extends BaseTestCase
     public function testGet(): void
     {
         $this->r
-            ->table('nl')
+            ->table('tablename')
             ->insert([
                 [
                     'id' => 'foo',
@@ -198,7 +198,7 @@ class TableTest extends BaseTestCase
             ->run();
 
         $res = $this->r
-            ->table('nl')
+            ->table('tablename')
             ->get('foo')
             ->run();
 
@@ -212,7 +212,7 @@ class TableTest extends BaseTestCase
     public function testGetNonExistingDocument(): void
     {
         $res = $this->r
-            ->table('nl')
+            ->table('tablename')
             ->get('bar')
             ->run();
 
