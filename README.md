@@ -1,6 +1,6 @@
-                                 PHP-RETHINK-QL
-            A PHP RethinkDB driver for the RethinkDB query language (ReQL).
-                            License: Apache License 2.0
+                                                 PHP-RETHINK-QL
+                         A PHP RethinkDB driver for the RethinkDB query language (ReQL).
+                                          License: Apache License 2.0
 
 PHP-RETHINK-QL [![by](https://img.shields.io/badge/by-%40tbolier-ff69b4.svg?style=flat-square)](https://github.com/tbolier)
 ========================
