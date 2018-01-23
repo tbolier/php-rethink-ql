@@ -8,9 +8,6 @@ PHP-RETHINK-QL [![by](https://img.shields.io/badge/by-%40tbolier-ff69b4.svg?styl
 # License
 PHP-RETHINK-QL is licensed under the terms of the Apache License 2.0 http://www.apache.org/licenses/LICENSE-2.0
 
-This library uses some parts of code of the original `PHP-RQL`  library of Daniel Mewes (https://github.com/danielmewes/php-rql).
-The classes that contain parts of code from `PHP-RQL` have a PHPDoc on top of the class, stating the reference and changes refering to this parts of code taken from `PHP-RQL`.
-
 # Description
 
 A new clean and solid RethinkDB driver for PHP, focused on clean code with SOLID principles in mind.

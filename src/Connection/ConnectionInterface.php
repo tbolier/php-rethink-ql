@@ -10,7 +10,7 @@ interface ConnectionInterface
     /**
      * @return bool
      */
-    public function isConnected(): bool;
+    public function isStreamOpen(): bool;
 
     /**
      * @return Connection

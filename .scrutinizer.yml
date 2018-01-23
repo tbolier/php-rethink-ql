@@ -2,6 +2,9 @@ before_commands:
     - "composer install"
 
 build:
+  # Runs before inferred commands
+  before:
+    - ''
   environment:
     php:
       version: '7.1'

@@ -9,7 +9,9 @@
         }
     ],
     "minimum-stability": "dev",
-    "require": {},
+    "require": {
+        "psr/http-message": "^1.0@dev"
+    },
     "require-dev": {
         "mockery/mockery": "^1.0@dev",
         "phpunit/phpunit": "^7.0@dev"

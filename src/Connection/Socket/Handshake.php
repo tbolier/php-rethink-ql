@@ -16,9 +16,11 @@ declare(strict_types=1);
  * - Removed obsolete code.
  */
 
-namespace TBolier\RethinkQL\Connection;
+namespace TBolier\RethinkQL\Connection\Socket;
 
-class Handshake
+use Psr\Http\Message\StreamInterface;
+
+class Handshake implements HandshakeInterface
 {
     /**
      * @var string
@@ -74,11 +76,55 @@ class Handshake
     }
 
     /**
+     * @inheritdoc
+     * @throws \RuntimeException
+     * @throws Exception
+     */
+    public function hello(StreamInterface $stream): void
+    {
+        try {
+            $handshakeResponse = null;
+            while (true) {
+                if (!$stream->isWritable()) {
+                    throw new Exception('Not connected');
+                }
+
+                if ($handshakeResponse !== null && preg_match('/^ERROR:\s(.+)$/i', $handshakeResponse,
+                        $errorMatch)) {
+                    throw new Exception($errorMatch[1]);
+                }
+
+                try {
+                    $msg = $this->nextMessage($handshakeResponse);
+                } catch (Exception $e) {
+                    $stream->close();
+                    throw $e;
+                }
+
+                if ($msg === 'successful') {
+                    break;
+                }
+
+                if ($msg !== '') {
+                    $stream->write($msg);
+                }
+
+                // Read null-terminated response
+                $handshakeResponse = $stream->getContents();
+            }
+        } catch (Exception $e) {
+            $stream->close();
+            throw $e;
+        }
+
+    }
+
+    /**
      * @param $response
      * @return string
      * @throws Exception
      */
-    public function nextMessage(string $response = null): ?string
+    private function nextMessage(string $response = null): ?string
     {
         switch ($this->state) {
             case 0:
