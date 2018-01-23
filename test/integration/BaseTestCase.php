@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace TBolier\RethinkQL\Test;
+namespace TBolier\RethinkQL\IntegrationTest;
 
 use Mockery;
 use PHPUnit\Framework\TestCase;

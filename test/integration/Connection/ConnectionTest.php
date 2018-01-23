@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace TBolier\RethinkQL\Test\Connection;
+namespace TBolier\RethinkQL\IntegrationTest\Connection;
 
 use Mockery;
 use Mockery\MockInterface;
 use TBolier\RethinkQL\Connection\ConnectionInterface;
 use TBolier\RethinkQL\Connection\OptionsInterface;
-use TBolier\RethinkQL\Test\BaseTestCase;
+use TBolier\RethinkQL\IntegrationTest\BaseTestCase;
 use TBolier\RethinkQL\Types\Query\QueryType;
 
 class ConnectionTest extends BaseTestCase

@@ -7,7 +7,7 @@ use ArrayObject;
 use TBolier\RethinkQL\Connection\ConnectionInterface;
 use TBolier\RethinkQL\Rethink;
 use TBolier\RethinkQL\RethinkInterface;
-use TBolier\RethinkQL\Test\BaseTestCase;
+use TBolier\RethinkQL\IntegrationTest\BaseTestCase;
 
 class DatabaseTest extends BaseTestCase
 {
