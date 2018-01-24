@@ -20,9 +20,9 @@ build:
         'date.timezone': 'Europe/Amsterdam'
   tests:
     override:
-      - command: 'vendor/bin/phpunit --coverage-clover=coverage-report'
+      - command: 'vendor/bin/phpunit --coverage-clover=.coverage'
         coverage:
-          file: 'coverage-report'
+          file: '.coverage'
           format: 'clover'
 
 tools:

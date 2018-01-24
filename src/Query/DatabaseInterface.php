@@ -6,6 +6,23 @@ namespace TBolier\RethinkQL\Query;
 interface DatabaseInterface
 {
     /**
+     * @param string $name
+     * @return self
+     */
+    public function dbCreate(string $name): self;
+
+    /**
+     * @param string $name
+     * @return self
+     */
+    public function dbDrop(string $name): self;
+
+    /**
+     * @return self
+     */
+    public function dbList(): self;
+
+    /**
      * @return self
      */
     public function tableList(): self;

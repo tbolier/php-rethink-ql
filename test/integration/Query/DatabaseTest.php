@@ -12,27 +12,11 @@ use TBolier\RethinkQL\IntegrationTest\BaseTestCase;
 class DatabaseTest extends BaseTestCase
 {
     /**
-     * @var RethinkInterface
-     */
-    private $r;
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        /** @var ConnectionInterface $connection */
-        $connection = $this->createConnection('phpunit_default')->connect();
-        $connection->connect()->use('test');
-
-        $this->r = new Rethink($connection);
-    }
-
-    /**
      * @throws \Exception
      */
     public function testTableList()
     {
-        $res = $this->r
+        $res = $this->r()
             ->db()
             ->tableList()
             ->run();
@@ -45,9 +29,9 @@ class DatabaseTest extends BaseTestCase
      */
     public function testCreateTable()
     {
-        $res = $this->r
+        $res = $this->r()
             ->db()
-            ->tableCreate('en')
+            ->tableCreate('createtable')
             ->run();
 
         $this->assertObStatus(['tables_created' => 1], $res[0]);
@@ -58,9 +42,14 @@ class DatabaseTest extends BaseTestCase
      */
     public function testDropTable()
     {
-        $res = $this->r
+        $this->r()
             ->db()
-            ->tableDrop('en')
+            ->tableCreate('createtable')
+            ->run();
+
+        $res = $this->r()
+            ->db()
+            ->tableDrop('createtable')
             ->run();
 
         $this->assertObStatus(['tables_dropped' => 1], $res[0]);

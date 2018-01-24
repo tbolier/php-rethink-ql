@@ -10,20 +10,53 @@ use TBolier\RethinkQL\Connection\ConnectionInterface;
 use TBolier\RethinkQL\Connection\Options;
 use TBolier\RethinkQL\Connection\Socket\Handshake;
 use TBolier\RethinkQL\Connection\Socket\Socket;
+use TBolier\RethinkQL\Rethink;
+use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\VersionDummy\Version;
 
 class BaseTestCase extends TestCase
 {
     /**
-     * @var ConnectionInterface
+     * @var RethinkInterface
      */
-    protected $connection;
+    private $r;
+
+    /**
+     * @var ConnectionInterface[]
+     */
+    private $connections;
 
     protected function setUp()
     {
         Mockery::getConfiguration()->allowMockingNonExistentMethods(false);
 
         parent::setUp();
+    }
+
+    protected function r()
+    {
+        if ($this->r !== null) {
+            return $this->r;
+        }
+
+        /** @var ConnectionInterface $connection */
+        $connection = $this->createConnection('phpunit_default')->connect();
+        $connection->connect()->use('test');
+
+        $this->r = new Rethink($connection);
+
+        if (!\in_array('test', $this->r->dbList()->run()[0])) {
+            $this->r->dbCreate('test')->run();
+        }
+
+        return $this->r;
+    }
+
+    protected function tearDown()
+    {
+        if ($this->r !== null && $this->r->connection()->isStreamOpen() && \in_array('test', $this->r->dbList()->run()[0], true)) {
+            $this->r->dbDrop('test')->run();
+        }
     }
 
     /**
@@ -34,7 +67,7 @@ class BaseTestCase extends TestCase
     {
         $options = new Options(PHPUNIT_CONNECTIONS[$name]);
 
-        $this->connection = new Connection(
+        $connection = new Connection(
             function () use ($options) {
                 return new Socket(
                     $options
@@ -44,13 +77,17 @@ class BaseTestCase extends TestCase
             $options->getDbname()
         );
 
-        return $this->connection;
+        $this->connections[] = $connection;
+
+        return $connection;
     }
 
     public function __destruct()
     {
-        if ($this->connection->isStreamOpen()) {
-            $this->connection->close();
+        foreach ($this->connections as $connection) {
+            if ($connection->isStreamOpen()) {
+                $connection->close();
+            }
         }
 
         Mockery::close();

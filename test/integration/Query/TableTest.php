@@ -11,21 +11,22 @@ use TBolier\RethinkQL\IntegrationTest\BaseTestCase;
 
 class TableTest extends BaseTestCase
 {
-    /**
-     * @var RethinkInterface
-     */
-    private $r;
-
     public function setUp()
     {
         parent::setUp();
 
-        /** @var ConnectionInterface $connection */
-        $connection = $this->createConnection('phpunit_default')->connect();
-        $connection->connect()->use('test');
+        if (!\in_array('tabletest', $this->r()->db()->tableList()->run()[0], true)) {
+            $this->r()->db()->tableCreate('tabletest')->run();
+        }
+    }
 
-        $this->r = new Rethink($connection);
-        $this->r->db()->tableCreate('tablename');
+    public function tearDown()
+    {
+        if (\in_array('tabletest', $this->r()->db()->tableList()->run()[0], true)) {
+            $this->r()->db()->tableDrop('tabletest')->run();
+        }
+
+        parent::tearDown();
     }
 
     /**
@@ -33,8 +34,8 @@ class TableTest extends BaseTestCase
      */
     public function testEmptyTable()
     {
-        $count = $this->r
-            ->table('tablename')
+        $count = $this->r()
+            ->table('tabletest')
             ->filter([
                 [
                     'title' => 'Test document',
@@ -45,8 +46,8 @@ class TableTest extends BaseTestCase
 
         $this->assertInternalType('int', $count[0]);
 
-        $res = $this->r
-            ->table('tablename')
+        $res = $this->r()
+            ->table('tabletest')
             ->delete()
             ->run();
 
@@ -58,16 +59,7 @@ class TableTest extends BaseTestCase
      */
     public function testInsert()
     {
-        $res = $this->r
-            ->table('tablename')
-            ->insert([
-                [
-                    'documentId' => 1,
-                    'title' => 'Test document',
-                    'description' => 'My first document.',
-                ],
-            ])
-            ->run();
+        $res = $this->insertDocument();
 
         $this->assertObStatus(['inserted' => 1], $res[0]);
     }
@@ -77,8 +69,10 @@ class TableTest extends BaseTestCase
      */
     public function testCount()
     {
-        $res = $this->r
-            ->table('tablename')
+        $this->insertDocument();
+
+        $res = $this->r()
+            ->table('tabletest')
             ->count()
             ->run();
 
@@ -90,8 +84,10 @@ class TableTest extends BaseTestCase
      */
     public function testFilter()
     {
-        $res = $this->r
-            ->table('tablename')
+        $this->insertDocument();
+
+        $res = $this->r()
+            ->table('tabletest')
             ->filter([
                 [
                     'title' => 'Test document',
@@ -107,8 +103,10 @@ class TableTest extends BaseTestCase
      */
     public function testUpdate()
     {
-        $this->r
-            ->table('tablename')
+        $this->insertDocument();
+
+        $this->r()
+            ->table('tabletest')
             ->insert([
                 [
                     'title' => 'Update document',
@@ -116,8 +114,8 @@ class TableTest extends BaseTestCase
             ])
             ->run();
 
-        $count = $this->r
-            ->table('tablename')
+        $count = $this->r()
+            ->table('tabletest')
             ->filter([
                 [
                     'title' => 'Update document',
@@ -126,8 +124,8 @@ class TableTest extends BaseTestCase
             ->count()
             ->run();
 
-        $res = $this->r
-            ->table('tablename')
+        $res = $this->r()
+            ->table('tabletest')
             ->filter([
                 [
                     'title' => 'Update document',
@@ -148,8 +146,8 @@ class TableTest extends BaseTestCase
      */
     public function testDeleteDocument()
     {
-        $this->r
-            ->table('tablename')
+        $this->r()
+            ->table('tabletest')
             ->insert([
                 [
                     'title' => 'Delete document',
@@ -157,8 +155,8 @@ class TableTest extends BaseTestCase
             ])
             ->run();
 
-        $count = $this->r
-            ->table('tablename')
+        $count = $this->r()
+            ->table('tabletest')
             ->filter([
                 [
                     'title' => 'Delete document',
@@ -169,8 +167,8 @@ class TableTest extends BaseTestCase
 
         $this->assertInternalType('int', $count[0]);
 
-        $res = $this->r
-            ->table('tablename')
+        $res = $this->r()
+            ->table('tabletest')
             ->filter([
                 [
                     'title' => 'Delete document',
@@ -188,8 +186,8 @@ class TableTest extends BaseTestCase
      */
     public function testGet(): void
     {
-        $this->r
-            ->table('tablename')
+        $this->r()
+            ->table('tabletest')
             ->insert([
                 [
                     'id' => 'foo',
@@ -197,8 +195,8 @@ class TableTest extends BaseTestCase
             ])
             ->run();
 
-        $res = $this->r
-            ->table('tablename')
+        $res = $this->r()
+            ->table('tabletest')
             ->get('foo')
             ->run();
 
@@ -211,8 +209,8 @@ class TableTest extends BaseTestCase
      */
     public function testGetNonExistingDocument(): void
     {
-        $res = $this->r
-            ->table('tablename')
+        $res = $this->r()
+            ->table('tabletest')
             ->get('bar')
             ->run();
 
@@ -248,5 +246,23 @@ class TableTest extends BaseTestCase
         }
 
         $this->assertEquals($status, $res);
+    }
+
+    /**
+     * @return array
+     */
+    private function insertDocument(): array
+    {
+        $res = $this->r()
+            ->table('tabletest')
+            ->insert([
+                [
+                    'documentId' => 1,
+                    'title' => 'Test document',
+                    'description' => 'My first document.',
+                ],
+            ])
+            ->run();
+        return $res;
     }
 }
