@@ -6,6 +6,7 @@ namespace TBolier\RethinkQL\Connection;
 use Psr\Http\Message\StreamInterface;
 use TBolier\RethinkQL\Connection\Socket\HandshakeInterface;
 use TBolier\RethinkQL\Connection\Socket\StreamHandlerInterface;
+use TBolier\RethinkQL\Query\Cursor;
 use TBolier\RethinkQL\Query\Expr;
 use TBolier\RethinkQL\Query\Message;
 use TBolier\RethinkQL\Query\MessageInterface;
@@ -155,7 +156,6 @@ class Connection implements ConnectionInterface
             // Await the response
             $response = $this->receiveResponse($token, $message);
 
-            // Todo: support all response types, and decide what the return type should be.
             if ($response['t'] === ResponseType::SUCCESS_PARTIAL) {
                 $this->activeTokens[$token] = true;
             }
@@ -189,11 +189,20 @@ class Connection implements ConnectionInterface
             return $message;
         }
 
-        array_walk_recursive($message->getQuery(), function (&$item) {
-            if (is_scalar($item) && !mb_detect_encoding((string)$item, 'utf-8', true)) {
-                $item = utf8_encode($item);
-            }
-        });
+        if (\is_array($message->getQuery()->getQuery())) {
+            array_walk_recursive($message->getQuery()->getQuery(), function (&$item) {
+                if (is_scalar($item) && !mb_detect_encoding((string)$item, 'utf-8', true)) {
+                    $item = utf8_encode($item);
+                }
+            });
+
+            return $message;
+        }
+
+        $scalar = &$message->getQuery()->getQuery();
+        if (\is_string($scalar)) {
+            utf8_encode($scalar);
+        }
 
         return $message;
     }
@@ -254,7 +263,6 @@ class Connection implements ConnectionInterface
                 break;
             default:
                 throw new ConnectionException('Failed to encode query as JSON: ' . json_last_error());
-                break;
         }
 
         if ($request === false) {

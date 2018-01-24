@@ -15,7 +15,7 @@ class Table implements TableInterface
     private $rethink;
 
     /**
-     * @var array
+     * @var MessageInterface
      */
     private $message;
 

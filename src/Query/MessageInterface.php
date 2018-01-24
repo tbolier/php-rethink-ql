@@ -14,7 +14,7 @@ interface MessageInterface extends \JsonSerializable
      * @param int $queryType
      * @return MessageInterface
      */
-    public function setQueryType(int $queryType): self;
+    public function setQueryType(int $queryType): MessageInterface;
 
     /**
      * @return QueryInterface
@@ -25,7 +25,7 @@ interface MessageInterface extends \JsonSerializable
      * @param QueryInterface $query
      * @return MessageInterface
      */
-    public function setQuery(QueryInterface $query): self;
+    public function setQuery(QueryInterface $query): MessageInterface;
 
     /**
      * @return array
@@ -36,7 +36,7 @@ interface MessageInterface extends \JsonSerializable
      * @param array $options
      * @return MessageInterface
      */
-    public function setOptions(array $options): self;
+    public function setOptions(array $options): MessageInterface;
 
     /**
      * @inheritdoc
