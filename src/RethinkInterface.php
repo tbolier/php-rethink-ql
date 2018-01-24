@@ -24,4 +24,21 @@ interface RethinkInterface
      * @return DatabaseInterface
      */
     public function db(): DatabaseInterface;
+
+    /**
+     * @param string $name
+     * @return DatabaseInterface
+     */
+    public function dbCreate(string $name): DatabaseInterface;
+
+    /**
+     * @param string $name
+     * @return DatabaseInterface
+     */
+    public function dbDrop(string $name): DatabaseInterface;
+
+    /**
+     * @return DatabaseInterface
+     */
+    public function dbList(): DatabaseInterface;
 }

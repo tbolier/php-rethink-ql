@@ -2,7 +2,7 @@
                          A PHP RethinkDB driver for the RethinkDB query language (ReQL).
                                           License: Apache License 2.0
 
-PHP-RETHINK-QL [![by](https://img.shields.io/badge/by-%40tbolier-ff69b4.svg?style=flat-square)](https://github.com/tbolier)
+PHP-RETHINK-QL [![by](https://img.shields.io/badge/by-%40tbolier-ff69b4.svg?style=flat-square)](https://github.com/tbolier) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/tbolier/php-rethink-ql/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/tbolier/php-rethink-ql/?branch=master) [![Code Coverage](https://scrutinizer-ci.com/g/tbolier/php-rethink-ql/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/tbolier/php-rethink-ql/?branch=master) [![Build Status](https://scrutinizer-ci.com/g/tbolier/php-rethink-ql/badges/build.png?b=master)](https://scrutinizer-ci.com/g/tbolier/php-rethink-ql/build-status/master)
 ========================
 
 # License
@@ -18,7 +18,7 @@ Feel free to fork this code and contribute.
 
 # Requirements
 
-## RethinkDB version
+## RethinkDB versionhttps://getcomposer.org/doc/articles/autoloader-optimization.md
 
 This library supports the RethinkDB release `>=2.3.0` and protocol version `V1_0`.
 Earliers version of RethinkDB are not supported at this moment.

@@ -15,7 +15,7 @@ class Database implements DatabaseInterface
     private $rethink;
 
     /**
-     * @var array
+     * @var MessageInterface
      */
     private $message;
 
@@ -29,9 +29,65 @@ class Database implements DatabaseInterface
 
         $message
             ->setQueryType(QueryType::START)
-            ->setQuery(new Query([]));
+            ->setQuery(new Query([
+                TermType::DB_LIST
+            ]));
 
         $this->message = $message;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function dbCreate(string $name): DatabaseInterface
+    {
+        $this->message
+            ->setQueryType(QueryType::START)
+            ->setQuery(new Query([
+                TermType::DB_CREATE,
+                [
+                    [
+                        TermType::DATUM,
+                        $name,
+                    ],
+                ],
+            ]));
+
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function dbDrop(string $name): DatabaseInterface
+    {
+        $this->message
+            ->setQueryType(QueryType::START)
+            ->setQuery(new Query([
+                TermType::DB_DROP,
+                [
+                    [
+                        TermType::DATUM,
+                        $name,
+                    ],
+                ],
+            ]));
+
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function dbList(): DatabaseInterface
+    {
+        $this->message
+            ->setQueryType(QueryType::START)
+            ->setQuery(new Query([
+                TermType::DB_LIST
+            ]));
+
+        return $this;
     }
 
     /**
@@ -89,7 +145,6 @@ class Database implements DatabaseInterface
 
         return $this;
     }
-
     /**
      * @return array
      */
