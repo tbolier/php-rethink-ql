@@ -1,8 +1,6 @@
 <?php
 
-namespace TBolier\RethinkQL\IntegrationTest;
-
-\define(
+define(
     'PHPUNIT_CONNECTIONS',
     [
         'phpunit_default' => [

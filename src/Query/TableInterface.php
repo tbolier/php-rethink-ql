@@ -8,36 +8,36 @@ interface TableInterface
     /**
      * @return TableInterface
      */
-    public function count(): self;
+    public function count(): TableInterface;
 
     /**
      * @param array $documents
-     * @return self
+     * @return TableInterface
      */
-    public function filter(array $documents): self;
+    public function filter(array $documents): TableInterface;
 
     /**
      * @param mixed $value
-     * @return self
+     * @return TableInterface
      */
-    public function get($value): self;
+    public function get($value): TableInterface;
 
     /**
      * @param array $documents
-     * @return self
+     * @return TableInterface
      */
-    public function insert(array $documents): self;
+    public function insert(array $documents): TableInterface;
 
     /**
      * @param array $documents
-     * @return self
+     * @return TableInterface
      */
-    public function update(array $documents): self;
+    public function update(array $documents): TableInterface;
 
     /**
-     * @return self
+     * @return TableInterface
      */
-    public function delete(): self;
+    public function delete(): TableInterface;
 
     /**
      * @return array

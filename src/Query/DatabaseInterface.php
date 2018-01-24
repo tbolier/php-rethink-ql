@@ -7,37 +7,37 @@ interface DatabaseInterface
 {
     /**
      * @param string $name
-     * @return self
+     * @return DatabaseInterface
      */
-    public function dbCreate(string $name): self;
+    public function dbCreate(string $name): DatabaseInterface;
 
     /**
      * @param string $name
-     * @return self
+     * @return DatabaseInterface
      */
-    public function dbDrop(string $name): self;
+    public function dbDrop(string $name): DatabaseInterface;
 
     /**
-     * @return self
+     * @return DatabaseInterface
      */
-    public function dbList(): self;
+    public function dbList(): DatabaseInterface;
 
     /**
-     * @return self
+     * @return DatabaseInterface
      */
-    public function tableList(): self;
-
-    /**
-     * @param string $name
-     * @return self
-     */
-    public function tableCreate(string $name): self;
+    public function tableList(): DatabaseInterface;
 
     /**
      * @param string $name
-     * @return self
+     * @return DatabaseInterface
      */
-    public function tableDrop(string $name): self;
+    public function tableCreate(string $name): DatabaseInterface;
+
+    /**
+     * @param string $name
+     * @return DatabaseInterface
+     */
+    public function tableDrop(string $name): DatabaseInterface;
 
     /**
      * @return array

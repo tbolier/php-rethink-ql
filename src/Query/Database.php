@@ -9,7 +9,7 @@ use TBolier\RethinkQL\Types\Term\TermType;
 
 class Database implements DatabaseInterface
 {
-    /**T
+    /**
      * @var RethinkInterface
      */
     private $rethink;
