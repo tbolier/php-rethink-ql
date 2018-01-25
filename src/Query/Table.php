@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace TBolier\RethinkQL\Query;
 
+use TBolier\RethinkQL\Response\ResponseInterface;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Query\QueryType;
 use TBolier\RethinkQL\Types\Term\TermType;
@@ -95,7 +96,6 @@ class Table implements TableInterface
                         [
                             TermType::JSON,
                             $jsonDocuments,
-                            (object)[],
                         ],
                     ],
                 ]));
@@ -108,6 +108,7 @@ class Table implements TableInterface
      */
     public function insert(array $documents): TableInterface
     {
+        // TODO: Move encoding logic to QueryNormalizer.
         $jsonDocuments = [];
         foreach ($documents as $key => $document) {
             $jsonDocuments[] = json_encode($document);
@@ -217,9 +218,9 @@ class Table implements TableInterface
     }
 
     /**
-     * @return array
+     * @return ResponseInterface
      */
-    public function run(): array
+    public function run(): ResponseInterface
     {
         return $this->rethink->connection()->run($this->message);
     }

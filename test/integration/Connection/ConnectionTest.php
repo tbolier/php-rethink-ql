@@ -8,6 +8,8 @@ use Mockery\MockInterface;
 use TBolier\RethinkQL\Connection\ConnectionInterface;
 use TBolier\RethinkQL\Connection\OptionsInterface;
 use TBolier\RethinkQL\IntegrationTest\BaseTestCase;
+use TBolier\RethinkQL\Response\Response;
+use TBolier\RethinkQL\Response\ResponseInterface;
 use TBolier\RethinkQL\Types\Query\QueryType;
 
 class ConnectionTest extends BaseTestCase
@@ -31,8 +33,10 @@ class ConnectionTest extends BaseTestCase
     {
         /** @var ConnectionInterface $connection */
         $connection = $this->createConnection('phpunit_default')->connect();
+        $result = $connection->expr('foo');
 
-        $this->assertInternalType('array', $connection->expr('foo'));
+        $this->assertInstanceOf(ResponseInterface::class, $result);
+        $this->assertEquals('foo', $result->getData()[0]);
     }
 
     /**
@@ -43,6 +47,7 @@ class ConnectionTest extends BaseTestCase
         /** @var ConnectionInterface $connection */
         $res = $this->createConnection('phpunit_default')->connect()->server();
 
-        $this->assertEquals(QueryType::SERVER_INFO, $res['t']);
+        $this->assertEquals(QueryType::SERVER_INFO, $res->getType());
+        $this->assertInternalType('string', $res->getData()[0]['name']);
     }
 }

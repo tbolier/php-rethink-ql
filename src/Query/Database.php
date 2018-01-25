@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace TBolier\RethinkQL\Query;
 
+use TBolier\RethinkQL\Response\ResponseInterface;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Query\QueryType;
 use TBolier\RethinkQL\Types\Term\TermType;
@@ -146,9 +147,9 @@ class Database implements DatabaseInterface
         return $this;
     }
     /**
-     * @return array
+     * @return ResponseInterface
      */
-    public function run(): array
+    public function run(): ResponseInterface
     {
         return $this->rethink->connection()->run($this->message);
     }

@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace TBolier\RethinkQL\Query;
 
+use TBolier\RethinkQL\Response\ResponseInterface;
+
 interface DatabaseInterface
 {
     /**
@@ -40,7 +42,7 @@ interface DatabaseInterface
     public function tableDrop(string $name): DatabaseInterface;
 
     /**
-     * @return array
+     * @return ResponseInterface
      */
-    public function run(): array;
+    public function run(): ResponseInterface;
 }

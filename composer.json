@@ -10,7 +10,9 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "psr/http-message": "^1.0@dev"
+        "psr/http-message": "^1.0@dev",
+        "symfony/serializer": "^4.1@dev",
+        "symfony/property-access": "^4.1@dev"
     },
     "require-dev": {
         "mockery/mockery": "^1.0@dev",

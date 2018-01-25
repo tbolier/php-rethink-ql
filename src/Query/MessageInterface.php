@@ -28,15 +28,15 @@ interface MessageInterface extends \JsonSerializable
     public function setQuery(QueryInterface $query): MessageInterface;
 
     /**
-     * @return array
+     * @return OptionsInterface
      */
-    public function getOptions(): array;
+    public function getOptions(): OptionsInterface;
 
     /**
-     * @param array $options
+     * @param OptionsInterface $options
      * @return MessageInterface
      */
-    public function setOptions(array $options): MessageInterface;
+    public function setOptions(OptionsInterface $options): MessageInterface;
 
     /**
      * @inheritdoc

@@ -18,7 +18,7 @@ class Message implements MessageInterface
     private $query;
 
     /**
-     * @var array
+     * @var OptionsInterface
      */
     private $options;
 
@@ -31,7 +31,7 @@ class Message implements MessageInterface
     {
         $this->queryType = $queryType ?? QueryType::START;
         $this->query = $query ?? new Query([]);
-        $this->options = $options ?? (object)[];
+        $this->options = $options ?? [];
     }
 
     /**
@@ -73,7 +73,7 @@ class Message implements MessageInterface
     /**
      * @inheritdoc
      */
-    public function getOptions(): array
+    public function getOptions(): OptionsInterface
     {
         return $this->options;
     }
@@ -81,7 +81,7 @@ class Message implements MessageInterface
     /**
      * @inheritdoc
      */
-    public function setOptions(array $options): MessageInterface
+    public function setOptions(OptionsInterface $options): MessageInterface
     {
         $this->options = $options;
 
@@ -96,7 +96,7 @@ class Message implements MessageInterface
         return [
             $this->queryType,
             $this->getQuery(),
-            $this->getOptions()
+            (object)$this->getOptions()
         ];
     }
 
@@ -107,6 +107,4 @@ class Message implements MessageInterface
     {
         return $this->toArray();
     }
-
-
 }
