@@ -3,8 +3,12 @@ declare(strict_types=1);
 
 namespace TBolier\RethinkQL\Connection;
 
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 use TBolier\RethinkQL\Connection\Socket\Socket;
 use TBolier\RethinkQL\Connection\Socket\Handshake;
+use TBolier\RethinkQL\Serializer\QueryNormalizer;
 use TBolier\RethinkQL\Types\VersionDummy\Version;
 
 class Registry implements RegistryInterface
@@ -41,6 +45,7 @@ class Registry implements RegistryInterface
             throw new ConnectionException("The connection {$name} has already been added.", 400);
         }
 
+        // TODO: Create factory for instantiation Connection.
         $this->connections[$name] = new Connection(
             function () use ($options) {
                 return new Socket(
@@ -48,7 +53,15 @@ class Registry implements RegistryInterface
                 );
             },
             new Handshake($options->getUser(), $options->getPassword(), Version::V1_0),
-            $options->getDbname()
+            $options->getDbname(),
+            new Serializer(
+                [new QueryNormalizer()],
+                [new JsonEncoder()]
+            ),
+            new Serializer(
+                [new ObjectNormalizer()],
+                [new JsonEncoder()]
+            )
         );
 
         return true;

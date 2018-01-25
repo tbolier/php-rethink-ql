@@ -4,24 +4,20 @@ declare(strict_types=1);
 namespace TBolier\RethinkQL\Connection;
 
 use Psr\Http\Message\StreamInterface;
+use Symfony\Component\Serializer\SerializerInterface;
+use TBolier\RethinkQL\Connection\Socket\Exception;
 use TBolier\RethinkQL\Connection\Socket\HandshakeInterface;
-use TBolier\RethinkQL\Connection\Socket\StreamHandlerInterface;
-use TBolier\RethinkQL\Query\Cursor;
 use TBolier\RethinkQL\Query\Expr;
 use TBolier\RethinkQL\Query\Message;
 use TBolier\RethinkQL\Query\MessageInterface;
-use TBolier\RethinkQL\Query\Query;
+use TBolier\RethinkQL\Query\Options as QueryOptions;
+use TBolier\RethinkQL\Response\Response;
+use TBolier\RethinkQL\Response\ResponseInterface;
 use TBolier\RethinkQL\Types\Query\QueryType;
 use TBolier\RethinkQL\Types\Response\ResponseType;
-use TBolier\RethinkQL\Types\Term\TermType;
 
 class Connection implements ConnectionInterface
 {
-    /**
-     * @var OptionsInterface
-     */
-    private $options;
-
     /**
      * @var int[]
      */
@@ -53,15 +49,34 @@ class Connection implements ConnectionInterface
     private $handshake;
 
     /**
+     * @var SerializerInterface
+     */
+    private $querySerializer;
+
+    /**
+     * @var SerializerInterface
+     */
+    private $responseSerializer;
+
+    /**
      * @param \Closure $streamWrapper
      * @param HandshakeInterface $handshake
      * @param string $dbName
+     * @param SerializerInterface $querySerializer
+     * @param SerializerInterface $responseSerializer
      */
-    public function __construct(\Closure $streamWrapper, HandshakeInterface $handshake, string $dbName)
-    {
+    public function __construct(
+        \Closure $streamWrapper,
+        HandshakeInterface $handshake,
+        string $dbName,
+        SerializerInterface $querySerializer,
+        SerializerInterface $responseSerializer
+    ) {
         $this->streamWrapper = $streamWrapper;
         $this->dbName = $dbName;
         $this->handshake = $handshake;
+        $this->querySerializer = $querySerializer;
+        $this->responseSerializer = $responseSerializer;
     }
 
     /**
@@ -121,7 +136,7 @@ class Connection implements ConnectionInterface
             // Await the response
             $response = $this->receiveResponse($token, $query);
 
-            if ($response['t'] !== 4) {
+            if ($response->getType() !== 4) {
                 throw new ConnectionException('Unexpected response type for noreplyWait query.');
             }
         } catch (\Exception $e) {
@@ -134,7 +149,7 @@ class Connection implements ConnectionInterface
      * @return array
      * @throws ConnectionException
      */
-    public function run(MessageInterface $message): array
+    public function run(MessageInterface $message)
     {
         if (!$this->isStreamOpen()) {
             throw new ConnectionException('Not connected.');
@@ -142,10 +157,6 @@ class Connection implements ConnectionInterface
 
         try {
             $token = $this->generateToken();
-
-            if ($message instanceof Query) {
-                $message->setQuery($this->utf8Converter($message->getQuery()));
-            }
 
             $this->writeQuery($token, $message);
 
@@ -156,12 +167,16 @@ class Connection implements ConnectionInterface
             // Await the response
             $response = $this->receiveResponse($token, $message);
 
-            if ($response['t'] === ResponseType::SUCCESS_PARTIAL) {
+            if ($response->getType() === ResponseType::SUCCESS_PARTIAL) {
                 $this->activeTokens[$token] = true;
             }
 
-
-            return $response['r'];
+            if ($response->getType() === ResponseType::SUCCESS_ATOM) {
+                return $response;
+            } else {
+                // @TODO: create cursor with response.
+                return $response;
+            }
         } catch (\Exception $e) {
             throw new ConnectionException($e->getMessage(), $e->getCode(), $e);
         }
@@ -177,34 +192,6 @@ class Connection implements ConnectionInterface
         $this->noReply = true;
         $this->run($query);
         $this->noReply = false;
-    }
-
-    /**
-     * @param MessageInterface $message
-     * @return mixed
-     */
-    private function utf8Converter(MessageInterface $message): MessageInterface
-    {
-        if (null !== $message->getQuery()) {
-            return $message;
-        }
-
-        if (\is_array($message->getQuery()->getQuery())) {
-            array_walk_recursive($message->getQuery()->getQuery(), function (&$item) {
-                if (is_scalar($item) && !mb_detect_encoding((string)$item, 'utf-8', true)) {
-                    $item = utf8_encode($item);
-                }
-            });
-
-            return $message;
-        }
-
-        $scalar = &$message->getQuery()->getQuery();
-        if (\is_string($scalar)) {
-            utf8_encode($scalar);
-        }
-
-        return $message;
     }
 
     /**
@@ -238,35 +225,12 @@ class Connection implements ConnectionInterface
      */
     private function writeQuery(int $token, MessageInterface $message): int
     {
-        $message->setOptions([
-            'db' => [
-                TermType::DB,
-                [$this->dbName],
-                (object)[],
-            ],
-        ]);
+        $message->setOptions((new QueryOptions())->setDb($this->dbName));
 
-        $request = json_encode($message);
-
-        switch (json_last_error()) {
-            case JSON_ERROR_DEPTH:
-                throw new ConnectionException('JSON error: Maximum stack depth exceeded');
-            case JSON_ERROR_STATE_MISMATCH:
-                throw new ConnectionException('JSON error: Underflow or the modes mismatch');
-            case JSON_ERROR_CTRL_CHAR:
-                throw new ConnectionException('JSON error: Unexpected control character found');
-            case JSON_ERROR_SYNTAX:
-                throw new ConnectionException('JSON error: Syntax error, malformed JSON.');
-            case JSON_ERROR_UTF8:
-                throw new ConnectionException('JSON error: Malformed UTF-8 characters, possibly incorrectly encoded.');
-            case JSON_ERROR_NONE:
-                break;
-            default:
-                throw new ConnectionException('Failed to encode query as JSON: ' . json_last_error());
-        }
-
-        if ($request === false) {
-            throw new ConnectionException('Failed to encode query as JSON: ' . json_last_error());
+        try {
+            $request = $this->querySerializer->serialize($message, 'json');
+        } catch (\Exception $e) {
+            throw new Exception('Serializing query message failed.', $e->getCode(), $e);
         }
 
         $requestSize = pack('V', \strlen($request));
@@ -278,11 +242,10 @@ class Connection implements ConnectionInterface
     /**
      * @param int $token
      * @param MessageInterface $message
-     * @return array
-     * @throws \RuntimeException
+     * @return ResponseInterface
      * @throws ConnectionException
      */
-    private function receiveResponse(int $token, MessageInterface $message): array
+    private function receiveResponse(int $token, MessageInterface $message): ResponseInterface
     {
         $responseHeader = $this->stream->read(4 + 8);
         $responseHeader = unpack('Vtoken/Vtoken2/Vsize', $responseHeader);
@@ -294,31 +257,31 @@ class Connection implements ConnectionInterface
         $responseSize = $responseHeader['size'];
         $responseBuf = $this->stream->read($responseSize);
 
-        $response = json_decode($responseBuf, true);
+        $response = $this->responseSerializer->deserialize($responseBuf, Response::class, 'json');
         $this->validateResponse($response, $responseToken, $token, $message);
 
         return $response;
     }
 
     /**
-     * @param array $response
+     * @param ResponseInterface $response
      * @param int $responseToken
      * @param int $token
      * @param MessageInterface $message
      * @throws ConnectionException
      */
-    private function validateResponse(array $response, int $responseToken, int $token, MessageInterface $message): void
-    {
-        if (isset($response['error'])) {
-            throw new ConnectionException($response['error'], $response['error_code']);
-        }
-
-        if (!isset($response['t'])) {
+    private function validateResponse(
+        ResponseInterface $response,
+        int $responseToken,
+        int $token,
+        MessageInterface $message
+    ): void {
+        if (!$response->getType()) {
             throw new ConnectionException('Response message has no type.');
         }
 
-        if ($response['t'] === ResponseType::CLIENT_ERROR) {
-            throw new ConnectionException('Server says PHP-RQL is buggy: ' . $response['r'][0]);
+        if ($response->getType() === ResponseType::CLIENT_ERROR) {
+            throw new ConnectionException('Server says PHP-RQL is buggy: ' . $response->getData()[0]);
         }
 
         if ($responseToken !== $token) {
@@ -328,12 +291,12 @@ class Connection implements ConnectionInterface
             );
         }
 
-        if ($response['t'] === ResponseType::COMPILE_ERROR) {
-            throw new ConnectionException('Compile error: ' . $response['r'][0] . ', jsonQuery: ' . json_encode($message));
+        if ($response->getType() === ResponseType::COMPILE_ERROR) {
+            throw new ConnectionException('Compile error: ' . $response->getData()[0] . ', jsonQuery: ' . json_encode($message));
         }
 
-        if ($response['t'] === ResponseType::RUNTIME_ERROR) {
-            throw new ConnectionException('Runtime error: ' . $response['r'][0] . ', jsonQuery: ' . json_encode($message));
+        if ($response->getType() === ResponseType::RUNTIME_ERROR) {
+            throw new ConnectionException('Runtime error: ' . $response->getData()[0] . ', jsonQuery: ' . json_encode($message));
         }
     }
 
@@ -363,10 +326,10 @@ class Connection implements ConnectionInterface
     }
 
     /**
-     * @return array
+     * @return ResponseInterface
      * @throws \Exception
      */
-    public function server(): array
+    public function server(): ResponseInterface
     {
         if (!$this->isStreamOpen()) {
             throw new ConnectionException('Not connected.');
@@ -381,7 +344,7 @@ class Connection implements ConnectionInterface
             // Await the response
             $response = $this->receiveResponse($token, $query);
 
-            if ($response['t'] !== 5) {
+            if ($response->getType() !== 5) {
                 throw new ConnectionException('Unexpected response type for server query.');
             }
         } catch (\Exception $e) {
@@ -393,10 +356,10 @@ class Connection implements ConnectionInterface
 
     /**
      * @param string $string
-     * @return array
+     * @return ResponseInterface
      * @throws ConnectionException
      */
-    public function expr(string $string): array
+    public function expr(string $string): ResponseInterface
     {
         $message = new Message();
         $message->setQueryType(QueryType::START)

@@ -5,6 +5,7 @@ namespace TBolier\RethinkConnect\Test\Connection;
 
 use ArrayObject;
 use TBolier\RethinkQL\Connection\ConnectionInterface;
+use TBolier\RethinkQL\Response\ResponseInterface;
 use TBolier\RethinkQL\Rethink;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\IntegrationTest\BaseTestCase;
@@ -15,14 +16,14 @@ class TableTest extends BaseTestCase
     {
         parent::setUp();
 
-        if (!\in_array('tabletest', $this->r()->db()->tableList()->run()[0], true)) {
+        if (!\in_array('tabletest', $this->r()->db()->tableList()->run()->getData()[0], true)) {
             $this->r()->db()->tableCreate('tabletest')->run();
         }
     }
 
     public function tearDown()
     {
-        if (\in_array('tabletest', $this->r()->db()->tableList()->run()[0], true)) {
+        if (\in_array('tabletest', $this->r()->db()->tableList()->run()->getData()[0], true)) {
             $this->r()->db()->tableDrop('tabletest')->run();
         }
 
@@ -44,14 +45,14 @@ class TableTest extends BaseTestCase
             ->count()
             ->run();
 
-        $this->assertInternalType('int', $count[0]);
+        $this->assertInternalType('int', $count->getData()[0]);
 
         $res = $this->r()
             ->table('tabletest')
             ->delete()
             ->run();
 
-        $this->assertObStatus(['deleted' => $count[0]], $res[0]);
+        $this->assertObStatus(['deleted' => $count->getData()[0]], $res->getData()[0]);
     }
 
     /**
@@ -61,7 +62,7 @@ class TableTest extends BaseTestCase
     {
         $res = $this->insertDocument();
 
-        $this->assertObStatus(['inserted' => 1], $res[0]);
+        $this->assertObStatus(['inserted' => 1], $res->getData()[0]);
     }
 
     /**
@@ -76,7 +77,7 @@ class TableTest extends BaseTestCase
             ->count()
             ->run();
 
-        $this->assertInternalType('int', $res[0]);
+        $this->assertInternalType('int', $res->getData()[0]);
     }
 
     /**
@@ -95,7 +96,7 @@ class TableTest extends BaseTestCase
             ])
             ->run();
 
-        $this->assertInternalType('array', $res[0]);
+        $this->assertInternalType('array', $res->getData()[0]);
     }
 
     /**
@@ -138,7 +139,7 @@ class TableTest extends BaseTestCase
             ])
             ->run();
 
-        $this->assertObStatus(['replaced' => $count[0]], $res[0]);
+        $this->assertObStatus(['replaced' => $count->getData()[0]], $res->getData()[0]);
     }
 
     /**
@@ -165,7 +166,7 @@ class TableTest extends BaseTestCase
             ->count()
             ->run();
 
-        $this->assertInternalType('int', $count[0]);
+        $this->assertInternalType('int', $count->getData()[0]);
 
         $res = $this->r()
             ->table('tabletest')
@@ -177,7 +178,7 @@ class TableTest extends BaseTestCase
             ->delete()
             ->run();
 
-        $this->assertObStatus(['deleted' => $count[0]], $res[0]);
+        $this->assertObStatus(['deleted' => $count->getData()[0]], $res->getData()[0]);
     }
 
     /**
@@ -200,7 +201,7 @@ class TableTest extends BaseTestCase
             ->get('foo')
             ->run();
 
-        $this->assertEquals([0 => ['id' => 'foo']], $res);
+        $this->assertEquals([0 => ['id' => 'foo']], $res->getData());
     }
 
     /**
@@ -214,7 +215,7 @@ class TableTest extends BaseTestCase
             ->get('bar')
             ->run();
 
-        $this->assertEquals([0 => null], $res);
+        $this->assertEquals([0 => null], $res->getData());
     }
 
     /**
@@ -249,9 +250,9 @@ class TableTest extends BaseTestCase
     }
 
     /**
-     * @return array
+     * @return ResponseInterface
      */
-    private function insertDocument(): array
+    private function insertDocument(): ResponseInterface
     {
         $res = $this->r()
             ->table('tabletest')
@@ -263,6 +264,7 @@ class TableTest extends BaseTestCase
                 ],
             ])
             ->run();
+
         return $res;
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace TBolier\RethinkQL\Connection;
 
 use TBolier\RethinkQL\Query\MessageInterface;
+use TBolier\RethinkQL\Response\ResponseInterface;
 
 interface ConnectionInterface
 {
@@ -19,9 +20,9 @@ interface ConnectionInterface
 
     /**
      * @param MessageInterface $message
-     * @return array
+     * @return ResponseInterface
      */
-    public function run(MessageInterface $message): array;
+    public function run(MessageInterface $message);
 
     /**
      * @param MessageInterface $query
@@ -36,9 +37,9 @@ interface ConnectionInterface
     public function changes(MessageInterface $query): array;
 
     /**
-     * @return array
+     * @return ResponseInterface
      */
-    public function server(): array;
+    public function server(): ResponseInterface;
 
     /**
      * @param string $name
@@ -54,7 +55,7 @@ interface ConnectionInterface
 
     /**
      * @param string $string
-     * @return array
+     * @return ResponseInterface
      */
-    public function expr(string $string): array;
+    public function expr(string $string): ResponseInterface;
 }
