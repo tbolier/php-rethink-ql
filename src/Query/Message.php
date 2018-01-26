@@ -25,13 +25,13 @@ class Message implements MessageInterface
     /**
      * @param int $queryType
      * @param QueryInterface $query
-     * @param array $options
+     * @param OptionsInterface $options
      */
-    public function __construct(int $queryType = null, QueryInterface $query = null, array $options = null)
+    public function __construct(int $queryType = null, QueryInterface $query = null, OptionsInterface $options = null)
     {
         $this->queryType = $queryType ?? QueryType::START;
         $this->query = $query ?? new Query([]);
-        $this->options = $options ?? [];
+        $this->options = $options ?? new Options();
     }
 
     /**

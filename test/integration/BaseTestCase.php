@@ -29,7 +29,7 @@ class BaseTestCase extends TestCase
     /**
      * @var ConnectionInterface[]
      */
-    private $connections;
+    private $connections = [];
 
     protected function setUp()
     {

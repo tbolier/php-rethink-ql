@@ -211,8 +211,10 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
     public function runNoReply(MessageInterface $query): array
     {
         $this->noReply = true;
-        $this->run($query);
+        $result = $this->run($query);
         $this->noReply = false;
+
+        return $result;
     }
 
     /**
@@ -225,7 +227,7 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
             $tries = 0;
             $maxToken = 1 << 30;
             do {
-                $token = \random_int(0, $maxToken);
+                $token = random_int(0, $maxToken);
                 $haveCollision = isset($this->activeTokens[$token]);
             } while ($haveCollision && $tries++ < 1024);
             if ($haveCollision) {

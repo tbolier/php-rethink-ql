@@ -6,6 +6,9 @@
         <testsuite name="Integration test suite">
             <directory>test/integration/*</directory>
         </testsuite>
+        <testsuite name="Unit test suite">
+            <directory>test/unit/*</directory>
+        </testsuite>
     </testsuites>
     <filter>
         <whitelist addUncoveredFilesFromWhitelist="true" processUncoveredFilesFromWhitelist="false">
