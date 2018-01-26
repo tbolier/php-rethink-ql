@@ -42,7 +42,7 @@ interface TableInterface
     public function delete(): TableInterface;
 
     /**
-     * @return ResponseInterface
+     * @return mixed
      */
-    public function run(): ResponseInterface;
+    public function run();
 }

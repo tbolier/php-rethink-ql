@@ -11,12 +11,14 @@ use TBolier\RethinkQL\Query\Expr;
 use TBolier\RethinkQL\Query\Message;
 use TBolier\RethinkQL\Query\MessageInterface;
 use TBolier\RethinkQL\Query\Options as QueryOptions;
+use TBolier\RethinkQL\Query\Query;
+use TBolier\RethinkQL\Response\Cursor;
 use TBolier\RethinkQL\Response\Response;
 use TBolier\RethinkQL\Response\ResponseInterface;
 use TBolier\RethinkQL\Types\Query\QueryType;
 use TBolier\RethinkQL\Types\Response\ResponseType;
 
-class Connection implements ConnectionInterface
+class Connection implements ConnectionInterface, ConnectionCursorInterface
 {
     /**
      * @var int[]
@@ -146,10 +148,11 @@ class Connection implements ConnectionInterface
 
     /**
      * @param MessageInterface $message
-     * @return array
+     * @param bool $raw
+     * @return ResponseInterface|Cursor
      * @throws ConnectionException
      */
-    public function run(MessageInterface $message)
+    public function run(MessageInterface $message, $raw = false)
     {
         if (!$this->isStreamOpen()) {
             throw new ConnectionException('Not connected.');
@@ -161,25 +164,43 @@ class Connection implements ConnectionInterface
             $this->writeQuery($token, $message);
 
             if ($this->noReply) {
-                return [];
+                return;
             }
 
-            // Await the response
             $response = $this->receiveResponse($token, $message);
 
             if ($response->getType() === ResponseType::SUCCESS_PARTIAL) {
                 $this->activeTokens[$token] = true;
             }
 
-            if ($response->getType() === ResponseType::SUCCESS_ATOM) {
-                return $response;
-            } else {
-                // @TODO: create cursor with response.
+            if ($raw || $response->getType() === ResponseType::SUCCESS_ATOM) {
                 return $response;
             }
+
+            return $this->createCursorFromResponse($response, $token, $message);
         } catch (\Exception $e) {
             throw new ConnectionException($e->getMessage(), $e->getCode(), $e);
         }
+    }
+
+    /**
+     * @inheritdoc
+     * @throws ConnectionException
+     */
+    public function rewindFromCursor(MessageInterface $message): ResponseInterface
+    {
+        return $this->run($message, true);
+    }
+
+    /**
+     * @param ResponseInterface $response
+     * @param int $token
+     * @param MessageInterface $message
+     * @return Cursor
+     */
+    private function createCursorFromResponse(ResponseInterface $response, int $token, MessageInterface $message): Cursor
+    {
+        return new Cursor($this, $token, $response, $message);
     }
 
     /**
@@ -218,12 +239,10 @@ class Connection implements ConnectionInterface
     }
 
     /**
-     * @param int $token
-     * @param MessageInterface $message
-     * @return int
+     * @inheritdoc
      * @throws \Exception
      */
-    private function writeQuery(int $token, MessageInterface $message): int
+    public function writeQuery(int $token, MessageInterface $message): int
     {
         $message->setOptions((new QueryOptions())->setDb($this->dbName));
 
@@ -240,9 +259,51 @@ class Connection implements ConnectionInterface
     }
 
     /**
+     * @inheritdoc
+     * @throws \Exception
+     */
+    public function continueQuery(int $token): ResponseInterface
+    {
+        $message = (new Message())->setQuery(
+            new Query([QueryType::CONTINUE])
+        );
+
+        $this->writeQuery($token, $message);
+
+        // Await the response
+        $response = $this->receiveResponse($token, $message);
+
+        if ($response->getType() !== ResponseType::SUCCESS_PARTIAL) {
+            unset($this->activeTokens[$token]);
+        }
+
+        return $response;
+    }
+
+    /**
+     * @inheritdoc
+     * @throws \Exception
+     */
+    public function stopQuery(int $token): ResponseInterface
+    {
+        $message = (new Message())->setQuery(
+            new Query([QueryType::STOP])
+        );
+
+        $this->writeQuery($token, $message);
+
+        $response = $this->receiveResponse($token, $message);
+
+        unset($this->activeTokens[$token]);
+
+        return $response;
+    }
+
+    /**
      * @param int $token
      * @param MessageInterface $message
      * @return ResponseInterface
+     * @throws \RuntimeException
      * @throws ConnectionException
      */
     private function receiveResponse(int $token, MessageInterface $message): ResponseInterface
@@ -257,6 +318,7 @@ class Connection implements ConnectionInterface
         $responseSize = $responseHeader['size'];
         $responseBuf = $this->stream->read($responseSize);
 
+        /** @var ResponseInterface $response */
         $response = $this->responseSerializer->deserialize($responseBuf, Response::class, 'json');
         $this->validateResponse($response, $responseToken, $token, $message);
 
