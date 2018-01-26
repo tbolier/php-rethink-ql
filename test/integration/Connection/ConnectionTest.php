@@ -24,6 +24,9 @@ function random_int($min = 0, $max = 0)
 
 class ConnectionTest extends BaseTestCase
 {
+    /**
+     * @var MockInterface
+     */
     public static $functions;
 
     /**
@@ -226,7 +229,7 @@ class ConnectionTest extends BaseTestCase
      */
     public function testNoReplyException(): void
     {
-        self::$functions->shouldReceive('random_int')->andThrow(Exception::class,  'foo')->byDefault();
+        self::$functions->shouldReceive('random_int')->andThrow(Exception::class, 'foo')->byDefault();
 
         $connection = $this->createConnection('phpunit_default')->connect();
 
@@ -243,6 +246,7 @@ class ConnectionTest extends BaseTestCase
             'token2' => 0,
             'size' => 19
         ];
+
 
         self::$functions->shouldReceive('unpack')->with('Vtoken/Vtoken2/Vsize', '', 0)->andReturn($expectedToken);
         self::$functions->shouldReceive('random_int')->andReturn(1);
@@ -289,7 +293,7 @@ class ConnectionTest extends BaseTestCase
     {
         self::$functions = Mockery::mock();
 
-        self::$functions->shouldReceive('random_int')->andThrow(Exception::class,  'foo')->byDefault();
+        self::$functions->shouldReceive('random_int')->andThrow(Exception::class, 'foo')->byDefault();
 
         /** @var ConnectionInterface $connection */
         $connection = $this->createConnection('phpunit_default')->connect();
@@ -513,11 +517,11 @@ class ConnectionTest extends BaseTestCase
         // Reset expectations to use PHP built-in functions
         self::$functions = Mockery::mock();
 
-        self::$functions->shouldReceive('random_int')->byDefault()->andReturnUsing(function($min = 0, $max = 0) {
+        self::$functions->shouldReceive('random_int')->byDefault()->andReturnUsing(function ($min = 0, $max = 0) {
             return \random_int($min, $max);
         });
 
-        self::$functions->shouldReceive('unpack')->byDefault()->andReturnUsing(function($format = '', $data = '', $offset = 0) {
+        self::$functions->shouldReceive('unpack')->byDefault()->andReturnUsing(function ($format = '', $data = '', $offset = 0) {
             return \unpack($format, $data, $offset);
         });
     }

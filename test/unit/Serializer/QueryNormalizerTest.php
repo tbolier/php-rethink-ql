@@ -101,7 +101,6 @@ class QueryNormalizerTest extends TestCase
     public function testInvalidArgumentExceptionThrownOnInvalidClass(): void
     {
         $object = new \ArrayObject();
-        $object->foo = 'bar';
 
         $this->normalizer->normalize($object);
     }
