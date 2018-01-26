@@ -218,9 +218,9 @@ class Table implements TableInterface
     }
 
     /**
-     * @return ResponseInterface
+     * @return mixed
      */
-    public function run(): ResponseInterface
+    public function run()
     {
         return $this->rethink->connection()->run($this->message);
     }
