@@ -3,14 +3,13 @@ declare(strict_types=1);
 
 namespace TBolier\RethinkQL\Query;
 
-use TBolier\RethinkQL\Response\ResponseInterface;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Query\QueryType;
 use TBolier\RethinkQL\Types\Term\TermType;
 
 class Table implements TableInterface
 {
-    /**T
+    /**
      * @var RethinkInterface
      */
     private $rethink;
