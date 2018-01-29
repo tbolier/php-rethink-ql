@@ -26,9 +26,9 @@ interface ConnectionInterface
 
     /**
      * @param MessageInterface $query
-     * @return array
+     * @return ResponseInterface|Cursor
      */
-    public function runNoReply(MessageInterface $query): array;
+    public function runNoReply(MessageInterface $query);
 
     /**
      * @param MessageInterface $query
