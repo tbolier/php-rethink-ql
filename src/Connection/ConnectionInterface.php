@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace TBolier\RethinkQL\Connection;
 
 use TBolier\RethinkQL\Query\MessageInterface;
+use TBolier\RethinkQL\Response\Cursor;
 use TBolier\RethinkQL\Response\ResponseInterface;
 
 interface ConnectionInterface

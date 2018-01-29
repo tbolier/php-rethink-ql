@@ -28,7 +28,7 @@ class OptionsTest extends TestCase
 
         $this->assertEquals($config['hostname'], $options->getHostname());
         $this->assertEquals($config['port'], $options->getPort());
-        $this->assertEquals($config['dbname'], $options->getDbname());
+        $this->assertEquals($config['dbname'], $options->getDbName());
         $this->assertEquals($config['user'], $options->getUser());
         $this->assertEquals($config['password'], $options->getPassword());
         $this->assertEquals($config['timeout'], $options->getTimeout());

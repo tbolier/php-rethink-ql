@@ -12,6 +12,8 @@ class RegistryTest extends TestCase
 {
     /**
      * @return void
+     * @throws \Exception
+     * @throws \TBolier\RethinkQL\Connection\ConnectionException
      */
     public function testIfRegistryGetsConstructedWithConnections(): void
     {
@@ -48,6 +50,7 @@ class RegistryTest extends TestCase
      * @expectedExceptionMessage The connection fooConnection has already been added
      * @expectedExceptionCode 400
      * @return void
+     * @throws \TBolier\RethinkQL\Connection\ConnectionException
      */
     public function testIfExceptionThrownOnDuplicateConnection(): void
     {
@@ -71,6 +74,7 @@ class RegistryTest extends TestCase
      * @expectedExceptionMessage The connection fooConnection does not exist
      * @expectedExceptionCode 400
      * @return void
+     * @throws \TBolier\RethinkQL\Connection\ConnectionException
      */
     public function testIfExceptionThrownOnMissingConnection(): void
     {

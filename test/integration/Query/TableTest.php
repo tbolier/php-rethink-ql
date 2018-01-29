@@ -4,11 +4,8 @@ declare(strict_types=1);
 namespace TBolier\RethinkConnect\Test\Connection;
 
 use ArrayObject;
-use TBolier\RethinkQL\Connection\ConnectionInterface;
 use TBolier\RethinkQL\Response\Cursor;
 use TBolier\RethinkQL\Response\ResponseInterface;
-use TBolier\RethinkQL\Rethink;
-use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\IntegrationTest\BaseTestCase;
 
 class TableTest extends BaseTestCase

@@ -53,7 +53,7 @@ class Registry implements RegistryInterface
                 );
             },
             new Handshake($options->getUser(), $options->getPassword(), Version::V1_0),
-            $options->getDbname(),
+            $options->getDbName(),
             new Serializer(
                 [new QueryNormalizer()],
                 [new JsonEncoder()]

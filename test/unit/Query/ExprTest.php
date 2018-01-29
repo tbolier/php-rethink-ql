@@ -23,6 +23,7 @@ class ExprTest extends TestCase
 
     /**
      * @return void
+     * @throws \Exception
      */
     public function testGetQuery(): void
     {
@@ -31,6 +32,7 @@ class ExprTest extends TestCase
 
     /**
      * @return void
+     * @throws \Exception
      */
     public function testJsonSerialize(): void
     {

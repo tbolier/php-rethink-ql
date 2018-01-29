@@ -99,7 +99,7 @@ class ConnectionTest extends BaseTestCase
                 );
             },
             $handshakeMock,
-            $options->getDbname(),
+            $options->getDbName(),
             $serializerMock,
             $serializerMock
         );
@@ -148,7 +148,7 @@ class ConnectionTest extends BaseTestCase
                 );
             },
             $handshakeMock,
-            $options->getDbname(),
+            $options->getDbName(),
             $serializerMock,
             $serializerMock
         );
@@ -567,7 +567,7 @@ class ConnectionTest extends BaseTestCase
                 return $streamMock;
             },
             $handshakeMock,
-            $options->getDbname(),
+            $options->getDbName(),
             $serializerMock,
             $serializerMock
         );

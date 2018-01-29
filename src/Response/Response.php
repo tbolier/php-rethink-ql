@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace TBolier\RethinkQL\Response;
 
@@ -30,11 +31,11 @@ class Response implements ResponseInterface
     private $note;
 
     /**
-     * @param int $type
-     * @param array $data
-     * @param array $backtrace
-     * @param array|null $profile
-     * @param array|null $note
+     * @param int|null $t
+     * @param array|null $r
+     * @param array|null $b
+     * @param array|null $p
+     * @param array|null $n
      */
     public function __construct(int $t = null, array $r = null, array $b = null, array $p = null, array $n = null)
     {
