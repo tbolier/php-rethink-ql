@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace TBolier\RethinkQL\UnitTest\Connection\Socket;
 
+use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
 use TBolier\RethinkQL\Connection\Socket\Handshake;
 
@@ -91,6 +92,7 @@ class HandshakeTest extends TestCase
      */
     public function testExceptionThrownOnProtocolError(): void
     {
+        /** @var MockInterface $stream */
         $stream = \Mockery::mock('\Psr\Http\Message\StreamInterface');
         $stream->shouldReceive('isWritable')->andReturn(true);
         $stream->shouldReceive('close');

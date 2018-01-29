@@ -85,7 +85,7 @@ class QueryNormalizerTest extends TestCase
         $expectedReturn = ['foo' => 'bar'];
 
         $object = Mockery::mock('\JsonSerializable');
-        $object->shouldReceive('jsonSerialize')->andReturn($expectedReturn);
+        $object->getMock()->shouldReceive('jsonSerialize')->andReturn($expectedReturn);
 
 
         $data = $this->normalizer->normalize($object);
