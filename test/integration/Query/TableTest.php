@@ -5,6 +5,7 @@ namespace TBolier\RethinkConnect\Test\Connection;
 
 use ArrayObject;
 use TBolier\RethinkQL\Connection\ConnectionInterface;
+use TBolier\RethinkQL\Response\Cursor;
 use TBolier\RethinkQL\Response\ResponseInterface;
 use TBolier\RethinkQL\Rethink;
 use TBolier\RethinkQL\RethinkInterface;
@@ -60,7 +61,7 @@ class TableTest extends BaseTestCase
      */
     public function testInsert()
     {
-        $res = $this->insertDocument();
+        $res = $this->insertDocument(1);
 
         $this->assertObStatus(['inserted' => 1], $res->getData()[0]);
     }
@@ -70,7 +71,7 @@ class TableTest extends BaseTestCase
      */
     public function testCount()
     {
-        $this->insertDocument();
+        $this->insertDocument(1);
 
         $res = $this->r()
             ->table('tabletest')
@@ -85,9 +86,10 @@ class TableTest extends BaseTestCase
      */
     public function testFilter()
     {
-        $this->insertDocument();
+        $this->insertDocument(1);
 
-        $res = $this->r()
+        /** @var Cursor $cursor */
+        $cursor = $this->r()
             ->table('tabletest')
             ->filter([
                 [
@@ -96,7 +98,8 @@ class TableTest extends BaseTestCase
             ])
             ->run();
 
-        $this->assertInternalType('array', $res->getData()[0]);
+        $this->assertInstanceOf(\Iterator::class, $cursor);
+        $this->assertInternalType('array', $cursor->current());
     }
 
     /**
@@ -104,7 +107,7 @@ class TableTest extends BaseTestCase
      */
     public function testUpdate()
     {
-        $this->insertDocument();
+        $this->insertDocument(1);
 
         $this->r()
             ->table('tabletest')
@@ -250,15 +253,16 @@ class TableTest extends BaseTestCase
     }
 
     /**
+     * @param int $documentId
      * @return ResponseInterface
      */
-    private function insertDocument(): ResponseInterface
+    private function insertDocument(int $documentId): ResponseInterface
     {
         $res = $this->r()
             ->table('tabletest')
             ->insert([
                 [
-                    'documentId' => 1,
+                    'documentId' => $documentId,
                     'title' => 'Test document',
                     'description' => 'My first document.',
                 ],
