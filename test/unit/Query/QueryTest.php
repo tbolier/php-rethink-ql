@@ -9,7 +9,8 @@ use TBolier\RethinkQL\Query\Query;
 class QueryTest extends TestCase
 {
     /**
-     * @rreturn void
+     * @return void
+     * @throws \Exception
      */
     public function testGetQuery(): void
     {
@@ -21,6 +22,7 @@ class QueryTest extends TestCase
 
     /**
      * @return void
+     * @throws \Exception
      */
     public function testJsonSerialize(): void
     {

@@ -6,7 +6,6 @@ namespace TBolier\RethinkQL\IntegrationTest;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\JsonSerializableNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use TBolier\RethinkQL\Connection\Connection;
@@ -80,7 +79,7 @@ class BaseTestCase extends TestCase
                 );
             },
             new Handshake($options->getUser(), $options->getPassword(), Version::V1_0),
-            $options->getDbname(),
+            $options->getDbName(),
             new Serializer(
                 [new QueryNormalizer()],
                 [new JsonEncoder()]

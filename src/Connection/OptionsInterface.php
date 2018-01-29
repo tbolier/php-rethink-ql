@@ -18,7 +18,7 @@ interface OptionsInterface
     /**
      * @return string
      */
-    public function getDbname(): string;
+    public function getDbName(): string;
 
     /**
      * @return string

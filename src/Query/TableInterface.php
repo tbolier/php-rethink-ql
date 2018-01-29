@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace TBolier\RethinkQL\Query;
 
-use TBolier\RethinkQL\Response\ResponseInterface;
-
 interface TableInterface
 {
     /**

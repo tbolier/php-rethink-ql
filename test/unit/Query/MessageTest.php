@@ -12,6 +12,7 @@ class MessageTest extends TestCase
 {
     /**
      * @return void
+     * @throws \Exception
      */
     public function testAccessors(): void
     {
@@ -32,6 +33,7 @@ class MessageTest extends TestCase
 
     /**
      * @return void
+     * @throws \Exception
      */
     public function testToArray(): void
     {
@@ -52,6 +54,7 @@ class MessageTest extends TestCase
 
     /**
      * @return void
+     * @throws \Exception
      */
     public function testJsonSerialize(): void
     {

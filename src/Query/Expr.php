@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace TBolier\RethinkQL\Query;
 
-
 class Expr implements QueryInterface
 {
     /**
