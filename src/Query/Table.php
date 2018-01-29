@@ -82,22 +82,21 @@ class Table implements TableInterface
 
         $this->message
             ->setQueryType(QueryType::START)
-            ->setQuery(new Query(
+            ->setQuery(new Query([
+                TermType::FILTER,
                 [
-                    TermType::FILTER,
                     [
+                        TermType::TABLE,
                         [
-                            TermType::TABLE,
-                            [
-                                $this->table,
-                            ],
-                        ],
-                        [
-                            TermType::JSON,
-                            $jsonDocuments,
+                            $this->table,
                         ],
                     ],
-                ]));
+                    [
+                        TermType::JSON,
+                        $jsonDocuments,
+                    ],
+                ],
+            ]));
 
         return $this;
     }

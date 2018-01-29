@@ -10,6 +10,7 @@ class OptionsTest extends TestCase
 {
     /**
      * @return void
+     * @throws \Exception
      */
     public function testAccessors(): void
     {
@@ -38,6 +39,7 @@ class OptionsTest extends TestCase
 
     /**
      * @return void
+     * @throws \Exception
      */
     public function testIfHasDefaultDatabaseReturnsTrue(): void
     {
@@ -52,6 +54,7 @@ class OptionsTest extends TestCase
 
     /**
      * @return void
+     * @throws \Exception
      */
     public function testIfHasDefaultDatabaseReturnsFalse(): void
     {

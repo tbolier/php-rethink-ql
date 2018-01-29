@@ -5,9 +5,9 @@ mb_internal_encoding('UTF-8');
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$configFile =  __DIR__ . '/config.php';
+$configFile =  '/config.php';
 if (getenv('integration_test_file')) {
-    $configFile =  __DIR__ . '/config_scrutinizer.php';
+    $configFile =  '/config_scrutinizer.php';
 }
 
-require_once $configFile;
+require_once __DIR__ . $configFile;

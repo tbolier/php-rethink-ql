@@ -82,6 +82,7 @@ class ConnectionTest extends BaseTestCase
      * @expectedException \TBolier\RethinkQL\Connection\ConnectionException
      * @expectedExceptionMessage Test exception
      * @return void
+     * @throws ConnectionException
      */
     public function testConnectThrowsCorrectException(): void
     {
@@ -109,6 +110,7 @@ class ConnectionTest extends BaseTestCase
 
     /**
      * @return void
+     * @throws Exception
      */
     public function testServer(): void
     {
@@ -131,6 +133,7 @@ class ConnectionTest extends BaseTestCase
 
     /**
      * @expectedException \TBolier\RethinkQL\Connection\ConnectionException
+     * @throws Exception
      */
     public function testServerThrowsExceptionOnConnectionException(): void
     {
@@ -159,6 +162,8 @@ class ConnectionTest extends BaseTestCase
 
     /**
      * @return void
+     * @throws ConnectionException
+     * @throws Exception
      */
     public function testClose(): void
     {
@@ -173,6 +178,8 @@ class ConnectionTest extends BaseTestCase
 
     /**
      * @return void
+     * @throws ConnectionException
+     * @throws Exception
      */
     public function testCloseNoReplyWait(): void
     {
@@ -209,6 +216,8 @@ class ConnectionTest extends BaseTestCase
 
     /**
      * @return void
+     * @throws ConnectionException
+     * @throws Exception
      */
     public function testRunNoReply(): void
     {
@@ -227,6 +236,8 @@ class ConnectionTest extends BaseTestCase
      * @expectedException \TBolier\RethinkQL\Connection\ConnectionException
      * @expectedExceptionMessage Generating the token failed.
      * @return void
+     * @throws ConnectionException
+     * @throws Exception
      */
     public function testNoReplyException(): void
     {
@@ -239,6 +250,8 @@ class ConnectionTest extends BaseTestCase
 
     /**
      * @return void
+     * @throws ConnectionException
+     * @throws Exception
      */
     public function testRunPartialSuccess(): void
     {
@@ -311,6 +324,8 @@ class ConnectionTest extends BaseTestCase
      * @expectedException \TBolier\RethinkQL\Connection\ConnectionException
      * @expectedExceptionMessage Response message has no type.
      * @return void
+     * @throws ConnectionException
+     * @throws Exception
      */
     public function testConnectionExceptionThrownOnNoResponseType(): void
     {
@@ -342,6 +357,8 @@ class ConnectionTest extends BaseTestCase
      * @expectedException \TBolier\RethinkQL\Connection\ConnectionException
      * @expectedExceptionMessage Compile error: foo, jsonQuery: "{}"
      * @return void
+     * @throws ConnectionException
+     * @throws Exception
      */
     public function testConnectionExceptionThrownOnCompileError(): void
     {
@@ -375,6 +392,8 @@ class ConnectionTest extends BaseTestCase
      * @expectedException \TBolier\RethinkQL\Connection\ConnectionException
      * @expectedExceptionMessage Runtime error: foo, jsonQuery: "{}"
      * @return void
+     * @throws ConnectionException
+     * @throws Exception
      */
     public function testConnectionExceptionThrownOnRuntimeError(): void
     {
@@ -407,6 +426,8 @@ class ConnectionTest extends BaseTestCase
      * @expectedException \TBolier\RethinkQL\Connection\ConnectionException
      * @expectedExceptionMessage Received wrong token. Response does not match the request. Expected 1, received 11
      * @return void
+     * @throws ConnectionException
+     * @throws Exception
      */
     public function testConnectionExceptionThrownOnInvalidResponseToken(): void
     {
@@ -439,6 +460,8 @@ class ConnectionTest extends BaseTestCase
      * @expectedException \TBolier\RethinkQL\Connection\ConnectionException
      * @expectedExceptionMessage Invalid response from server: Invalid token.
      * @return void
+     * @throws ConnectionException
+     * @throws Exception
      */
     public function testConnectionExceptionThrownOnInvalidResponseToken2(): void
     {
@@ -471,6 +494,8 @@ class ConnectionTest extends BaseTestCase
      * @expectedException \TBolier\RethinkQL\Connection\ConnectionException
      * @expectedExceptionMessage Server says PHP-RQL is buggy:
      * @return void
+     * @throws ConnectionException
+     * @throws Exception
      */
     public function testConnectionExceptionThrownOnClientErrorResponseType(): void
     {
@@ -501,6 +526,7 @@ class ConnectionTest extends BaseTestCase
 
     /**
      * @return void
+     * @throws Exception
      */
     public function testUse(): void
     {

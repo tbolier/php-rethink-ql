@@ -10,6 +10,7 @@ class ResponseTest extends TestCase
 {
     /**
      * @return void
+     * @throws \Exception
      */
     public function testAccessors(): void
     {

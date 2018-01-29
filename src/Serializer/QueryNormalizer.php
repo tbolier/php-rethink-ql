@@ -1,15 +1,12 @@
 <?php
-
+declare(strict_types=1);
 
 namespace TBolier\RethinkQL\Serializer;
-
 
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Exception\LogicException;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\SerializerInterface;
-use TBolier\RethinkQL\Query\MessageInterface;
 use TBolier\RethinkQL\Query\OptionsInterface;
 
 class QueryNormalizer extends AbstractNormalizer
@@ -17,7 +14,7 @@ class QueryNormalizer extends AbstractNormalizer
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
         if ($this->isCircularReference($object, $context)) {
             return $this->handleCircularReference($object);
@@ -61,7 +58,7 @@ class QueryNormalizer extends AbstractNormalizer
     /**
      * {@inheritdoc}
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         throw new LogicException(sprintf('Cannot denormalize with "%s".', __CLASS__));
     }
