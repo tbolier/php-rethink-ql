@@ -31,6 +31,7 @@ class QueryNormalizerTest extends TestCase
 
     /**
      * @return void
+     * @throws \Exception
      */
     public function testNormalizeWithStdClass(): void
     {
@@ -44,6 +45,7 @@ class QueryNormalizerTest extends TestCase
 
     /**
      * @return void
+     * @throws \Exception
      */
     public function testNormalizeWithOptions(): void
     {
@@ -79,6 +81,7 @@ class QueryNormalizerTest extends TestCase
 
     /**
      * @return void
+     * @throws \Exception
      */
     public function testNormalizeWithJsonSerializable(): void
     {
@@ -120,9 +123,10 @@ class QueryNormalizerTest extends TestCase
 
         $this->normalizer->normalize($object);
     }
-    
+
     /**
      * @return void
+     * @throws \Exception
      */
     public function testSupportsDenormalizationReturnsFalse(): void
     {
