@@ -8,6 +8,7 @@ use Mockery;
 use Mockery\MockInterface;
 use TBolier\RethinkQL\Connection\Socket\Socket;
 use TBolier\RethinkQL\IntegrationTest\BaseTestCase;
+use TBolier\RethinkQL\Response\Cursor;
 use TBolier\RethinkQL\Response\ResponseInterface;
 use TBolier\RethinkQL\Types\Query\QueryType;
 use TBolier\RethinkQL\Types\Response\ResponseType;
@@ -219,7 +220,7 @@ class ConnectionTest extends BaseTestCase
 
         $connection->close(false);
 
-        $this->assertEquals([], $reply);
+        $this->assertNull($reply);
     }
 
     /**
@@ -255,16 +256,18 @@ class ConnectionTest extends BaseTestCase
 
         $responseMock = Mockery::mock('\TBolier\RethinkQL\Response\ResponseInterface');
         $responseMock->shouldReceive('getType')->andReturn(ResponseType::SUCCESS_PARTIAL);
+        $responseMock->shouldReceive('getData')->andReturn([]);
 
         $connection = $this->setUpMockConnection($responseMock);
 
         $connection = $connection->connect();
 
+        /** @var Cursor $reply */
         $reply = $connection->run($message);
 
         $connection->close(false);
 
-        $this->assertEquals($responseMock, $reply);
+        $this->assertInstanceOf(Cursor::class, $reply);
     }
 
 

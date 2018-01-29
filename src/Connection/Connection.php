@@ -205,10 +205,10 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
 
     /**
      * @param MessageInterface $query
-     * @return array
+     * @return ResponseInterface|Cursor
      * @throws ConnectionException
      */
-    public function runNoReply(MessageInterface $query): array
+    public function runNoReply(MessageInterface $query)
     {
         $this->noReply = true;
         $result = $this->run($query);
