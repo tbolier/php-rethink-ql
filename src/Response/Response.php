@@ -11,22 +11,22 @@ class Response implements ResponseInterface
     private $type;
 
     /**
-     * @var array
+     * @var array|null
      */
     private $data;
 
     /**
-     * @var array
+     * @var array|null
      */
     private $backtrace;
 
     /**
-     * @var array
+     * @var array|null
      */
     private $profile;
 
     /**
-     * @var array
+     * @var array|null
      */
     private $note;
 

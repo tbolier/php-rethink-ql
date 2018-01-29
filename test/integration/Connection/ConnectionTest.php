@@ -13,11 +13,24 @@ use TBolier\RethinkQL\Response\ResponseInterface;
 use TBolier\RethinkQL\Types\Query\QueryType;
 use TBolier\RethinkQL\Types\Response\ResponseType;
 
+/**
+ * @param string $format
+ * @param string $data
+ * @param int    $offset
+ *
+ * @return mixed
+ */
 function unpack($format = '', $data = '', $offset = 0)
 {
     return ConnectionTest::$functions->unpack($format, $data, $offset);
 }
 
+/**
+ * @param int $min
+ * @param int $max
+ *
+ * @return mixed
+ */
 function random_int($min = 0, $max = 0)
 {
     return ConnectionTest::$functions->random_int($min, $max);
@@ -42,7 +55,7 @@ class ConnectionTest extends BaseTestCase
     {
         parent::setUp();
 
-        self::$functions = Mockery::mock();
+        self::$functions = \Mockery::mock();
 
         $this->useDefaultInternals();
 
@@ -241,7 +254,8 @@ class ConnectionTest extends BaseTestCase
      */
     public function testNoReplyException(): void
     {
-        self::$functions->shouldReceive('random_int')->andThrow(Exception::class, 'foo')->byDefault();
+        self::$functions->shouldReceive('random_int')
+                        ->andThrow(Exception::class, 'foo')->byDefault();
 
         $connection = $this->createConnection('phpunit_default')->connect();
 
@@ -262,7 +276,10 @@ class ConnectionTest extends BaseTestCase
         ];
 
 
-        self::$functions->shouldReceive('unpack')->with('Vtoken/Vtoken2/Vsize', '', 0)->andReturn($expectedToken);
+        self::$functions->shouldReceive('unpack')
+                        ->with('Vtoken/Vtoken2/Vsize', '', 0)
+                        ->andReturn($expectedToken);
+
         self::$functions->shouldReceive('random_int')->andReturn(1);
 
         $message = $this->setUpMessageMock();
@@ -335,7 +352,10 @@ class ConnectionTest extends BaseTestCase
             'size' => 19
         ];
 
-        self::$functions->shouldReceive('unpack')->with('Vtoken/Vtoken2/Vsize', '', 0)->andReturn($expectedToken);
+        self::$functions->shouldReceive('unpack')
+                        ->with('Vtoken/Vtoken2/Vsize', '', 0)
+                        ->andReturn($expectedToken);
+
         self::$functions->shouldReceive('random_int')->andReturn(1);
 
         $message = $this->setUpMessageMock();

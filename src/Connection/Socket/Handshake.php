@@ -89,10 +89,7 @@ class Handshake implements HandshakeInterface
                     throw new Exception('Not connected');
                 }
 
-                if ($handshakeResponse !== null && preg_match('/^ERROR:\s(.+)$/i', $handshakeResponse,
-                        $errorMatch)) {
-                    throw new Exception($errorMatch[1]);
-                }
+                $this->checkResponse($handshakeResponse);
 
                 try {
                     $msg = $this->nextMessage($handshakeResponse);
@@ -159,10 +156,10 @@ class Handshake implements HandshakeInterface
     }
 
     /**
-     * @param $response
+     * @param null|string $response
      * @return string
      */
-    private function createHandshakeMessage($response): string
+    private function createHandshakeMessage(?string $response): string
     {
         $response === null or die('Illegal handshake state');
 
@@ -186,11 +183,11 @@ class Handshake implements HandshakeInterface
     }
 
     /**
-     * @param $response
+     * @param null|string $response
      * @return string
      * @throws Exception
      */
-    private function verifyProtocol($response): string
+    private function verifyProtocol(?string $response): string
     {
         if (strpos($response, 'ERROR') === 0) {
             throw new Exception(
@@ -216,7 +213,7 @@ class Handshake implements HandshakeInterface
 
     /**
      * @param $response
-     * @return string
+     * @return null|string string
      * @throws Exception
      */
     private function createAuthenticationMessage($response): string
@@ -266,11 +263,11 @@ class Handshake implements HandshakeInterface
     }
 
     /**
-     * @param $response
+     * @param null|string $response
      * @return string
      * @throws Exception
      */
-    private function verifyAuthentication($response): string
+    private function verifyAuthentication(string $response): string
     {
         $json = json_decode($response, true);
         if ($json['success'] === false) {
@@ -282,15 +279,31 @@ class Handshake implements HandshakeInterface
             $authentication[$pair[0]] = $pair[1];
         }
 
-        $v = base64_decode($authentication['v']);
-
-        // TODO: Use cryptographic comparison
-        if ($v !== $this->serverSignature) {
-            throw new Exception('Invalid server signature.');
-        }
+        $this->checkSignature(base64_decode($authentication['v']));
 
         $this->state = 4;
 
         return 'successful';
+    }
+
+    /**
+     * @param null|string $handshakeResponse
+     */
+    private function checkResponse(?string $handshakeResponse)
+    {
+        if ($handshakeResponse !== null && preg_match('/^ERROR:\s(.+)$/i', $handshakeResponse,
+                $errorMatch)) {
+            throw new Exception($errorMatch[1]);
+        }
+    }
+
+    /**
+     * @param string $signature
+     */
+    private function checkSignature(string $signature)
+    {
+        if (!hash_equals($signature, $this->serverSignature)) {
+            throw new Exception('Invalid server signature.');
+        }
     }
 }
