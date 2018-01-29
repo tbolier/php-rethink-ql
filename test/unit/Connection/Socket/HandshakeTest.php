@@ -4,10 +4,10 @@ declare(strict_types=1);
 namespace TBolier\RethinkQL\UnitTest\Connection\Socket;
 
 use Mockery\MockInterface;
-use PHPUnit\Framework\TestCase;
 use TBolier\RethinkQL\Connection\Socket\Handshake;
+use TBolier\RethinkQL\UnitTest\BaseUnitTestCase;
 
-class HandshakeTest extends TestCase
+class HandshakeTest extends BaseUnitTestCase
 {
     /**
      * @var Handshake

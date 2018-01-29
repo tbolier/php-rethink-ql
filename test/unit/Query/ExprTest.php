@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace TBolier\RethinkQL\UnitTest\Query;
 
-use PHPUnit\Framework\TestCase;
 use TBolier\RethinkQL\Query\Expr;
+use TBolier\RethinkQL\UnitTest\BaseUnitTestCase;
 
-class ExprTest extends TestCase
+class ExprTest extends BaseUnitTestCase
 {
     /**
      * @var Expr

@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace TBolier\RethinkQL\UnitTest\Query;
 
-use PHPUnit\Framework\TestCase;
 use TBolier\RethinkQL\Response\Response;
+use TBolier\RethinkQL\UnitTest\BaseUnitTestCase;
 
-class ResponseTest extends TestCase
+class ResponseTest extends BaseUnitTestCase
 {
     /**
      * @return void

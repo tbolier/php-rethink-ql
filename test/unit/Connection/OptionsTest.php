@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace TBolier\RethinkQL\UnitTest\Connection;
 
-use PHPUnit\Framework\TestCase;
 use TBolier\RethinkQL\Connection\Options;
+use TBolier\RethinkQL\UnitTest\BaseUnitTestCase;
 
-class OptionsTest extends TestCase
+class OptionsTest extends BaseUnitTestCase
 {
     /**
      * @return void
@@ -22,7 +22,7 @@ class OptionsTest extends TestCase
             'password' => 'secret',
             'timeout' => 120,
             'timeout_stream' => 300,
-            'ssl' => true
+            'ssl' => true,
         ];
 
         $options = new Options($config);

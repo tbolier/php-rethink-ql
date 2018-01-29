@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace TBolier\RethinkQL\UnitTest\Connection;
 
-use PHPUnit\Framework\TestCase;
 use TBolier\RethinkQL\Connection\Connection;
 use TBolier\RethinkQL\Connection\Options;
 use TBolier\RethinkQL\Connection\Registry;
+use TBolier\RethinkQL\UnitTest\BaseUnitTestCase;
 
-class RegistryTest extends TestCase
+class RegistryTest extends BaseUnitTestCase
 {
     /**
      * @return void
@@ -18,13 +18,13 @@ class RegistryTest extends TestCase
     public function testIfRegistryGetsConstructedWithConnections(): void
     {
         $optionsConfig = [
-            'dbname' => 'foo'
+            'dbname' => 'foo',
         ];
 
         $options = new Options($optionsConfig);
 
         $options2Config = [
-            'dbname' => 'bar'
+            'dbname' => 'bar',
         ];
 
         $options2 = new Options($options2Config);
@@ -55,7 +55,7 @@ class RegistryTest extends TestCase
     public function testIfExceptionThrownOnDuplicateConnection(): void
     {
         $optionsConfig = [
-            'dbname' => 'foo'
+            'dbname' => 'foo',
         ];
 
         $options = new Options($optionsConfig);
