@@ -4,12 +4,12 @@ declare(strict_types=1);
 namespace TBolier\RethinkQL\UnitTest\Serializer;
 
 use Mockery;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\Serializer;
 use TBolier\RethinkQL\Query\Options;
 use TBolier\RethinkQL\Serializer\QueryNormalizer;
+use TBolier\RethinkQL\UnitTest\BaseUnitTestCase;
 
-class QueryNormalizerTest extends TestCase
+class QueryNormalizerTest extends BaseUnitTestCase
 {
     /**
      * @var QueryNormalizer
@@ -72,8 +72,8 @@ class QueryNormalizerTest extends TestCase
 
         $context = [
             'circular_reference_limit' => [
-                spl_object_hash($object) => 1
-            ]
+                spl_object_hash($object) => 1,
+            ],
         ];
 
         $this->normalizer->normalize($object, null, $context);
@@ -95,7 +95,7 @@ class QueryNormalizerTest extends TestCase
 
         $this->assertEquals($expectedReturn, $data);
     }
-    
+
     /**
      * @expectedException \Symfony\Component\Serializer\Exception\InvalidArgumentException
      * @expectedExceptionMessage The ArrayObject must implement "JsonSerializable"

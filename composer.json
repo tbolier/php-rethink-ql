@@ -21,6 +21,7 @@
     "autoload": {
         "psr-4": {
             "TBolier\\RethinkQL\\": "src/",
+            "TBolier\\RethinkQL\\UnitTest\\": "test/unit/",
             "TBolier\\RethinkQL\\IntegrationTest\\": "test/integration/"
         }
     }

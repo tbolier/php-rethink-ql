@@ -151,6 +151,10 @@ class Socket implements StreamInterface
      */
     public function write($string)
     {
+        if (!$this->isWritable()) {
+            throw new \RuntimeException('The stream is not writable.');
+        }
+
         $writeLength = \strlen($string);
         $this->tellPos = $writeLength;
 

@@ -24,41 +24,34 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
      * @var int[]
      */
     private $activeTokens;
-
-    /**
-     * @var StreamInterface
-     */
-    private $stream;
-
     /**
      * @var string
      */
     private $dbName;
-
-    /**
-     * @var bool
-     */
-    private $noReply = false;
-
-    /**
-     * @var \Closure
-     */
-    private $streamWrapper;
-
     /**
      * @var HandshakeInterface
      */
     private $handshake;
-
+    /**
+     * @var bool
+     */
+    private $noReply = false;
     /**
      * @var SerializerInterface
      */
     private $querySerializer;
-
     /**
      * @var SerializerInterface
      */
     private $responseSerializer;
+    /**
+     * @var StreamInterface
+     */
+    private $stream;
+    /**
+     * @var \Closure
+     */
+    private $streamWrapper;
 
     /**
      * @param \Closure $streamWrapper
@@ -82,12 +75,35 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
     }
 
     /**
+     * @param MessageInterface $query
+     * @return void
+     */
+    public function changes(MessageInterface $query): void
+    {
+        // TODO: Implement changes() method.
+    }
+
+    /**
+     * @param bool $noReplyWait
+     * @throws ConnectionException
+     * @throws \Exception
+     */
+    public function close($noReplyWait = true): void
+    {
+        if ($noReplyWait) {
+            $this->noReplyWait();
+        }
+
+        $this->stream->close();
+    }
+
+    /**
      * @inheritdoc
      * @throws ConnectionException
      */
     public function connect(): self
     {
-        if ($this->isStreamOpen()) {
+        if ($this->stream !== null && $this->stream->isWritable()) {
             return $this;
         }
 
@@ -102,48 +118,56 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
     }
 
     /**
-     * @param bool $noReplyWait
-     * @throws ConnectionException
+     * @inheritdoc
      * @throws \Exception
      */
-    public function close($noReplyWait = true): void
+    public function continueQuery(int $token): ResponseInterface
     {
-        if (!$this->isStreamOpen()) {
-            throw new ConnectionException('Not connected.');
+         $message = (new Message())->setQuery(
+            new Query([QueryType::CONTINUE])
+        );
+
+        $this->writeQuery($token, $message);
+
+        // Await the response
+        $response = $this->receiveResponse($token, $message);
+
+        if ($response->getType() !== ResponseType::SUCCESS_PARTIAL) {
+            unset($this->activeTokens[$token]);
         }
 
-        if ($noReplyWait) {
-            $this->noReplyWait();
-        }
-
-        $this->stream->close();
+        return $response;
     }
 
     /**
+     * @param string $string
+     * @return ResponseInterface
      * @throws ConnectionException
-     * @throws \Exception
      */
-    private function noReplyWait(): void
+    public function expr(string $string): ResponseInterface
     {
-        if (!$this->isStreamOpen()) {
-            throw new ConnectionException('Not connected.');
-        }
+        $message = new Message();
+        $message->setQueryType(QueryType::START)
+            ->setQuery(new Expr($string));
 
-        try {
-            $token = $this->generateToken();
+        return $this->run($message);
+    }
 
-            $query = new Message(QueryType::NOREPLY_WAIT);
-            $this->writeQuery($token, $query);
+    /**
+     * @inheritdoc
+     */
+    public function isStreamOpen(): bool
+    {
+        return ($this->stream !== null && $this->stream->isWritable());
+    }
 
-            // Await the response
-            $response = $this->receiveResponse($token, $query);
-
-            if ($response->getType() !== 4) {
-                throw new ConnectionException('Unexpected response type for noreplyWait query.');
-            }
-        } catch (\Exception $e) {
-            throw new ConnectionException($e->getMessage(), $e->getCode(), $e);
-        }
+    /**
+     * @inheritdoc
+     * @throws ConnectionException
+     */
+    public function rewindFromCursor(MessageInterface $message): ResponseInterface
+    {
+        return $this->run($message, true);
     }
 
     /**
@@ -154,10 +178,6 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
      */
     public function run(MessageInterface $message, $raw = false)
     {
-        if (!$this->isStreamOpen()) {
-            throw new ConnectionException('Not connected.');
-        }
-
         try {
             $token = $this->generateToken();
 
@@ -184,26 +204,6 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
     }
 
     /**
-     * @inheritdoc
-     * @throws ConnectionException
-     */
-    public function rewindFromCursor(MessageInterface $message): ResponseInterface
-    {
-        return $this->run($message, true);
-    }
-
-    /**
-     * @param ResponseInterface $response
-     * @param int $token
-     * @param MessageInterface $message
-     * @return Cursor
-     */
-    private function createCursorFromResponse(ResponseInterface $response, int $token, MessageInterface $message): Cursor
-    {
-        return new Cursor($this, $token, $response, $message);
-    }
-
-    /**
      * @param MessageInterface $query
      * @return ResponseInterface|Cursor
      * @throws ConnectionException
@@ -215,6 +215,92 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
         $this->noReply = false;
 
         return $result;
+    }
+
+    /**
+     * @return ResponseInterface
+     * @throws \Exception
+     */
+    public function server(): ResponseInterface
+    {
+        try {
+            $token = $this->generateToken();
+
+            $query = new Message(QueryType::SERVER_INFO);
+            $this->writeQuery($token, $query);
+
+            // Await the response
+            $response = $this->receiveResponse($token, $query);
+
+            if ($response->getType() !== 5) {
+                throw new ConnectionException('Unexpected response type for server query.');
+            }
+        } catch (\Exception $e) {
+            throw new ConnectionException($e->getMessage(), $e->getCode(), $e);
+        }
+
+        return $response;
+    }
+
+    /**
+     * @inheritdoc
+     * @throws \Exception
+     */
+    public function stopQuery(int $token): ResponseInterface
+    {
+        $message = (new Message())->setQuery(
+            new Query([QueryType::STOP])
+        );
+
+        $this->writeQuery($token, $message);
+
+        $response = $this->receiveResponse($token, $message);
+
+        unset($this->activeTokens[$token]);
+
+        return $response;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function use(string $name): void
+    {
+        $this->dbName = $name;
+    }
+
+    /**
+     * @inheritdoc
+     * @throws \Exception
+     */
+    public function writeQuery(int $token, MessageInterface $message): int
+    {
+        $message->setOptions((new QueryOptions())->setDb($this->dbName));
+
+        try {
+            $request = $this->querySerializer->serialize($message, 'json');
+        } catch (\Exception $e) {
+            throw new Exception('Serializing query message failed.', $e->getCode(), $e);
+        }
+
+        $requestSize = pack('V', \strlen($request));
+        $binaryToken = pack('V', $token) . pack('V', 0);
+
+        return $this->stream->write($binaryToken . $requestSize . $request);
+    }
+
+    /**
+     * @param ResponseInterface $response
+     * @param int $token
+     * @param MessageInterface $message
+     * @return Cursor
+     */
+    private function createCursorFromResponse(
+        ResponseInterface $response,
+        int $token,
+        MessageInterface $message
+    ): Cursor {
+        return new Cursor($this, $token, $response, $message);
     }
 
     /**
@@ -241,64 +327,26 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
     }
 
     /**
-     * @inheritdoc
+     * @throws ConnectionException
      * @throws \Exception
      */
-    public function writeQuery(int $token, MessageInterface $message): int
+    private function noReplyWait(): void
     {
-        $message->setOptions((new QueryOptions())->setDb($this->dbName));
-
         try {
-            $request = $this->querySerializer->serialize($message, 'json');
+            $token = $this->generateToken();
+
+            $query = new Message(QueryType::NOREPLY_WAIT);
+            $this->writeQuery($token, $query);
+
+            // Await the response
+            $response = $this->receiveResponse($token, $query);
+
+            if ($response->getType() !== 4) {
+                throw new ConnectionException('Unexpected response type for noreplyWait query.');
+            }
         } catch (\Exception $e) {
-            throw new Exception('Serializing query message failed.', $e->getCode(), $e);
+            throw new ConnectionException($e->getMessage(), $e->getCode(), $e);
         }
-
-        $requestSize = pack('V', \strlen($request));
-        $binaryToken = pack('V', $token) . pack('V', 0);
-
-        return $this->stream->write($binaryToken . $requestSize . $request);
-    }
-
-    /**
-     * @inheritdoc
-     * @throws \Exception
-     */
-    public function continueQuery(int $token): ResponseInterface
-    {
-        $message = (new Message())->setQuery(
-            new Query([QueryType::CONTINUE])
-        );
-
-        $this->writeQuery($token, $message);
-
-        // Await the response
-        $response = $this->receiveResponse($token, $message);
-
-        if ($response->getType() !== ResponseType::SUCCESS_PARTIAL) {
-            unset($this->activeTokens[$token]);
-        }
-
-        return $response;
-    }
-
-    /**
-     * @inheritdoc
-     * @throws \Exception
-     */
-    public function stopQuery(int $token): ResponseInterface
-    {
-        $message = (new Message())->setQuery(
-            new Query([QueryType::STOP])
-        );
-
-        $this->writeQuery($token, $message);
-
-        $response = $this->receiveResponse($token, $message);
-
-        unset($this->activeTokens[$token]);
-
-        return $response;
     }
 
     /**
@@ -311,6 +359,10 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
     private function receiveResponse(int $token, MessageInterface $message): ResponseInterface
     {
         $responseHeader = $this->stream->read(4 + 8);
+        if (empty($responseHeader)) {
+            throw new ConnectionException('Empty response headers received from server.');
+        }
+
         $responseHeader = unpack('Vtoken/Vtoken2/Vsize', $responseHeader);
         $responseToken = $responseHeader['token'];
         if ($responseHeader['token2'] !== 0) {
@@ -362,73 +414,5 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
         if ($response->getType() === ResponseType::RUNTIME_ERROR) {
             throw new ConnectionException('Runtime error: ' . $response->getData()[0] . ', jsonQuery: ' . json_encode($message));
         }
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function use(string $name): void
-    {
-        $this->dbName = $name;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function isStreamOpen(): bool
-    {
-        return ($this->stream !== null && $this->stream->isWritable());
-    }
-
-    /**
-     * @param MessageInterface $query
-     * @return array
-     */
-    public function changes(MessageInterface $query): array
-    {
-        // TODO: Implement changes() method.
-    }
-
-    /**
-     * @return ResponseInterface
-     * @throws \Exception
-     */
-    public function server(): ResponseInterface
-    {
-        if (!$this->isStreamOpen()) {
-            throw new ConnectionException('Not connected.');
-        }
-
-        try {
-            $token = $this->generateToken();
-
-            $query = new Message(QueryType::SERVER_INFO);
-            $this->writeQuery($token, $query);
-
-            // Await the response
-            $response = $this->receiveResponse($token, $query);
-
-            if ($response->getType() !== 5) {
-                throw new ConnectionException('Unexpected response type for server query.');
-            }
-        } catch (\Exception $e) {
-            throw new ConnectionException($e->getMessage(), $e->getCode(), $e);
-        }
-
-        return $response;
-    }
-
-    /**
-     * @param string $string
-     * @return ResponseInterface
-     * @throws ConnectionException
-     */
-    public function expr(string $string): ResponseInterface
-    {
-        $message = new Message();
-        $message->setQueryType(QueryType::START)
-            ->setQuery(new Expr($string));
-
-        return $this->run($message);
     }
 }

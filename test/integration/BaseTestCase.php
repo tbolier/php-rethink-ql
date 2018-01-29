@@ -49,7 +49,7 @@ class BaseTestCase extends TestCase
 
         $this->r = new Rethink($connection);
 
-        if (!\in_array('test', $this->r->dbList()->run()->getData()[0])) {
+        if (!\in_array('test', $this->r->dbList()->run()->getData()[0], true)) {
             $this->r->dbCreate('test')->run();
         }
 
@@ -58,7 +58,7 @@ class BaseTestCase extends TestCase
 
     protected function tearDown()
     {
-        if ($this->r !== null && $this->r->connection()->isStreamOpen() && \in_array('test',
+        if ($this->r !== null && \in_array('test',
                 $this->r->dbList()->run()->getData()[0], true)) {
             $this->r->dbDrop('test')->run();
         }
@@ -98,9 +98,7 @@ class BaseTestCase extends TestCase
     public function __destruct()
     {
         foreach ($this->connections as $connection) {
-            if ($connection->isStreamOpen()) {
-                $connection->close();
-            }
+            $connection->close();
         }
 
         Mockery::close();

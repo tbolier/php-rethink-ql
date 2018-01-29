@@ -9,15 +9,29 @@ use TBolier\RethinkQL\Response\ResponseInterface;
 
 interface ConnectionInterface
 {
+
     /**
-     * @return bool
+     * @param MessageInterface $query
+     * @return void
      */
-    public function isStreamOpen(): bool;
+    public function changes(MessageInterface $query): void;
+
+    /**
+     * @param bool $noReplyWait
+     * @return void
+     */
+    public function close($noReplyWait = true): void;
 
     /**
      * @return Connection
      */
     public function connect(): Connection;
+
+    /**
+     * @param string $string
+     * @return ResponseInterface
+     */
+    public function expr(string $string): ResponseInterface;
 
     /**
      * @param MessageInterface $message
@@ -32,12 +46,6 @@ interface ConnectionInterface
     public function runNoReply(MessageInterface $query);
 
     /**
-     * @param MessageInterface $query
-     * @return array
-     */
-    public function changes(MessageInterface $query): array;
-
-    /**
      * @return ResponseInterface
      */
     public function server(): ResponseInterface;
@@ -47,16 +55,4 @@ interface ConnectionInterface
      * @return void
      */
     public function use(string $name): void;
-
-    /**
-     * @param bool $noReplyWait
-     * @return void
-     */
-    public function close($noReplyWait = true): void;
-
-    /**
-     * @param string $string
-     * @return ResponseInterface
-     */
-    public function expr(string $string): ResponseInterface;
 }
