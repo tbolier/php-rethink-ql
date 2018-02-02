@@ -21,7 +21,7 @@ interface ConnectionInterface
 
     /**
      * @param MessageInterface $message
-     * @return ResponseInterface
+     * @return ResponseInterface|Cursor
      */
     public function run(MessageInterface $message);
 
