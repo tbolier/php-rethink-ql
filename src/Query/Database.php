@@ -11,14 +11,14 @@ use TBolier\RethinkQL\Types\Term\TermType;
 class Database implements DatabaseInterface
 {
     /**
-     * @var RethinkInterface
-     */
-    private $rethink;
-
-    /**
      * @var MessageInterface
      */
     private $message;
+
+    /**
+     * @var RethinkInterface
+     */
+    private $rethink;
 
     /**
      * @param RethinkInterface $rethink
@@ -31,7 +31,7 @@ class Database implements DatabaseInterface
         $message
             ->setQueryType(QueryType::START)
             ->setQuery(new Query([
-                TermType::DB_LIST
+                TermType::DB_LIST,
             ]));
 
         $this->message = $message;
@@ -85,7 +85,7 @@ class Database implements DatabaseInterface
         $this->message
             ->setQueryType(QueryType::START)
             ->setQuery(new Query([
-                TermType::DB_LIST
+                TermType::DB_LIST,
             ]));
 
         return $this;
@@ -146,6 +146,7 @@ class Database implements DatabaseInterface
 
         return $this;
     }
+
     /**
      * @return ResponseInterface
      */

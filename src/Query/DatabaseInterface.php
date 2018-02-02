@@ -25,11 +25,6 @@ interface DatabaseInterface
     public function dbList(): DatabaseInterface;
 
     /**
-     * @return DatabaseInterface
-     */
-    public function tableList(): DatabaseInterface;
-
-    /**
      * @param string $name
      * @return DatabaseInterface
      */
@@ -40,6 +35,11 @@ interface DatabaseInterface
      * @return DatabaseInterface
      */
     public function tableDrop(string $name): DatabaseInterface;
+
+    /**
+     * @return DatabaseInterface
+     */
+    public function tableList(): DatabaseInterface;
 
     /**
      * @return ResponseInterface
