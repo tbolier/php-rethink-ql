@@ -10,14 +10,14 @@ use TBolier\RethinkQL\Types\Term\TermType;
 class Table implements TableInterface
 {
     /**
-     * @var RethinkInterface
-     */
-    private $rethink;
-
-    /**
      * @var MessageInterface
      */
     private $message;
+
+    /**
+     * @var RethinkInterface
+     */
+    private $rethink;
 
     /**
      * @var string

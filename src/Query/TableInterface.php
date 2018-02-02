@@ -11,6 +11,11 @@ interface TableInterface
     public function count(): TableInterface;
 
     /**
+     * @return TableInterface
+     */
+    public function delete(): TableInterface;
+
+    /**
      * @param array $documents
      * @return TableInterface
      */
@@ -29,18 +34,13 @@ interface TableInterface
     public function insert(array $documents): TableInterface;
 
     /**
+     * @return mixed
+     */
+    public function run();
+
+    /**
      * @param array $documents
      * @return TableInterface
      */
     public function update(array $documents): TableInterface;
-
-    /**
-     * @return TableInterface
-     */
-    public function delete(): TableInterface;
-
-    /**
-     * @return mixed
-     */
-    public function run();
 }
