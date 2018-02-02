@@ -84,14 +84,13 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
     }
 
     /**
-     * @param bool $noReplyWait
-     * @throws ConnectionException
+     * @param bool $noreplyWait
      * @throws \Exception
      */
-    public function close($noReplyWait = true): void
+    public function close($noreplyWait = true): void
     {
-        if ($noReplyWait) {
-            $this->noReplyWait();
+        if ($noreplyWait) {
+            $this->noreplyWait();
         }
 
         $this->stream->close();
@@ -121,9 +120,20 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
      * @inheritdoc
      * @throws \Exception
      */
+    public function reconnect($noreplyWait = true): Connection
+    {
+        $this->close($noreplyWait);
+
+        return $this->connect();
+    }
+
+    /**
+     * @inheritdoc
+     * @throws \Exception
+     */
     public function continueQuery(int $token): ResponseInterface
     {
-         $message = (new Message())->setQuery(
+        $message = (new Message())->setQuery(
             new Query([QueryType::CONTINUE])
         );
 
@@ -155,14 +165,6 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
 
     /**
      * @inheritdoc
-     */
-    public function isStreamOpen(): bool
-    {
-        return ($this->stream !== null && $this->stream->isWritable());
-    }
-
-    /**
-     * @inheritdoc
      * @throws ConnectionException
      */
     public function rewindFromCursor(MessageInterface $message): ResponseInterface
@@ -171,9 +173,7 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
     }
 
     /**
-     * @param MessageInterface $message
-     * @param bool $raw
-     * @return ResponseInterface|Cursor
+     * @inheritdoc
      * @throws ConnectionException
      */
     public function run(MessageInterface $message, $raw = false)
@@ -204,8 +204,7 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
     }
 
     /**
-     * @param MessageInterface $query
-     * @return ResponseInterface|Cursor
+     * @inheritdoc
      * @throws ConnectionException
      */
     public function runNoReply(MessageInterface $query)
@@ -218,7 +217,7 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
     }
 
     /**
-     * @return ResponseInterface
+     * @inheritdoc
      * @throws \Exception
      */
     public function server(): ResponseInterface
@@ -229,7 +228,6 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
             $query = new Message(QueryType::SERVER_INFO);
             $this->writeQuery($token, $query);
 
-            // Await the response
             $response = $this->receiveResponse($token, $query);
 
             if ($response->getType() !== 5) {
@@ -290,6 +288,29 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
     }
 
     /**
+     * @inheritdoc
+     * @throws ConnectionException
+     * @throws \Exception
+     */
+    public function noreplyWait(): void
+    {
+        try {
+            $token = $this->generateToken();
+
+            $query = new Message(QueryType::NOREPLY_WAIT);
+            $this->writeQuery($token, $query);
+
+            $response = $this->receiveResponse($token, $query);
+
+            if ($response->getType() !== 4) {
+                throw new ConnectionException('Unexpected response type for noreplyWait query.');
+            }
+        } catch (\Exception $e) {
+            throw new ConnectionException($e->getMessage(), $e->getCode(), $e);
+        }
+    }
+
+    /**
      * @param ResponseInterface $response
      * @param int $token
      * @param MessageInterface $message
@@ -324,29 +345,6 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
         }
 
         return $token;
-    }
-
-    /**
-     * @throws ConnectionException
-     * @throws \Exception
-     */
-    private function noReplyWait(): void
-    {
-        try {
-            $token = $this->generateToken();
-
-            $query = new Message(QueryType::NOREPLY_WAIT);
-            $this->writeQuery($token, $query);
-
-            // Await the response
-            $response = $this->receiveResponse($token, $query);
-
-            if ($response->getType() !== 4) {
-                throw new ConnectionException('Unexpected response type for noreplyWait query.');
-            }
-        } catch (\Exception $e) {
-            throw new ConnectionException($e->getMessage(), $e->getCode(), $e);
-        }
     }
 
     /**
