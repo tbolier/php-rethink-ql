@@ -18,7 +18,7 @@ Feel free to fork this code and contribute.
 
 # Requirements
 
-## RethinkDB versionhttps://getcomposer.org/doc/articles/autoloader-optimization.md
+## RethinkDB version
 
 This library supports the RethinkDB release `>=2.3.0` and protocol version `V1_0`.
 Earliers version of RethinkDB are not supported at this moment.
@@ -127,18 +127,18 @@ Below you will find a table with the supported ReQL command methods per release 
 | noreplyWait            | ✓ | | 
 | server                 | ✓ | | 
 | optArg                 | ✘ | |
-|
+| | | |
 | **Cursors** 
 | next                   | ✓ | | 
 | for                    | ✓ | | 
 | toList                 | ✓ | | 
 | close                  | ✓ | | 
-| 
+| | | | 
 | **Manipulating databases** 
 | dbCreate               | ✓ | | 
 | dbDrop                 | ✓ | | 
 | dbList                 | ✓ | | 
-|
+| | | |
 | **Manipulating tables**
 | tableCreate            | ✓ | | 
 | tableDrop              | ✓ | | 
@@ -149,14 +149,14 @@ Below you will find a table with the supported ReQL command methods per release 
 | indexRename            | ✘ | | 
 | indexStatus            | ✘ | | 
 | indexWait              | ✘ | | 
-|
+| | | |
 | **Writing data**
 | insert                 | ✓ | | 
 | update                 | ✓ | | 
 | replace                | ✓ | | 
 | delete                 | ✓ | | 
 | sync                   | ✘ | | 
-|
+| | | |
 | **Selecting data** 
 | db                     | ✓ | | 
 | table                  | ✓ | | 
@@ -169,7 +169,7 @@ Below you will find a table with the supported ReQL command methods per release 
 | outerJoin              | ✘ | | 
 | eqJoin                 | ✘ | | 
 | zip                    | ✘ | | 
-| 
+| | | |
 | **Transformations** 
 | map                    | ✘ | | 
 | withFields             | ✘ | | 
@@ -183,7 +183,7 @@ Below you will find a table with the supported ReQL command methods per release 
 | isEmpty                | ✘ | | 
 | union                  | ✘ | | 
 | sample                 | ✘ | | 
-|
+| | | |
 | **Aggregation** 
 | group                  | ✘ | | 
 | ungroup                | ✘ | | 
@@ -196,7 +196,7 @@ Below you will find a table with the supported ReQL command methods per release 
 | max                    | ✘ | | 
 | distinct               | ✘ | | 
 | contains               | ✘ | | 
-|
+| | | |
 | **Document manipulation** 
 | row                    | ✘ | | 
 | pluck                  | ✘ | | 
@@ -244,7 +244,7 @@ Below you will find a table with the supported ReQL command methods per release 
 | round                  | ✘ | | 
 | ceil                   | ✘ | | 
 | floor                  | ✘ | | 
-|
+| | | |
 | **Dates and times** 
 | now                    | ✘ | | 
 | time                   | ✘ | | 
@@ -265,7 +265,7 @@ Below you will find a table with the supported ReQL command methods per release 
 | seconds                | ✘ | | 
 | toISO8601              | ✘ | | 
 | toEpochTime            | ✘ | | 
-|
+| | | |
 | **Control structures** 
 | array                  | ✘ | | 
 | hashMap                | ✘ | | 
@@ -300,7 +300,7 @@ Below you will find a table with the supported ReQL command methods per release 
 | point                  | ✘ | | 
 | polygon                | ✘ | | 
 | polygonSub             | ✘ | | 
-|
+| | | |
 | **Administration**
 | grant                  | ✘ | | 
 | config                 | ✘ | | 
