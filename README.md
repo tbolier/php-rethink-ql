@@ -27,10 +27,10 @@ Earliers version of RethinkDB are not supported at this moment.
 
 PHP version `>=7.1`
 
-# Examples
+# Getting started
 
 Multiple connections can be injected into the connection `Registry`.
-Create multiple document `Manager` per connection.
+Create the Rethink driver object by injecting a `Connection` object into it.
 
 ```php
 <?php
@@ -66,48 +66,9 @@ A create table example:
 $r->db()
   ->tableCreate('Table')
   ->run();
-```          
-
-An insert example:            
-```php
-$r->table('tableName')
-  ->insert([
-      [
-          'documentId' => 1,
-          'title' => 'Test document',
-          'description' => 'My first document.'  
-      ],    
-  ])
-  ->run();
 ```
 
-An update example:            
-```php
-$r->table('tableName')
-  ->filter([
-      [
-          'title' => 'Test document',
-      ],    
-  ])
-  ->update([
-      [
-          'title' => 'Updated document',
-      ],    
-  ])
-  ->run();
-```
-
-A filter and count example:
-```php
-$r->table('tableName')
-  ->filter([
-      [
-          'title' => 'Test document',
-      ],
-  ])
-  ->count()
-  ->run();
-```
+For more information go to our docs section: [Getting started](docs/Getting-started.md)
 
 # Supported ReQL Command API overview.
 
@@ -115,7 +76,7 @@ Below you will find a table with the supported ReQL command methods per release 
 
 | method | Version 1.0 | Version 2.0 |
 | --- | :---: | :---: |
-| **Accessing ReQL** 
+| **Accessing ReQL**
 | r                      | ✓ | | 
 | connection             | ✓ | | 
 | close                  | ✓ | | 
