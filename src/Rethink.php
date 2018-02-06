@@ -8,7 +8,7 @@ use TBolier\RethinkQL\Query\Builder;
 use TBolier\RethinkQL\Query\BuilderInterface;
 use TBolier\RethinkQL\Query\DatabaseInterface;
 use TBolier\RethinkQL\Query\Message;
-use TBolier\RethinkQL\Query\TableInterface;
+use TBolier\RethinkQL\Query\Table;
 
 class Rethink implements RethinkInterface
 {
@@ -76,7 +76,7 @@ class Rethink implements RethinkInterface
     /**
      * @inheritdoc
      */
-    public function table(string $name): TableInterface
+    public function table(string $name): Table
     {
         return $this->builder->table($name);
     }

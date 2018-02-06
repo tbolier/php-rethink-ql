@@ -13,7 +13,7 @@ class Builder implements BuilderInterface
     private $rethink;
 
     /**
-     * @var TableInterface
+     * @var Table
      */
     private $table;
 
@@ -39,9 +39,9 @@ class Builder implements BuilderInterface
 
     /**
      * @param string $name
-     * @return TableInterface
+     * @return Table
      */
-    public function table(string $name): TableInterface
+    public function table(string $name): Table
     {
         if ($this->table) {
             unset($this->table);

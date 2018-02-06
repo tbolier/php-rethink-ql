@@ -1,12 +1,16 @@
 <?php
-declare(strict_types=1);
 
 namespace TBolier\RethinkQL\Query;
 
-interface QueryInterface extends \JsonSerializable
+interface QueryInterface
 {
     /**
-     * @return string|array
+     * @return mixed
      */
-    public function getQuery();
+    public function run();
+
+    /**
+     * @return array
+     */
+    public function toArray(): array;
 }

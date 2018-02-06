@@ -3,21 +3,18 @@ declare(strict_types=1);
 
 namespace TBolier\RethinkQL\Query;
 
+use TBolier\RethinkQL\Query\Operation\AbstractOperation;
+use TBolier\RethinkQL\Query\Operation\Filter;
+use TBolier\RethinkQL\Query\Operation\Get;
 use TBolier\RethinkQL\RethinkInterface;
-use TBolier\RethinkQL\Types\Query\QueryType;
 use TBolier\RethinkQL\Types\Term\TermType;
 
-class Table implements TableInterface
+class Table extends AbstractOperation
 {
     /**
-     * @var MessageInterface
+     * @var array
      */
-    private $message;
-
-    /**
-     * @var RethinkInterface
-     */
-    private $rethink;
+    private $query;
 
     /**
      * @var string
@@ -31,195 +28,45 @@ class Table implements TableInterface
      */
     public function __construct(string $name, RethinkInterface $rethink, MessageInterface $message)
     {
-        $this->rethink = $rethink;
+        parent::__construct($rethink, $message);
+
         $this->table = $name;
-
-        $message
-            ->setQueryType(QueryType::START)
-            ->setQuery(new Query([
-                TermType::TABLE,
-                [
-                    $this->table,
-                ],
-            ]));
-
+        $this->rethink = $rethink;
         $this->message = $message;
+
+        $this->query = [
+            TermType::TABLE,
+            [
+                $this->table,
+            ],
+        ];
     }
 
     /**
      * @inheritdoc
      */
-    public function count(): TableInterface
+    public function filter(array $documents): AbstractQuery
     {
-        $this->message
-            ->setQueryType(QueryType::START)
-            ->setQuery(new Query(
-                [
-                    TermType::COUNT,
-                    [
-                        [
-                            TermType::TABLE,
-                            [
-                                $this->table,
-                            ],
-                        ],
-                    ],
-                ]
-            ));
+        $filter = new Filter($this->rethink, $this->message, $this, $documents);
 
-        return $this;
+        return $filter;
     }
 
     /**
      * @inheritdoc
      */
-    public function filter(array $documents): TableInterface
+    public function get($value): AbstractQuery
     {
-        $jsonDocuments = [];
-        foreach ($documents as $key => $document) {
-            $jsonDocuments[] = json_encode($document);
-        }
+        $get = new Get($this->rethink, $this->message, $this, $value);
 
-        $this->message
-            ->setQueryType(QueryType::START)
-            ->setQuery(new Query([
-                TermType::FILTER,
-                [
-                    [
-                        TermType::TABLE,
-                        [
-                            $this->table,
-                        ],
-                    ],
-                    [
-                        TermType::JSON,
-                        $jsonDocuments,
-                    ],
-                ],
-            ]));
-
-        return $this;
+        return $get;
     }
 
     /**
      * @inheritdoc
      */
-    public function insert(array $documents): TableInterface
+    public function toArray(): array
     {
-        // TODO: Move encoding logic to QueryNormalizer.
-        $jsonDocuments = [];
-        foreach ($documents as $key => $document) {
-            $jsonDocuments[] = json_encode($document);
-        }
-
-        $this->message
-            ->setQueryType(QueryType::START)
-            ->setQuery(new Query(
-                [
-                    TermType::INSERT,
-                    [
-                        [
-                            TermType::TABLE,
-                            [
-                                $this->table,
-                            ],
-                        ],
-                        [
-                            TermType::JSON,
-                            $jsonDocuments,
-                        ],
-                    ],
-                ]));
-
-        return $this;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function update(array $documents): TableInterface
-    {
-        $jsonDocuments = [];
-        foreach ($documents as $key => $document) {
-            $jsonDocuments[] = json_encode($document);
-        }
-
-        $this->message
-            ->setQueryType(QueryType::START)
-            ->setQuery(new Query(
-                [
-                    TermType::UPDATE,
-                    [
-                        [
-                            TermType::TABLE,
-                            [
-                                $this->table,
-                            ],
-                        ],
-                        [
-                            TermType::JSON,
-                            $jsonDocuments,
-                        ],
-                    ],
-                ]));
-
-        return $this;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function delete(): TableInterface
-    {
-        $this->message
-            ->setQueryType(QueryType::START)
-            ->setQuery(new Query([
-                TermType::DELETE,
-                [
-                    [
-                        TermType::TABLE,
-                        [
-                            $this->table,
-                        ],
-                    ],
-                ],
-            ]));
-
-        return $this;
-    }
-
-    /**
-     * @param mixed $value
-     * @return TableInterface
-     */
-    public function get($value): TableInterface
-    {
-        $this->message
-            ->setQueryType(QueryType::START)
-            ->setQuery(new Query([
-                TermType::GET,
-                [
-                    [
-                        TermType::TABLE,
-                        [
-                            $this->table,
-                        ],
-                    ],
-                    [
-                        TermType::DATUM,
-                        $value,
-                    ],
-                ],
-            ]));
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function run()
-    {
-        return $this->rethink->connection()->run($this->message);
+        return $this->query;
     }
 }
