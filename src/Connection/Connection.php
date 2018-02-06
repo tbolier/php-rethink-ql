@@ -11,7 +11,6 @@ use TBolier\RethinkQL\Query\Expr;
 use TBolier\RethinkQL\Query\Message;
 use TBolier\RethinkQL\Query\MessageInterface;
 use TBolier\RethinkQL\Query\Options as QueryOptions;
-use TBolier\RethinkQL\Query\Query;
 use TBolier\RethinkQL\Response\Cursor;
 use TBolier\RethinkQL\Response\Response;
 use TBolier\RethinkQL\Response\ResponseInterface;
@@ -134,7 +133,7 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
     public function continueQuery(int $token): ResponseInterface
     {
         $message = (new Message())->setQuery(
-            new Query([QueryType::CONTINUE])
+           [QueryType::CONTINUE]
         );
 
         $this->writeQuery($token, $message);
@@ -157,8 +156,8 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
     public function expr(string $string): ResponseInterface
     {
         $message = new Message();
-        $message->setQueryType(QueryType::START)
-            ->setQuery(new Expr($string));
+        $message->setCommand(QueryType::START)
+            ->setQuery([new Expr($string)]);
 
         return $this->run($message);
     }
@@ -247,7 +246,7 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
     public function stopQuery(int $token): ResponseInterface
     {
         $message = (new Message())->setQuery(
-            new Query([QueryType::STOP])
+           [QueryType::STOP]
         );
 
         $this->writeQuery($token, $message);
@@ -273,7 +272,9 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
      */
     public function writeQuery(int $token, MessageInterface $message): int
     {
-        $message->setOptions((new QueryOptions())->setDb($this->dbName));
+        if ($this->dbName) {
+            $message->setOptions((new QueryOptions())->setDb($this->dbName));
+        }
 
         try {
             $request = $this->querySerializer->serialize($message, 'json');

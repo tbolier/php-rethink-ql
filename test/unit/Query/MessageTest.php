@@ -5,7 +5,6 @@ namespace TBolier\RethinkQL\UnitTest\Query;
 
 use TBolier\RethinkQL\Query\Message;
 use TBolier\RethinkQL\Query\Options;
-use TBolier\RethinkQL\Query\Query;
 use TBolier\RethinkQL\UnitTest\BaseUnitTestCase;
 
 class MessageTest extends BaseUnitTestCase
@@ -17,12 +16,12 @@ class MessageTest extends BaseUnitTestCase
     public function testAccessors(): void
     {
         $queryType = 1;
-        $query = new Query([]);
+        $query = [];
         $options = new Options();
 
         $message = new Message();
 
-        $message->setQueryType($queryType);
+        $message->setCommand($queryType);
         $message->setQuery($query);
         $message->setOptions($options);
 
@@ -38,7 +37,7 @@ class MessageTest extends BaseUnitTestCase
     public function testToArray(): void
     {
         $queryType = 1;
-        $query = new Query([]);
+        $query = [];
         $options = new Options();
 
         $message = new Message($queryType, $query, $options);
@@ -59,7 +58,7 @@ class MessageTest extends BaseUnitTestCase
     public function testJsonSerialize(): void
     {
         $queryType = 1;
-        $query = new Query([]);
+        $query = [];
         $options = new Options();
 
         $message = new Message($queryType, $query, $options);

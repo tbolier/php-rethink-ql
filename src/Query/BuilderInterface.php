@@ -8,9 +8,9 @@ interface BuilderInterface
     /**
      * @param string $name
      *
-     * @return TableInterface
+     * @return Table
      */
-    public function table(string $name): TableInterface;
+    public function table(string $name): Table;
 
     /**
      * @return DatabaseInterface

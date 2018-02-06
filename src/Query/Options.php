@@ -31,6 +31,10 @@ class Options implements OptionsInterface
      */
     public function jsonSerialize()
     {
+        if (!$this->db) {
+            return [];
+        }
+
         return [
             'db' => $this->db
         ];

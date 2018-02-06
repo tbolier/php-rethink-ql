@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace TBolier\RethinkQL\Query;
 
-class Expr implements QueryInterface
+class Expr implements \JsonSerializable
 {
     /**
      * @var string
@@ -31,6 +31,6 @@ class Expr implements QueryInterface
      */
     public function jsonSerialize()
     {
-        return $this->query;
+        return (string)$this->query[0];
     }
 }

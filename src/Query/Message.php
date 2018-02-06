@@ -13,7 +13,7 @@ class Message implements MessageInterface
     private $queryType;
 
     /**
-     * @var QueryInterface
+     * @var array
      */
     private $query;
 
@@ -24,13 +24,13 @@ class Message implements MessageInterface
 
     /**
      * @param int $queryType
-     * @param QueryInterface $query
+     * @param array $query
      * @param OptionsInterface $options
      */
-    public function __construct(int $queryType = null, QueryInterface $query = null, OptionsInterface $options = null)
+    public function __construct(int $queryType = null, array $query = null, OptionsInterface $options = null)
     {
         $this->queryType = $queryType ?? QueryType::START;
-        $this->query = $query ?? new Query([]);
+        $this->query = $query ?? [];
         $this->options = $options ?? new Options();
     }
 
@@ -45,7 +45,7 @@ class Message implements MessageInterface
     /**
      * @inheritdoc
      */
-    public function setQueryType(int $queryType): MessageInterface
+    public function setCommand(int $queryType): MessageInterface
     {
         $this->queryType = $queryType;
 
@@ -55,7 +55,7 @@ class Message implements MessageInterface
     /**
      * @inheritdoc
      */
-    public function getQuery(): QueryInterface
+    public function getQuery(): array
     {
         return $this->query;
     }
@@ -63,7 +63,7 @@ class Message implements MessageInterface
     /**
      * @inheritdoc
      */
-    public function setQuery(QueryInterface $query): MessageInterface
+    public function setQuery(array $query): MessageInterface
     {
         $this->query = $query;
 

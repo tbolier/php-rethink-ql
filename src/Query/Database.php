@@ -5,20 +5,14 @@ namespace TBolier\RethinkQL\Query;
 
 use TBolier\RethinkQL\Response\ResponseInterface;
 use TBolier\RethinkQL\RethinkInterface;
-use TBolier\RethinkQL\Types\Query\QueryType;
 use TBolier\RethinkQL\Types\Term\TermType;
 
-class Database implements DatabaseInterface
+class Database extends AbstractQuery implements DatabaseInterface
 {
     /**
-     * @var MessageInterface
+     * @var array
      */
-    private $message;
-
-    /**
-     * @var RethinkInterface
-     */
-    private $rethink;
+    private $query;
 
     /**
      * @param RethinkInterface $rethink
@@ -26,15 +20,11 @@ class Database implements DatabaseInterface
      */
     public function __construct(RethinkInterface $rethink, MessageInterface $message)
     {
-        $this->rethink = $rethink;
+        parent::__construct($rethink, $message);
 
-        $message
-            ->setQueryType(QueryType::START)
-            ->setQuery(new Query([
-                TermType::DB_LIST,
-            ]));
-
-        $this->message = $message;
+        $this->query = [
+            TermType::DB_LIST,
+        ];
     }
 
     /**
@@ -42,17 +32,15 @@ class Database implements DatabaseInterface
      */
     public function dbCreate(string $name): DatabaseInterface
     {
-        $this->message
-            ->setQueryType(QueryType::START)
-            ->setQuery(new Query([
-                TermType::DB_CREATE,
+        $this->query = [
+            TermType::DB_CREATE,
+            [
                 [
-                    [
-                        TermType::DATUM,
-                        $name,
-                    ],
+                    TermType::DATUM,
+                    $name,
                 ],
-            ]));
+            ],
+        ];
 
         return $this;
     }
@@ -62,17 +50,15 @@ class Database implements DatabaseInterface
      */
     public function dbDrop(string $name): DatabaseInterface
     {
-        $this->message
-            ->setQueryType(QueryType::START)
-            ->setQuery(new Query([
-                TermType::DB_DROP,
+        $this->query = [
+            TermType::DB_DROP,
+            [
                 [
-                    [
-                        TermType::DATUM,
-                        $name,
-                    ],
+                    TermType::DATUM,
+                    $name,
                 ],
-            ]));
+            ],
+        ];
 
         return $this;
     }
@@ -82,11 +68,9 @@ class Database implements DatabaseInterface
      */
     public function dbList(): DatabaseInterface
     {
-        $this->message
-            ->setQueryType(QueryType::START)
-            ->setQuery(new Query([
-                TermType::DB_LIST,
-            ]));
+        $this->query = [
+            TermType::DB_LIST,
+        ];
 
         return $this;
     }
@@ -96,13 +80,9 @@ class Database implements DatabaseInterface
      */
     public function tableList(): DatabaseInterface
     {
-        $this->message
-            ->setQueryType(QueryType::START)
-            ->setQuery(new Query(
-                [
-                    TermType::TABLE_LIST,
-                ]
-            ));
+        $this->query = [
+            TermType::TABLE_LIST,
+        ];
 
         return $this;
     }
@@ -112,17 +92,15 @@ class Database implements DatabaseInterface
      */
     public function tableCreate(string $name): DatabaseInterface
     {
-        $this->message
-            ->setQueryType(QueryType::START)
-            ->setQuery(new Query([
-                TermType::TABLE_CREATE,
+        $this->query = [
+            TermType::TABLE_CREATE,
+            [
                 [
-                    [
-                        TermType::DATUM,
-                        $name,
-                    ],
+                    TermType::DATUM,
+                    $name,
                 ],
-            ]));
+            ],
+        ];
 
         return $this;
     }
@@ -132,17 +110,15 @@ class Database implements DatabaseInterface
      */
     public function tableDrop(string $name): DatabaseInterface
     {
-        $this->message
-            ->setQueryType(QueryType::START)
-            ->setQuery(new Query([
-                TermType::TABLE_DROP,
+        $this->query = [
+            TermType::TABLE_DROP,
+            [
                 [
-                    [
-                        TermType::DATUM,
-                        $name,
-                    ],
+                    TermType::DATUM,
+                    $name,
                 ],
-            ]));
+            ],
+        ];
 
         return $this;
     }
@@ -152,6 +128,16 @@ class Database implements DatabaseInterface
      */
     public function run(): ResponseInterface
     {
+        $this->message->setQuery($this->toArray());
+
         return $this->rethink->connection()->run($this->message);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function toArray(): array
+    {
+        return $this->query;
     }
 }

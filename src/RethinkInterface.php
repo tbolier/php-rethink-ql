@@ -5,7 +5,7 @@ namespace TBolier\RethinkQL;
 
 use TBolier\RethinkQL\Connection\ConnectionInterface;
 use TBolier\RethinkQL\Query\DatabaseInterface;
-use TBolier\RethinkQL\Query\TableInterface;
+use TBolier\RethinkQL\Query\Table;
 
 interface RethinkInterface
 {
@@ -16,9 +16,9 @@ interface RethinkInterface
 
     /**
      * @param string $name
-     * @return TableInterface
+     * @return Table
      */
-    public function table(string $name): TableInterface;
+    public function table(string $name): Table;
 
     /**
      * @return DatabaseInterface

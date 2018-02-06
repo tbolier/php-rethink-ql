@@ -33,6 +33,7 @@ class TableTest extends BaseTestCase
      */
     public function testEmptyTable()
     {
+        /** @var ResponseInterface $count */
         $count = $this->r()
             ->table('tabletest')
             ->filter([
@@ -102,6 +103,31 @@ class TableTest extends BaseTestCase
     /**
      * @throws \Exception
      */
+    public function testFilterCount()
+    {
+        $this->insertDocument(1);
+        $this->insertDocument(2);
+        $this->insertDocument(3);
+        $this->insertDocument(4);
+        $this->insertDocument(5);
+
+        /** @var ResponseInterface $res */
+        $res = $this->r()
+            ->table('tabletest')
+            ->filter([
+                [
+                    'title' => 'Test document',
+                ],
+            ])
+            ->count()
+            ->run();
+
+        $this->assertEquals(5, $res->getData()[0]);
+    }
+
+    /**
+     * @throws \Exception
+     */
     public function testUpdate()
     {
         $this->insertDocument(1);
@@ -115,6 +141,7 @@ class TableTest extends BaseTestCase
             ])
             ->run();
 
+        /** @var ResponseInterface $count */
         $count = $this->r()
             ->table('tabletest')
             ->filter([
@@ -124,7 +151,7 @@ class TableTest extends BaseTestCase
             ])
             ->count()
             ->run();
-
+        /** @var ResponseInterface $res */
         $res = $this->r()
             ->table('tabletest')
             ->filter([
@@ -156,6 +183,7 @@ class TableTest extends BaseTestCase
             ])
             ->run();
 
+        /** @var ResponseInterface $count */
         $count = $this->r()
             ->table('tabletest')
             ->filter([
@@ -168,6 +196,7 @@ class TableTest extends BaseTestCase
 
         $this->assertInternalType('int', $count->getData()[0]);
 
+        /** @var ResponseInterface $res */
         $res = $this->r()
             ->table('tabletest')
             ->filter([
@@ -196,6 +225,7 @@ class TableTest extends BaseTestCase
             ])
             ->run();
 
+        /** @var ResponseInterface $res */
         $res = $this->r()
             ->table('tabletest')
             ->get('foo')
@@ -210,6 +240,7 @@ class TableTest extends BaseTestCase
      */
     public function testGetNonExistingDocument(): void
     {
+        /** @var ResponseInterface $res */
         $res = $this->r()
             ->table('tabletest')
             ->get('bar')

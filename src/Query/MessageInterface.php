@@ -14,18 +14,18 @@ interface MessageInterface extends \JsonSerializable
      * @param int $queryType
      * @return MessageInterface
      */
-    public function setQueryType(int $queryType): MessageInterface;
+    public function setCommand(int $queryType): MessageInterface;
 
     /**
-     * @return QueryInterface
+     * @return array
      */
-    public function getQuery(): QueryInterface;
+    public function getQuery(): array;
 
     /**
-     * @param QueryInterface $query
+     * @param array $query
      * @return MessageInterface
      */
-    public function setQuery(QueryInterface $query): MessageInterface;
+    public function setQuery(array $query): MessageInterface;
 
     /**
      * @return OptionsInterface
