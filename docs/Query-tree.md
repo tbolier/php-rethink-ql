@@ -52,6 +52,7 @@ Index 4, [0,1,2]
 ]
 ```
 
+This is how we build up the query under the hood.
 
 ```php
 Query([
@@ -68,3 +69,5 @@ Query([
     {"name": "Michel"}]
 ])
 ```
+
+A recursive `toArray` method is added to the queries objects, returning the full query as an array which we will send to RethinkDB.

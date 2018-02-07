@@ -3,14 +3,18 @@ declare(strict_types=1);
 
 namespace TBolier\RethinkQL\Query;
 
-use TBolier\RethinkQL\Response\ResponseInterface;
+use TBolier\RethinkQL\Query\Operation\DbCreate;
+use TBolier\RethinkQL\Query\Operation\DbDrop;
+use TBolier\RethinkQL\Query\Operation\DbList;
+use TBolier\RethinkQL\Query\Operation\TableCreate;
+use TBolier\RethinkQL\Query\Operation\TableDrop;
+use TBolier\RethinkQL\Query\Operation\TableList;
 use TBolier\RethinkQL\RethinkInterface;
-use TBolier\RethinkQL\Types\Term\TermType;
 
 class Database extends AbstractQuery implements DatabaseInterface
 {
     /**
-     * @var array
+     * @var QueryInterface
      */
     private $query;
 
@@ -22,9 +26,7 @@ class Database extends AbstractQuery implements DatabaseInterface
     {
         parent::__construct($rethink, $message);
 
-        $this->query = [
-            TermType::DB_LIST,
-        ];
+        $this->dbList();
     }
 
     /**
@@ -32,15 +34,7 @@ class Database extends AbstractQuery implements DatabaseInterface
      */
     public function dbCreate(string $name): DatabaseInterface
     {
-        $this->query = [
-            TermType::DB_CREATE,
-            [
-                [
-                    TermType::DATUM,
-                    $name,
-                ],
-            ],
-        ];
+        $this->query = new DbCreate($this->rethink, $this->message, $name);
 
         return $this;
     }
@@ -50,15 +44,7 @@ class Database extends AbstractQuery implements DatabaseInterface
      */
     public function dbDrop(string $name): DatabaseInterface
     {
-        $this->query = [
-            TermType::DB_DROP,
-            [
-                [
-                    TermType::DATUM,
-                    $name,
-                ],
-            ],
-        ];
+        $this->query = new DbDrop($this->rethink, $this->message, $name);
 
         return $this;
     }
@@ -68,9 +54,7 @@ class Database extends AbstractQuery implements DatabaseInterface
      */
     public function dbList(): DatabaseInterface
     {
-        $this->query = [
-            TermType::DB_LIST,
-        ];
+        $this->query = new DbList($this->rethink, $this->message);
 
         return $this;
     }
@@ -80,9 +64,7 @@ class Database extends AbstractQuery implements DatabaseInterface
      */
     public function tableList(): DatabaseInterface
     {
-        $this->query = [
-            TermType::TABLE_LIST,
-        ];
+        $this->query = new TableList($this->rethink, $this->message);
 
         return $this;
     }
@@ -92,15 +74,7 @@ class Database extends AbstractQuery implements DatabaseInterface
      */
     public function tableCreate(string $name): DatabaseInterface
     {
-        $this->query = [
-            TermType::TABLE_CREATE,
-            [
-                [
-                    TermType::DATUM,
-                    $name,
-                ],
-            ],
-        ];
+        $this->query = new TableCreate($this->rethink, $this->message, $name);
 
         return $this;
     }
@@ -110,27 +84,9 @@ class Database extends AbstractQuery implements DatabaseInterface
      */
     public function tableDrop(string $name): DatabaseInterface
     {
-        $this->query = [
-            TermType::TABLE_DROP,
-            [
-                [
-                    TermType::DATUM,
-                    $name,
-                ],
-            ],
-        ];
+        $this->query = new TableDrop($this->rethink, $this->message, $name);
 
         return $this;
-    }
-
-    /**
-     * @return ResponseInterface
-     */
-    public function run(): ResponseInterface
-    {
-        $this->message->setQuery($this->toArray());
-
-        return $this->rethink->connection()->run($this->message);
     }
 
     /**
@@ -138,6 +94,6 @@ class Database extends AbstractQuery implements DatabaseInterface
      */
     public function toArray(): array
     {
-        return $this->query;
+        return $this->query->toArray();
     }
 }

@@ -40,9 +40,4 @@ interface DatabaseInterface
      * @return DatabaseInterface
      */
     public function tableList(): DatabaseInterface;
-
-    /**
-     * @return ResponseInterface
-     */
-    public function run(): ResponseInterface;
 }
