@@ -180,7 +180,7 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
         try {
             $token = $this->generateToken();
 
-            $this->writeQuery($token, $message);
+             $this->writeQuery($token, $message);
 
             if ($this->noReply) {
                 return;
