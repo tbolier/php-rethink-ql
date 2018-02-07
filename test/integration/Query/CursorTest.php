@@ -33,9 +33,6 @@ class CursorTest extends BaseTestCase
     {
         $this->insertDocuments();
 
-        /**
-         * @
-         */
         $cursor = $this->r()
             ->table('cursortest')
             ->run();

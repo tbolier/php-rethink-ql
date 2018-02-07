@@ -81,7 +81,7 @@ class BaseConnectionTestCase extends BaseUnitTestCase
     }
 
     /**
-     * @param mixed|null $response
+     * @param MockInterface $response
      * @return void
      */
     protected function setExpectations($response = null): void
@@ -101,7 +101,7 @@ class BaseConnectionTestCase extends BaseUnitTestCase
 
     /**
      * @param \stdClass $buffer
-     * @return mixed
+     * @return \stdClass
      */
     protected function catchStreamWrite(\stdClass $buffer)
     {

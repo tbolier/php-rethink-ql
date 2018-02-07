@@ -11,7 +11,7 @@ use TBolier\RethinkQL\Types\Term\TermType;
 class Get extends AbstractOperation
 {
     /**
-     * @var array
+     * @var string
      */
     private $predicate;
     /**
