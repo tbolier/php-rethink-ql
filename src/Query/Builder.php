@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace TBolier\RethinkQL\Query;
 
+use TBolier\RethinkQL\Message\MessageInterface;
 use TBolier\RethinkQL\RethinkInterface;
 
 class Builder implements BuilderInterface

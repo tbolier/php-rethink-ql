@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace TBolier\RethinkQL\Query\Operation;
 
+use TBolier\RethinkQL\Message\MessageInterface;
 use TBolier\RethinkQL\Query\AbstractQuery;
-use TBolier\RethinkQL\Query\MessageInterface;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Term\TermType;
 

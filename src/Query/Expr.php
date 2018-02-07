@@ -31,6 +31,6 @@ class Expr implements \JsonSerializable
      */
     public function jsonSerialize()
     {
-        return (string)$this->query[0];
+        return $this->query;
     }
 }

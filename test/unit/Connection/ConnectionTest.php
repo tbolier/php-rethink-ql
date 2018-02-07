@@ -5,7 +5,7 @@ namespace TBolier\RethinkQL\UnitTest\Connection;
 
 use Exception;
 use TBolier\RethinkQL\Connection\ConnectionException;
-use TBolier\RethinkQL\Query\MessageInterface;
+use TBolier\RethinkQL\Message\MessageInterface;
 use TBolier\RethinkQL\Response\Cursor;
 use TBolier\RethinkQL\Response\ResponseInterface;
 use TBolier\RethinkQL\Types\Query\QueryType;

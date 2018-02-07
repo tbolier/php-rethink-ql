@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace TBolier\RethinkQL\UnitTest\Connection;
 
-use TBolier\RethinkQL\Query\MessageInterface;
+use TBolier\RethinkQL\Message\MessageInterface;
 use TBolier\RethinkQL\Response\ResponseInterface;
 use TBolier\RethinkQL\Types\Response\ResponseType;
 
