@@ -1,73 +1,109 @@
-# Research: query tree
+# Query tree guide
 
 A simple RethinkDB query like:
 
 ```php
-$r->db('blog')->table('users')->filter('{name: 'Michel'}');
+$r->db('test')->table('tabletest')->filter('{"title":"Test document"}')->count();
 ```
 
-Will send this query to the RethinkDB socket.
+## Under the hood
 
-Index 0, [0,1,2]
+First we nest all query operation objects. This is a too long dump for the example. So afterwards the `toArray` method is called to normalize the query.
+This is how the message object looks like with the normalized query before we serialize it.
+
 ```php
-[
-    39, 
-    [[15, [[14, ["blog"]], "users"]],
-    {"name": "Michel"}]
-]
+TBolier\RethinkQL\Message\Message Object
+(
+    [queryType:TBolier\RethinkQL\Message\Message:private] => 1
+    [query:TBolier\RethinkQL\Message\Message:private] => Array
+        (
+            [0] => 43
+            [1] => Array
+                (
+                    [0] => Array
+                        (
+                            [0] => 39
+                            [1] => Array
+                                (
+                                    [0] => Array
+                                        (
+                                            [0] => 15
+                                            [1] => Array
+                                                (
+                                                    [0] => tabletest
+                                                )
+
+                                        )
+
+                                    [1] => Array
+                                        (
+                                            [0] => 98
+                                            [1] => Array
+                                                (
+                                                    [0] => {"title":"Test document"}
+                                                )
+
+                                        )
+
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [options:TBolier\RethinkQL\Message\Message:private] => TBolier\RethinkQL\Query\Options Object
+        (
+            [db:TBolier\RethinkQL\Query\Options:private] => Array
+                (
+                    [0] => 14
+                    [1] => Array
+                        (
+                            [0] => test
+                        )
+
+                )
+
+        )
+
+)
 ```
 
-Index 1, [Arguments]
+Now we JSON serialize the Message object and we end up with a raw query that we send to the RethinkDB (server):
+ 
 ```php
 [
+  1,
+  [
+    43,
     [
-        15,
-        [[14, ["blog"]],
-        "users"
-    ]
-]
-```
-
-Index 2, [0,1,2]
-```php
-[
-    15,
-    [[14, ["blog"]],
-    "users"
-]
-```
-
-Index 3, [Arguments]
-```php
-[
-    [14, ["blog"]
-]
-```
-
-Index 4, [0,1,2]
-```php
-[
-    14,
-    ["blog"]
-]
-```
-
-This is how we build up the query under the hood.
-
-```php
-Query([
-    39, 
-    [
-        Query([
+      [
+        39,
+        [
+          [
             15,
             [
-                Query([14, ["blog"])
-            ],
-            "users"
-        ])
-    ],
-    {"name": "Michel"}]
-])
+              "tabletest"
+            ]
+          ],
+          [
+            98,
+            [
+              "{\"title\":\"Test document\"}"
+            ]
+          ]
+        ]
+      ]
+    ]
+  ],
+  {
+    "db": [
+      14,
+      [
+        "test"
+      ]
+    ]
+  }
+]
 ```
-
-A recursive `toArray` method is added to the queries objects, returning the full query as an array which we will send to RethinkDB.
