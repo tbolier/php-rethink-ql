@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace TBolier\RethinkQL\Connection\Socket;
 
 use Psr\Http\Message\StreamInterface;
+use TBolier\RethinkQL\Connection\Socket\Exception;
 
 class Handshake implements HandshakeInterface
 {
@@ -282,15 +283,21 @@ class Handshake implements HandshakeInterface
             $authentication[$pair[0]] = $pair[1];
         }
 
-        $v = base64_decode($authentication['v']);
-
-        // TODO: Use cryptographic comparison
-        if ($v !== $this->serverSignature) {
-            throw new Exception('Invalid server signature.');
-        }
+        $this->checkSignature(base64_decode($authentication['v']));
 
         $this->state = 4;
 
         return 'successful';
+    }
+
+    /**
+     * @param $signature
+     * @throws Exception
+     */
+    private function checkSignature($signature)
+    {
+        if (!hash_equals($signature, $this->serverSignature)) {
+            throw new Exception('Invalid server signature.');
+        }
     }
 }
