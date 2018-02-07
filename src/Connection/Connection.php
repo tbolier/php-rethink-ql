@@ -7,9 +7,10 @@ use Psr\Http\Message\StreamInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use TBolier\RethinkQL\Connection\Socket\Exception;
 use TBolier\RethinkQL\Connection\Socket\HandshakeInterface;
+use TBolier\RethinkQL\Message\ExprMessage;
+use TBolier\RethinkQL\Message\Message;
+use TBolier\RethinkQL\Message\MessageInterface;
 use TBolier\RethinkQL\Query\Expr;
-use TBolier\RethinkQL\Query\Message;
-use TBolier\RethinkQL\Query\MessageInterface;
 use TBolier\RethinkQL\Query\Options as QueryOptions;
 use TBolier\RethinkQL\Response\Cursor;
 use TBolier\RethinkQL\Response\Response;
@@ -133,7 +134,7 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
     public function continueQuery(int $token): ResponseInterface
     {
         $message = (new Message())->setQuery(
-           [QueryType::CONTINUE]
+            [QueryType::CONTINUE]
         );
 
         $this->writeQuery($token, $message);
@@ -155,9 +156,9 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
      */
     public function expr(string $string): ResponseInterface
     {
-        $message = new Message();
+        $message = new ExprMessage();
         $message->setCommand(QueryType::START)
-            ->setQuery([new Expr($string)]);
+            ->setQuery(new Expr($string));
 
         return $this->run($message);
     }
@@ -180,7 +181,7 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
         try {
             $token = $this->generateToken();
 
-             $this->writeQuery($token, $message);
+            $this->writeQuery($token, $message);
 
             if ($this->noReply) {
                 return;
@@ -246,7 +247,7 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
     public function stopQuery(int $token): ResponseInterface
     {
         $message = (new Message())->setQuery(
-           [QueryType::STOP]
+            [QueryType::STOP]
         );
 
         $this->writeQuery($token, $message);
@@ -396,7 +397,7 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
         }
 
         if ($response->getType() === ResponseType::CLIENT_ERROR) {
-            throw new ConnectionException('Server says PHP-RQL is buggy: ' . $response->getData()[0]);
+            throw new ConnectionException('Client error: ' . $response->getData()[0] . ' jsonQuery: ' . json_encode($message));
         }
 
         if ($responseToken !== $token) {

@@ -1,26 +1,25 @@
 <?php
-declare(strict_types=1);
 
-namespace TBolier\RethinkQL\Query;
+namespace TBolier\RethinkQL\Message;
 
+use TBolier\RethinkQL\Query\Options;
+use TBolier\RethinkQL\Query\OptionsInterface;
 use TBolier\RethinkQL\Types\Query\QueryType;
 
-class Message implements MessageInterface
+class ExprMessage implements MessageInterface
 {
-    /**
-     * @var int
-     */
-    private $queryType;
-
-    /**
-     * @var array
-     */
-    private $query;
-
     /**
      * @var OptionsInterface
      */
     private $options;
+    /**
+     * @var array
+     */
+    private $query;
+    /**
+     * @var int
+     */
+    private $queryType;
 
     /**
      * @param int $queryType
@@ -55,15 +54,7 @@ class Message implements MessageInterface
     /**
      * @inheritdoc
      */
-    public function getQuery(): array
-    {
-        return $this->query;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function setQuery(array $query): MessageInterface
+    public function setQuery($query): MessageInterface
     {
         $this->query = $query;
 
@@ -95,8 +86,8 @@ class Message implements MessageInterface
     {
         return [
             $this->queryType,
-            $this->getQuery(),
-            (object)$this->getOptions()
+            $this->query,
+            (object)$this->getOptions(),
         ];
     }
 

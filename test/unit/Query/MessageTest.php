@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace TBolier\RethinkQL\UnitTest\Query;
 
-use TBolier\RethinkQL\Query\Message;
+use TBolier\RethinkQL\Message\Message;
 use TBolier\RethinkQL\Query\Options;
 use TBolier\RethinkQL\UnitTest\BaseUnitTestCase;
 
@@ -16,9 +16,8 @@ class MessageTest extends BaseUnitTestCase
     public function testAccessors(): void
     {
         $queryType = 1;
-        $query = [];
+        $query = ['yo'];
         $options = new Options();
-
         $message = new Message();
 
         $message->setCommand($queryType);
@@ -26,7 +25,11 @@ class MessageTest extends BaseUnitTestCase
         $message->setOptions($options);
 
         $this->assertEquals(1, $message->getQueryType());
-        $this->assertEquals($query, $message->getQuery());
+        $this->assertEquals([
+            1,
+            ['yo'],
+            new Options(),
+        ], $message->toArray());
         $this->assertEquals($options, $message->getOptions());
     }
 

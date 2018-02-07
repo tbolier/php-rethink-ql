@@ -5,7 +5,7 @@ namespace TBolier\RethinkQL\Response;
 
 use TBolier\RethinkQL\Connection\ConnectionCursorInterface;
 use TBolier\RethinkQL\Connection\ConnectionException;
-use TBolier\RethinkQL\Query\MessageInterface;
+use TBolier\RethinkQL\Message\MessageInterface;
 use TBolier\RethinkQL\Types\Response\ResponseType;
 
 class Cursor implements \Iterator
@@ -14,36 +14,30 @@ class Cursor implements \Iterator
      * @var ConnectionCursorInterface
      */
     private $connection;
-
-    /**
-     * @var int
-     */
-    private $token;
-
-    /**
-     * @var ResponseInterface
-     */
-    private $response;
-
     /**
      * @var int
      */
     private $index;
-
-    /**
-     * @var int
-     */
-    private $size;
-
     /**
      * @var bool
      */
     private $isComplete;
-
     /**
      * @var MessageInterface
      */
     private $message;
+    /**
+     * @var ResponseInterface
+     */
+    private $response;
+    /**
+     * @var int
+     */
+    private $size;
+    /**
+     * @var int
+     */
+    private $token;
 
     /**
      * @param ConnectionCursorInterface $connection
@@ -51,12 +45,67 @@ class Cursor implements \Iterator
      * @param ResponseInterface $response
      * @param MessageInterface $message
      */
-    public function __construct(ConnectionCursorInterface $connection, int $token, ResponseInterface $response, MessageInterface $message)
-    {
+    public function __construct(
+        ConnectionCursorInterface $connection,
+        int $token,
+        ResponseInterface $response,
+        MessageInterface $message
+    ) {
         $this->connection = $connection;
         $this->token = $token;
         $this->addResponse($response);
         $this->message = $message;
+    }
+
+    /**
+     * @inheritdoc
+     * @throws \Exception
+     */
+    public function current()
+    {
+        $this->seek();
+
+        if ($this->valid()) {
+            return $this->response->getData()[$this->index];
+        }
+    }
+
+    /**
+     * @inheritdoc
+     * @throws \Exception
+     */
+    public function next(): void
+    {
+        $this->index++;
+
+        $this->seek();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function key(): int
+    {
+        return $this->index;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function valid(): bool
+    {
+        return (!$this->isComplete || ($this->index < $this->size));
+    }
+
+    /**
+     * @inheritdoc
+     * @throws ConnectionException
+     */
+    public function rewind(): void
+    {
+        $this->close();
+
+        $this->addResponse($this->connection->rewindFromCursor($this->message));
     }
 
     /**
@@ -115,56 +164,5 @@ class Cursor implements \Iterator
         $this->index = 0;
         $this->size = 0;
         $this->response = null;
-    }
-
-    /**
-     * @inheritdoc
-     * @throws \Exception
-     */
-    public function current()
-    {
-        $this->seek();
-
-        if ($this->valid()) {
-            return $this->response->getData()[$this->index];
-        }
-    }
-
-    /**
-     * @inheritdoc
-     * @throws \Exception
-     */
-    public function next(): void
-    {
-        $this->index++;
-
-        $this->seek();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function key(): int
-    {
-        return $this->index;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function valid(): bool
-    {
-        return (!$this->isComplete || ($this->index < $this->size));
-    }
-
-    /**
-     * @inheritdoc
-     * @throws ConnectionException
-     */
-    public function rewind(): void
-    {
-        $this->close();
-
-        $this->addResponse($this->connection->rewindFromCursor($this->message));
     }
 }

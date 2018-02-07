@@ -1,7 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace TBolier\RethinkQL\Query;
+namespace TBolier\RethinkQL\Message;
+
+use TBolier\RethinkQL\Query\OptionsInterface;
 
 interface MessageInterface extends \JsonSerializable
 {
@@ -17,15 +19,10 @@ interface MessageInterface extends \JsonSerializable
     public function setCommand(int $queryType): MessageInterface;
 
     /**
-     * @return array
-     */
-    public function getQuery(): array;
-
-    /**
-     * @param array $query
+     * @param array|string $query
      * @return MessageInterface
      */
-    public function setQuery(array $query): MessageInterface;
+    public function setQuery($query): MessageInterface;
 
     /**
      * @return OptionsInterface

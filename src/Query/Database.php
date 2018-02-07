@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace TBolier\RethinkQL\Query;
 
+use TBolier\RethinkQL\Message\MessageInterface;
 use TBolier\RethinkQL\Query\Operation\DbCreate;
 use TBolier\RethinkQL\Query\Operation\DbDrop;
 use TBolier\RethinkQL\Query\Operation\DbList;
