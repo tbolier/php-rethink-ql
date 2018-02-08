@@ -24,6 +24,12 @@ build:
         coverage:
           file: '.coverage'
           format: 'clover'
+  nodes:
+    analysis:
+        project_setup:
+            override: true
+        tests:
+            override: [php-scrutinizer-run ---enable-security-analysis]
 
 tools:
   php_code_coverage: true
