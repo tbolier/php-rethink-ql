@@ -10,7 +10,7 @@ interface BuilderInterface
      *
      * @return Table
      */
-    public function table(string $name): Table;
+    public function table(string $name): TableInterface;
 
     /**
      * @return DatabaseInterface

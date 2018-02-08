@@ -4,21 +4,22 @@ declare(strict_types=1);
 namespace TBolier\RethinkQL\Query\Operation;
 
 use TBolier\RethinkQL\Message\MessageInterface;
+use TBolier\RethinkQL\Query\AbstractQuery;
 use TBolier\RethinkQL\Query\QueryInterface;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Term\TermType;
 
-class Update extends AbstractOperation
+class Update extends AbstractQuery
 {
-    /**
-     * @var QueryInterface
-     */
-    private $query;
-
     /**
      * @var array
      */
     private $documents;
+
+    /**
+     * @var QueryInterface
+     */
+    private $query;
 
     /**
      * @param RethinkInterface $rethink
@@ -26,8 +27,12 @@ class Update extends AbstractOperation
      * @param QueryInterface $query
      * @param array $documents
      */
-    public function __construct(RethinkInterface $rethink, MessageInterface $message, QueryInterface $query, array $documents)
-    {
+    public function __construct(
+        RethinkInterface $rethink,
+        MessageInterface $message,
+        QueryInterface $query,
+        array $documents
+    ) {
         parent::__construct($rethink, $message);
 
         $this->query = $query;

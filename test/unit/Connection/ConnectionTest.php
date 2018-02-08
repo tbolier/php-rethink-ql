@@ -162,7 +162,7 @@ class ConnectionTest extends BaseConnectionTestCase
         $this->setExpectations();
 
         try {
-            $this->connection->runNoReply($message);
+            $this->assertEmpty($this->connection->runNoReply($message));
         } catch (\Exception $e) {
             $this->fail($e->getMessage());
         }

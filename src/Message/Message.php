@@ -59,7 +59,7 @@ class Message implements MessageInterface
      */
     public function setQuery($query): MessageInterface
     {
-        $this->query = $query;
+        $this->query = (array) $query;
 
         return $this;
     }

@@ -7,20 +7,16 @@ use TBolier\RethinkQL\Message\MessageInterface;
 use TBolier\RethinkQL\Query\Operation\AbstractOperation;
 use TBolier\RethinkQL\Query\Operation\Filter;
 use TBolier\RethinkQL\Query\Operation\Get;
+use TBolier\RethinkQL\Query\Operation\OperationInterface;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Term\TermType;
 
-class Table extends AbstractOperation
+class Table extends AbstractOperation implements TableInterface
 {
     /**
      * @var array
      */
     private $query;
-
-    /**
-     * @var string
-     */
-    private $table;
 
     /**
      * @param string $name
@@ -31,14 +27,13 @@ class Table extends AbstractOperation
     {
         parent::__construct($rethink, $message);
 
-        $this->table = $name;
         $this->rethink = $rethink;
         $this->message = $message;
 
         $this->query = [
             TermType::TABLE,
             [
-                $this->table,
+                $name,
             ],
         ];
     }
@@ -46,21 +41,9 @@ class Table extends AbstractOperation
     /**
      * @inheritdoc
      */
-    public function filter(array $documents): AbstractQuery
+    public function get(string $value): OperationInterface
     {
-        $filter = new Filter($this->rethink, $this->message, $this, $documents);
-
-        return $filter;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function get($value): AbstractQuery
-    {
-        $get = new Get($this->rethink, $this->message, $this, $value);
-
-        return $get;
+        return new Get($this->rethink, $this->message, $this, $value);
     }
 
     /**

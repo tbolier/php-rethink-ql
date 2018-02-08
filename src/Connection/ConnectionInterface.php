@@ -46,15 +46,15 @@ interface ConnectionInterface
 
     /**
      * @param MessageInterface $message
-     * @return ResponseInterface
+     * @return \Iterable|ResponseInterface
      */
     public function run(MessageInterface $message);
 
     /**
      * @param MessageInterface $query
-     * @return ResponseInterface|Cursor
+     * @return void
      */
-    public function runNoReply(MessageInterface $query);
+    public function runNoReply(MessageInterface $query): void;
 
     /**
      * @return ResponseInterface

@@ -25,7 +25,12 @@ class Filter extends AbstractOperation
      * @param QueryInterface $query
      * @param array $documents
      */
-    public function __construct(RethinkInterface $rethink, MessageInterface $message, QueryInterface $query, array $documents) {
+    public function __construct(
+        RethinkInterface $rethink,
+        MessageInterface $message,
+        QueryInterface $query,
+        array $documents
+    ) {
         parent::__construct($rethink, $message);
 
         $this->query = $query;
