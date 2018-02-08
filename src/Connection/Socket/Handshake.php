@@ -19,7 +19,6 @@ declare(strict_types=1);
 namespace TBolier\RethinkQL\Connection\Socket;
 
 use Psr\Http\Message\StreamInterface;
-use TBolier\RethinkQL\Connection\Socket\Exception;
 
 class Handshake implements HandshakeInterface
 {
