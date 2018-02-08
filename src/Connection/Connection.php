@@ -309,7 +309,7 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
      * @param ResponseInterface $response
      * @param int $token
      * @param MessageInterface $message
-     * @return Cursor
+     * @return Iterable
      */
     private function createCursorFromResponse(
         ResponseInterface $response,

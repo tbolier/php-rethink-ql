@@ -14,11 +14,6 @@ A new clean and solid RethinkDB driver for PHP, focused on clean code with SOLID
 
 Unfortunately the original PHP-RQL driver is no longer is no longer actively maintained and patched. That's why we have started this new PHP RethinkDB driver with the goal to create an easy to understand driver that can be improved and maintained by the community.
 
-# Contributing
-
-Please read our [code of conduct](docs/code-of-conduct.md)
-The 
-
 # Requirements
 
 ## RethinkDB version

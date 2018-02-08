@@ -31,7 +31,7 @@ abstract class AbstractQuery implements QueryInterface
     }
 
     /**
-     * @return Iterable|ResponseInterface
+     * @inheritdoc
      */
     public function run()
     {
