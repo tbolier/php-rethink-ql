@@ -40,7 +40,7 @@ class BaseConnectionTestCase extends BaseUnitTestCase
     protected $stream;
 
     /**
-     * @var MockInterface
+     * @var callable
      */
     protected $streamWrapper;
 

@@ -6,6 +6,7 @@ namespace TBolier\RethinkQL\UnitTest\Connection\Socket;
 use Mockery\MockInterface;
 use TBolier\RethinkQL\Connection\Socket\Handshake;
 use TBolier\RethinkQL\UnitTest\BaseUnitTestCase;
+use Psr\Http\Message\StreamInterface;
 
 class HandshakeTest extends BaseUnitTestCase
 {
@@ -29,8 +30,8 @@ class HandshakeTest extends BaseUnitTestCase
      */
     public function testExceptionThrownOnStreamNotWritable(): void
     {
-        $stream = \Mockery::mock('\Psr\Http\Message\StreamInterface');
-        $stream->shouldReceive('isWritable')->andReturn(false);
+        $stream = \Mockery::mock(StreamInterface::class);
+        $stream->shouldReceive('isWritable')->atLeast()->andReturn(false);
         $stream->shouldReceive('close');
 
         $this->handshake->hello($stream);
@@ -43,11 +44,11 @@ class HandshakeTest extends BaseUnitTestCase
      */
     public function testExceptionThrownOnError(): void
     {
-        $stream = \Mockery::mock('\Psr\Http\Message\StreamInterface');
-        $stream->shouldReceive('isWritable')->andReturn(true);
+        $stream = \Mockery::mock(StreamInterface::class);
+        $stream->shouldReceive('isWritable')->atLeast()->andReturn(true);
         $stream->shouldReceive('close');
         $stream->shouldReceive('write');
-        $stream->shouldReceive('getContents')->andReturn('ERROR: Foobar');
+        $stream->shouldReceive('getContents')->atLeast()->andReturn('ERROR: Foobar');
 
         $this->handshake->hello($stream);
     }
@@ -59,11 +60,11 @@ class HandshakeTest extends BaseUnitTestCase
      */
     public function testExceptionThrownOnVerifyProtocolWithError(): void
     {
-        $stream = \Mockery::mock('\Psr\Http\Message\StreamInterface');
-        $stream->shouldReceive('isWritable')->andReturn(true);
+        $stream = \Mockery::mock(StreamInterface::class);
+        $stream->shouldReceive('isWritable')->atLeast()->andReturn(true);
         $stream->shouldReceive('close');
         $stream->shouldReceive('write');
-        $stream->shouldReceive('getContents')->andReturn('{"success":false, "error": "Foobar"}');
+        $stream->shouldReceive('getContents')->atLeast()->andReturn('{"success":false, "error": "Foobar"}');
 
         $this->handshake->hello($stream);
     }
@@ -75,11 +76,11 @@ class HandshakeTest extends BaseUnitTestCase
      */
     public function testExceptionThrownOnInvalidProtocolVersion(): void
     {
-        $stream = \Mockery::mock('\Psr\Http\Message\StreamInterface');
-        $stream->shouldReceive('isWritable')->andReturn(true);
+        $stream = \Mockery::mock(StreamInterface::class);
+        $stream->shouldReceive('isWritable')->atLeast()->andReturn(true);
         $stream->shouldReceive('close');
         $stream->shouldReceive('write');
-        $stream->shouldReceive('getContents')->andReturn('{"success":true, "max_protocol_version": 1, "min_protocol_version": 1}');
+        $stream->shouldReceive('getContents')->atLeast()->andReturn('{"success":true, "max_protocol_version": 1, "min_protocol_version": 1}');
 
         $this->handshake->hello($stream);
     }
@@ -93,11 +94,11 @@ class HandshakeTest extends BaseUnitTestCase
     public function testExceptionThrownOnProtocolError(): void
     {
         /** @var MockInterface $stream */
-        $stream = \Mockery::mock('\Psr\Http\Message\StreamInterface');
-        $stream->shouldReceive('isWritable')->andReturn(true);
+        $stream = \Mockery::mock(StreamInterface::class);
+        $stream->shouldReceive('isWritable')->atLeast()->andReturn(true);
         $stream->shouldReceive('close');
         $stream->shouldReceive('write');
-        $stream->shouldReceive('getContents')->andReturn('ERROR: Woops!');
+        $stream->shouldReceive('getContents')->atLeast()->andReturn('ERROR: Woops!');
 
         $this->handshake->hello($stream);
     }
