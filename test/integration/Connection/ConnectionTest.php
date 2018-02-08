@@ -35,7 +35,7 @@ class ConnectionTest extends BaseTestCase
         $result = $connection->expr('foo');
 
         $this->assertInstanceOf(ResponseInterface::class, $result);
-        $this->assertEquals('foo', $result->getData()[0]);
+        $this->assertEquals('foo', $result->getData());
     }
 
     /**
@@ -47,6 +47,6 @@ class ConnectionTest extends BaseTestCase
         $res = $this->createConnection('phpunit_default')->connect()->server();
 
         $this->assertEquals(QueryType::SERVER_INFO, $res->getType());
-        $this->assertInternalType('string', $res->getData()[0]['name']);
+        $this->assertInternalType('string', $res->getData()['name']);
     }
 }

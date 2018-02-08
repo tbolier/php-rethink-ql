@@ -65,9 +65,15 @@ class Cursor implements \Iterator
     {
         $this->seek();
 
-        if ($this->valid()) {
-            return $this->response->getData()[$this->index];
+        if (!$this->valid()) {
+            return;
         }
+
+        if ($this->response->isAtomic()) {
+            return $this->response->getData();
+        }
+
+        return $this->response->getData()[$this->index];
     }
 
     /**
