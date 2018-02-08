@@ -18,7 +18,7 @@ class DatabaseTest extends BaseTestCase
             ->tableList()
             ->run();
 
-        $this->assertInternalType('array', $res->getData()[0]);
+        $this->assertInternalType('array', $res->getData());
     }
 
     /**
@@ -31,7 +31,7 @@ class DatabaseTest extends BaseTestCase
             ->tableCreate('createtable')
             ->run();
 
-        $this->assertObStatus(['tables_created' => 1], $res->getData()[0]);
+        $this->assertObStatus(['tables_created' => 1], $res->getData());
     }
 
     /**
@@ -49,7 +49,7 @@ class DatabaseTest extends BaseTestCase
             ->tableDrop('createtable')
             ->run();
 
-        $this->assertObStatus(['tables_dropped' => 1], $res->getData()[0]);
+        $this->assertObStatus(['tables_dropped' => 1], $res->getData());
     }
 
     /**

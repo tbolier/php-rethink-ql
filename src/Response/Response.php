@@ -6,29 +6,25 @@ namespace TBolier\RethinkQL\Response;
 class Response implements ResponseInterface
 {
     /**
-     * @var int
+     * @var array|null
      */
-    private $type;
-
+    private $backtrace;
     /**
      * @var array|null
      */
     private $data;
-
-    /**
-     * @var array|null
-     */
-    private $backtrace;
-
-    /**
-     * @var array|null
-     */
-    private $profile;
-
     /**
      * @var array|null
      */
     private $note;
+    /**
+     * @var array|null
+     */
+    private $profile;
+    /**
+     * @var int
+     */
+    private $type;
 
     /**
      * @param int|null $t
@@ -47,7 +43,7 @@ class Response implements ResponseInterface
     }
 
     /**
-     * @return int
+     * @inheritdoc
      */
     public function getType(): ?int
     {
@@ -55,15 +51,27 @@ class Response implements ResponseInterface
     }
 
     /**
-     * @return array
+     * @inheritdoc
      */
-    public function getData(): ?array
+    public function getData()
     {
-        return $this->data;
+        if (!\is_array($this->data)) {
+            return null;
+        }
+
+        return \count($this->data) === 1 && array_key_exists(0, $this->data) ? $this->data[0] : $this->data;
     }
 
     /**
-     * @return array
+     * @return bool
+     */
+    public function isAtomic(): bool
+    {
+        return \count($this->data) === 1;
+    }
+
+    /**
+     * @inheritdoc
      */
     public function getBacktrace(): ?array
     {
@@ -71,7 +79,7 @@ class Response implements ResponseInterface
     }
 
     /**
-     * @return array
+     * @inheritdoc
      */
     public function getProfile(): ?array
     {
@@ -79,7 +87,7 @@ class Response implements ResponseInterface
     }
 
     /**
-     * @return array
+     * @inheritdoc
      */
     public function getNote(): ?array
     {

@@ -14,14 +14,14 @@ class TableTest extends BaseTestCase
     {
         parent::setUp();
 
-        if (!\in_array('tabletest', $this->r()->db()->tableList()->run()->getData()[0], true)) {
+        if (!\in_array('tabletest', $this->r()->db()->tableList()->run()->getData(), true)) {
             $this->r()->db()->tableCreate('tabletest')->run();
         }
     }
 
     public function tearDown()
     {
-        if (\in_array('tabletest', $this->r()->db()->tableList()->run()->getData()[0], true)) {
+        if (\in_array('tabletest', $this->r()->db()->tableList()->run()->getData(), true)) {
             $this->r()->db()->tableDrop('tabletest')->run();
         }
 
@@ -44,14 +44,14 @@ class TableTest extends BaseTestCase
             ->count()
             ->run();
 
-        $this->assertInternalType('int', $count->getData()[0]);
+        $this->assertInternalType('int', $count->getData());
 
         $res = $this->r()
             ->table('tabletest')
             ->delete()
             ->run();
 
-        $this->assertObStatus(['deleted' => $count->getData()[0]], $res->getData()[0]);
+        $this->assertObStatus(['deleted' => $count->getData()], $res->getData());
     }
 
     /**
@@ -61,7 +61,7 @@ class TableTest extends BaseTestCase
     {
         $res = $this->insertDocument(1);
 
-        $this->assertObStatus(['inserted' => 1], $res->getData()[0]);
+        $this->assertObStatus(['inserted' => 1], $res->getData());
     }
 
     /**
@@ -76,7 +76,7 @@ class TableTest extends BaseTestCase
             ->count()
             ->run();
 
-        $this->assertInternalType('int', $res->getData()[0]);
+        $this->assertInternalType('int', $res->getData());
     }
 
     /**
@@ -122,7 +122,7 @@ class TableTest extends BaseTestCase
             ->count()
             ->run();
 
-        $this->assertEquals(5, $res->getData()[0]);
+        $this->assertEquals(5, $res->getData());
     }
 
     /**
@@ -166,7 +166,7 @@ class TableTest extends BaseTestCase
             ])
             ->run();
 
-        $this->assertObStatus(['replaced' => $count->getData()[0]], $res->getData()[0]);
+        $this->assertObStatus(['replaced' => $count->getData()], $res->getData());
     }
 
     /**
@@ -194,7 +194,7 @@ class TableTest extends BaseTestCase
             ->count()
             ->run();
 
-        $this->assertInternalType('int', $count->getData()[0]);
+        $this->assertInternalType('int', $count->getData());
 
         /** @var ResponseInterface $res */
         $res = $this->r()
@@ -207,7 +207,7 @@ class TableTest extends BaseTestCase
             ->delete()
             ->run();
 
-        $this->assertObStatus(['deleted' => $count->getData()[0]], $res->getData()[0]);
+        $this->assertObStatus(['deleted' => $count->getData()], $res->getData());
     }
 
     /**
@@ -231,7 +231,7 @@ class TableTest extends BaseTestCase
             ->get('foo')
             ->run();
 
-        $this->assertEquals([0 => ['id' => 'foo']], $res->getData());
+        $this->assertEquals(['id' => 'foo'], $res->getData());
     }
 
     /**
@@ -246,7 +246,7 @@ class TableTest extends BaseTestCase
             ->get('bar')
             ->run();
 
-        $this->assertEquals([0 => null], $res->getData());
+        $this->assertEquals(null, $res->getData());
     }
 
     /**

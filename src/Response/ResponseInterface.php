@@ -11,9 +11,14 @@ interface ResponseInterface
     public function getType(): ?int;
 
     /**
-     * @return array
+     * @return string|array
      */
-    public function getData(): ?array;
+    public function getData();
+
+    /**
+     * @return bool
+     */
+    public function isAtomic(): bool;
 
     /**
      * @return array

@@ -49,7 +49,7 @@ class BaseTestCase extends TestCase
 
         $this->r = new Rethink($connection);
 
-        if (!\in_array('test', $this->r->dbList()->run()->getData()[0], true)) {
+        if (!\in_array('test', $this->r->dbList()->run()->getData(), true)) {
             $this->r->dbCreate('test')->run();
         }
 
@@ -59,7 +59,7 @@ class BaseTestCase extends TestCase
     protected function tearDown()
     {
         if ($this->r !== null && \in_array('test',
-                $this->r->dbList()->run()->getData()[0], true)) {
+                $this->r->dbList()->run()->getData(), true)) {
             $this->r->dbDrop('test')->run();
         }
     }

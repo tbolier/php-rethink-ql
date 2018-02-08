@@ -12,14 +12,14 @@ class CursorTest extends BaseTestCase
     {
         parent::setUp();
 
-        if (!\in_array('cursortest', $this->r()->db()->tableList()->run()->getData()[0], true)) {
+        if (!\in_array('cursortest', $this->r()->db()->tableList()->run()->getData(), true)) {
             $this->r()->db()->tableCreate('cursortest')->run();
         }
     }
 
     public function tearDown()
     {
-        if (\in_array('cursortest', $this->r()->db()->tableList()->run()->getData()[0], true)) {
+        if (\in_array('cursortest', $this->r()->db()->tableList()->run()->getData(), true)) {
             $this->r()->db()->tableDrop('cursortest')->run();
         }
 
@@ -38,7 +38,7 @@ class CursorTest extends BaseTestCase
             ->count()
             ->run();
 
-        $this->assertEquals(1000, $response->getData()[0]);
+        $this->assertEquals(1000, $response->getData());
     }
 
     /**
@@ -63,7 +63,7 @@ class CursorTest extends BaseTestCase
             ->insert([$documents])
             ->run();
 
-        $this->assertEquals(1000, $res->getData()[0]['inserted']);
+        $this->assertEquals(1000, $res->getData()['inserted']);
 
         return $res;
     }
