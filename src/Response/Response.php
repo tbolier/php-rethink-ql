@@ -11,22 +11,22 @@ class Response implements ResponseInterface
     private $type;
 
     /**
-     * @var array
+     * @var array|null
      */
     private $data;
 
     /**
-     * @var array
+     * @var array|null
      */
     private $backtrace;
 
     /**
-     * @var array
+     * @var array|null
      */
     private $profile;
 
     /**
-     * @var array
+     * @var array|null
      */
     private $note;
 
@@ -39,17 +39,17 @@ class Response implements ResponseInterface
      */
     public function __construct(int $t = null, array $r = null, array $b = null, array $p = null, array $n = null)
     {
-        $this->type = $t;
-        $this->data = $r;
-        $this->backtrace = $b;
-        $this->profile = $p;
-        $this->note = $n;
+        !$t ?: $this->type = $t;
+        !$r ?: $this->data = $r;
+        !$b ?: $this->backtrace = $b;
+        !$p ?: $this->profile = $p;
+        !$n ?: $this->note = $n;
     }
 
     /**
      * @return int
      */
-    public function getType(): int
+    public function getType(): ?int
     {
         return $this->type;
     }
@@ -57,7 +57,7 @@ class Response implements ResponseInterface
     /**
      * @return array
      */
-    public function getData(): array
+    public function getData(): ?array
     {
         return $this->data;
     }
@@ -65,7 +65,7 @@ class Response implements ResponseInterface
     /**
      * @return array
      */
-    public function getBacktrace(): array
+    public function getBacktrace(): ?array
     {
         return $this->backtrace;
     }
@@ -73,7 +73,7 @@ class Response implements ResponseInterface
     /**
      * @return array
      */
-    public function getProfile(): array
+    public function getProfile(): ?array
     {
         return $this->profile;
     }
@@ -81,7 +81,7 @@ class Response implements ResponseInterface
     /**
      * @return array
      */
-    public function getNote(): array
+    public function getNote(): ?array
     {
         return $this->note;
     }

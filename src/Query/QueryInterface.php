@@ -7,7 +7,7 @@ use TBolier\RethinkQL\Response\ResponseInterface;
 interface QueryInterface
 {
     /**
-     * @return \Iterable|ResponseInterface
+     * @return Iterable|ResponseInterface
      */
     public function run();
 

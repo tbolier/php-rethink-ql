@@ -8,25 +8,25 @@ interface ResponseInterface
     /**
      * @return int
      */
-    public function getType(): int;
+    public function getType(): ?int;
 
     /**
      * @return array
      */
-    public function getData(): array;
+    public function getData(): ?array;
 
     /**
      * @return array
      */
-    public function getBacktrace(): array;
+    public function getBacktrace(): ?array;
 
     /**
      * @return array
      */
-    public function getProfile(): array;
+    public function getProfile(): ?array;
 
     /**
      * @return array
      */
-    public function getNote(): array;
+    public function getNote(): ?array;
 }
