@@ -20,6 +20,7 @@ build:
         'date.timezone': 'Europe/Amsterdam'
   tests:
     override:
+      - php-scrutinizer-run
       - command: 'vendor/bin/phpunit --coverage-clover=.coverage'
         coverage:
           file: '.coverage'
