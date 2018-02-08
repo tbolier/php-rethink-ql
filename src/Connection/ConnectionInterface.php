@@ -46,7 +46,7 @@ interface ConnectionInterface
 
     /**
      * @param MessageInterface $message
-     * @return \Iterable|ResponseInterface
+     * @return Iterable|ResponseInterface
      */
     public function run(MessageInterface $message);
 
