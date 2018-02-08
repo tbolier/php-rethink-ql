@@ -33,11 +33,12 @@ class CursorTest extends BaseTestCase
     {
         $this->insertDocuments();
 
-        $cursor = $this->r()
+        $response = $this->r()
             ->table('cursortest')
+            ->count()
             ->run();
 
-        $this->assertCount(1000, $cursor);
+        $this->assertEquals(1000, $response->getData()[0]);
     }
 
     /**

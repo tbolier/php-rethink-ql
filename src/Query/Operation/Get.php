@@ -14,6 +14,7 @@ class Get extends AbstractOperation
      * @var string
      */
     private $predicate;
+
     /**
      * @var QueryInterface
      */

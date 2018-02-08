@@ -2,10 +2,12 @@
 
 namespace TBolier\RethinkQL\Query;
 
+use TBolier\RethinkQL\Response\ResponseInterface;
+
 interface QueryInterface
 {
     /**
-     * @return mixed
+     * @return \Iterable|ResponseInterface
      */
     public function run();
 

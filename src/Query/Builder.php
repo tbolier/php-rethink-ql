@@ -42,7 +42,7 @@ class Builder implements BuilderInterface
      * @param string $name
      * @return Table
      */
-    public function table(string $name): Table
+    public function table(string $name): TableInterface
     {
         if ($this->table) {
             unset($this->table);

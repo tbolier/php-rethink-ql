@@ -12,10 +12,12 @@ class ExprMessage implements MessageInterface
      * @var OptionsInterface
      */
     private $options;
+
     /**
-     * @var array
+     * @var string
      */
     private $query;
+
     /**
      * @var int
      */
@@ -23,13 +25,13 @@ class ExprMessage implements MessageInterface
 
     /**
      * @param int $queryType
-     * @param array $query
+     * @param string $query
      * @param OptionsInterface $options
      */
-    public function __construct(int $queryType = null, array $query = null, OptionsInterface $options = null)
+    public function __construct(int $queryType = null, string $query = '', OptionsInterface $options = null)
     {
         $this->queryType = $queryType ?? QueryType::START;
-        $this->query = $query ?? [];
+        $this->query = $query ?? '';
         $this->options = $options ?? new Options();
     }
 
@@ -56,7 +58,7 @@ class ExprMessage implements MessageInterface
      */
     public function setQuery($query): MessageInterface
     {
-        $this->query = $query;
+        $this->query = (string) $query;
 
         return $this;
     }

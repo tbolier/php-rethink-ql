@@ -19,7 +19,8 @@ class TableCreate extends AbstractOperation
      * @param MessageInterface $message
      * @param string $name
      */
-    public function __construct(RethinkInterface $rethink, MessageInterface $message, string $name) {
+    public function __construct(RethinkInterface $rethink, MessageInterface $message, string $name)
+    {
         parent::__construct($rethink, $message);
 
         $this->rethink = $rethink;

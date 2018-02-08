@@ -290,7 +290,7 @@ class Handshake implements HandshakeInterface
     /**
      * @param null|string $handshakeResponse
      */
-    private function checkResponse(?string $handshakeResponse)
+    private function checkResponse(?string $handshakeResponse): void
     {
         if ($handshakeResponse !== null && preg_match('/^ERROR:\s(.+)$/i', $handshakeResponse,
                 $errorMatch)) {
@@ -302,7 +302,7 @@ class Handshake implements HandshakeInterface
      * @param string $signature
      * @throws Exception
      */
-    private function checkSignature(string $signature)
+    private function checkSignature(string $signature): void
     {
         if (!hash_equals($signature, $this->serverSignature)) {
             throw new Exception('Invalid server signature.');

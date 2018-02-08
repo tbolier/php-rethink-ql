@@ -10,7 +10,6 @@ use TBolier\RethinkQL\Connection\Socket\HandshakeInterface;
 use TBolier\RethinkQL\Message\ExprMessage;
 use TBolier\RethinkQL\Message\Message;
 use TBolier\RethinkQL\Message\MessageInterface;
-use TBolier\RethinkQL\Query\Expr;
 use TBolier\RethinkQL\Query\Options as QueryOptions;
 use TBolier\RethinkQL\Response\Cursor;
 use TBolier\RethinkQL\Response\Response;
@@ -156,11 +155,7 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
      */
     public function expr(string $string): ResponseInterface
     {
-        $message = new ExprMessage();
-        $message->setCommand(QueryType::START)
-            ->setQuery(new Expr($string));
-
-        return $this->run($message);
+        return $this->run(new ExprMessage(QueryType::START, 'foo'));
     }
 
     /**
@@ -184,7 +179,7 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
             $this->writeQuery($token, $message);
 
             if ($this->noReply) {
-                return;
+                return null;
             }
 
             $response = $this->receiveResponse($token, $message);
@@ -207,13 +202,11 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
      * @inheritdoc
      * @throws ConnectionException
      */
-    public function runNoReply(MessageInterface $query)
+    public function runNoReply(MessageInterface $query): void
     {
         $this->noReply = true;
-        $result = $this->run($query);
+        $this->run($query);
         $this->noReply = false;
-
-        return $result;
     }
 
     /**
@@ -322,7 +315,7 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
         ResponseInterface $response,
         int $token,
         MessageInterface $message
-    ): Cursor {
+    ): Iterable {
         return new Cursor($this, $token, $response, $message);
     }
 
