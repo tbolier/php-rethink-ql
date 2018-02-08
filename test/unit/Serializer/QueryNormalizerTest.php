@@ -88,7 +88,7 @@ class QueryNormalizerTest extends BaseUnitTestCase
         $expectedReturn = ['foo' => 'bar'];
 
         $object = Mockery::mock('\JsonSerializable');
-        $object->shouldReceive('jsonSerialize')->andReturn($expectedReturn);
+        $object->shouldReceive('jsonSerialize')->once()->andReturn($expectedReturn);
 
 
         $data = $this->normalizer->normalize($object);
