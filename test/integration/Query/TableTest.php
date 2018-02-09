@@ -67,6 +67,35 @@ class TableTest extends BaseTestCase
     /**
      * @throws \Exception
      */
+    public function testMultipleInserts()
+    {
+        $res = $this->r()
+            ->table('tabletest')
+            ->insert([
+                [
+                    'documentId' => 1,
+                    'title' => 'Test document',
+                    'description' => 'My first document.',
+                ],
+                [
+                    'documentId' => 2,
+                    'title' => 'Test document',
+                    'description' => 'My first document.',
+                ],
+                [
+                    'documentId' => 3,
+                    'title' => 'Test document',
+                    'description' => 'My first document.',
+                ]
+            ])
+            ->run();
+
+        $this->assertObStatus(['inserted' => 3], $res->getData());
+    }
+
+    /**
+     * @throws \Exception
+     */
     public function testCount()
     {
         $this->insertDocument(1);
