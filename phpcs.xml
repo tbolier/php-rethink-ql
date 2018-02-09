@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<ruleset ref="PhpRethinkQL">
+    <description>The coding standard for PHP_CodeSniffer itself.</description>
+    <!-- Include the whole PSR standard -->
+    <rule ref="PSR2">
+    </rule>
+
+    <!-- Check all PHP files in directory tree by default. -->
+    <arg name="extensions" value="php"/>
+    <file>src</file>
+    <file>test</file>
+
+    <!-- Show progress and sniff codes in all reports -->
+    <arg value="ps"/>
+</ruleset>

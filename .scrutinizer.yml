@@ -1,60 +1,45 @@
 before_commands:
     - "composer install"
 
-build:
-  dependencies:
-    # Runs before inferred commands
-    before:
-      - 'source /etc/lsb-release && echo "deb http://download.rethinkdb.com/apt $DISTRIB_CODENAME main" | sudo tee /etc/apt/sources.list.d/rethinkdb.list'
-      - 'wget -qO- https://download.rethinkdb.com/apt/pubkey.gpg | sudo apt-key add -'
-      - 'sudo apt-get update -y'
-      - 'sudo apt-get install rethinkdb -y'
-      - 'sudo cp /etc/rethinkdb/default.conf.sample /etc/rethinkdb/instances.d/instance1.conf'
-      - 'sudo /etc/init.d/rethinkdb start'
-  environment:
-    variables:
-      integration_test_file: 'config_scrutinizer.php'
-    php:
-      version: '7.1'
-      ini:
-        'date.timezone': 'Europe/Amsterdam'
-  tests:
-    override:
-      - php-scrutinizer-run --enable-security-analysis
-      - command: 'vendor/bin/phpunit --coverage-clover=.coverage'
-        coverage:
-          file: '.coverage'
-          format: 'clover'
+checks:
+    php: true
 
-tools:
-  php_code_coverage: true
-  php_code_sniffer:
-      enabled: true
-      config:
-          standard: PSR2
-      filter:
-          paths: ["src/*", "test/*"]
-  php_cpd:
-      enabled: true
-      excluded_dirs: ["test", "vendor"]
-  php_cs_fixer:
-      enabled: true
-      config:
-          level: all
-      filter:
-          paths: ["src/*", "test/*"]
-  php_loc:
-      enabled: true
-      excluded_dirs: ["test", "vendor"]
-  php_mess_detector:
-      enabled: true
-      filter:
-          paths: ["src/*"]
-  php_pdepend:
-      enabled: true
-      excluded_dirs: ["test", "vendor"]
-  php_analyzer: true
-  php_analyzer:
-      filter:
-          paths: ["src/*", "test/*"]
-  sensiolabs_security_checker: true
+build:
+    environment:
+        timezone: 'Europe/Amsterdam'
+        variables:
+              integration_test_file: 'config_scrutinizer.php'
+        php:
+            version: '7.1'
+            ini:
+                'date.timezone': 'Europe/Amsterdam'
+    dependencies:
+        # Runs before inferred commands
+        before:
+          - 'source /etc/lsb-release && echo "deb http://download.rethinkdb.com/apt $DISTRIB_CODENAME main" | sudo tee /etc/apt/sources.list.d/rethinkdb.list'
+          - 'wget -qO- https://download.rethinkdb.com/apt/pubkey.gpg | sudo apt-key add -'
+          - 'sudo apt-get update -y'
+          - 'sudo apt-get install rethinkdb -y'
+          - 'sudo cp /etc/rethinkdb/default.conf.sample /etc/rethinkdb/instances.d/instance1.conf'
+          - 'sudo /etc/init.d/rethinkdb start'
+        # Overwrites inferred commands
+        override: []
+        # Runs after inferred commands
+        after: []
+    # Run after dependencies
+    project_setup:
+        before: []
+        override: []
+        after: []
+    nodes:
+        tests: true
+        analysis:
+            tests:
+                override:
+                    -
+                        command: phpcs-run --standard=phpcs.xml
+                        use_website_config: false
+                    - php-scrutinizer-run
+
+build_failure_conditions:
+  - 'issues.label("coding-style").new.exists'
