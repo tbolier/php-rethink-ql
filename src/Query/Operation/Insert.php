@@ -35,7 +35,7 @@ class Insert extends AbstractQuery
         parent::__construct($rethink, $message);
 
         $this->query = $query;
-        $this->predicate = $documents;
+        $this->predicate = [$documents];
         $this->rethink = $rethink;
         $this->message = $message;
     }

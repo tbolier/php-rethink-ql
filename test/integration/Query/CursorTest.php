@@ -60,7 +60,7 @@ class CursorTest extends BaseTestCase
         /** @var ResponseInterface $res */
         $res = $this->r()
             ->table('cursortest')
-            ->insert([$documents])
+            ->insert($documents)
             ->run();
 
         $this->assertEquals(1000, $res->getData()['inserted']);
