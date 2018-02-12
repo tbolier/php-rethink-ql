@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace TBolier\RethinkQL\Connection;
 
@@ -10,7 +10,7 @@ interface ConnectionCursorInterface extends ConnectionQueryInterface
 {
     /**
      * @param MessageInterface $message
-     * @return ResponseInterface
+     * @return Iterable|ResponseInterface
      * @throws ConnectionException
      */
     public function rewindFromCursor(MessageInterface $message): ResponseInterface;

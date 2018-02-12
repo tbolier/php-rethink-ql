@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace TBolier\RethinkQL\IntegrationTest;
 
@@ -12,14 +12,16 @@ use Symfony\Component\Serializer\Serializer;
 use TBolier\RethinkQL\Connection\Connection;
 use TBolier\RethinkQL\Connection\ConnectionInterface;
 use TBolier\RethinkQL\Connection\Options;
+use TBolier\RethinkQL\Connection\Socket\Exception;
 use TBolier\RethinkQL\Connection\Socket\Handshake;
 use TBolier\RethinkQL\Connection\Socket\Socket;
+use TBolier\RethinkQL\Response\ResponseInterface;
 use TBolier\RethinkQL\Rethink;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Serializer\QueryNormalizer;
 use TBolier\RethinkQL\Types\VersionDummy\Version;
 
-class BaseTestCase extends TestCase
+abstract class AbstractTestCase extends TestCase
 {
     /**
      * @var RethinkInterface
@@ -50,7 +52,9 @@ class BaseTestCase extends TestCase
 
         $this->r = new Rethink($connection);
 
-        if (!\in_array('test', $this->r->dbList()->run()->getData(), true)) {
+        /** @var ResponseInterface $res */
+        $res = $this->r->dbList()->run();
+        if (\is_array($res->getData()) && !\in_array('test', $res->getData(), true)) {
             $this->r->dbCreate('test')->run();
         }
 
@@ -59,8 +63,13 @@ class BaseTestCase extends TestCase
 
     protected function tearDown()
     {
-        if ($this->r !== null && \in_array('test',
-                $this->r->dbList()->run()->getData(), true)) {
+        if ($this->r === null) {
+            return;
+        }
+
+        /** @var ResponseInterface $res */
+        $res = $this->r->dbList()->run();
+        if (\is_array($res->getData()) && \in_array('test', $res->getData(), true)) {
             $this->r->dbDrop('test')->run();
         }
     }
@@ -68,6 +77,7 @@ class BaseTestCase extends TestCase
     /**
      * @param string $name
      * @return ConnectionInterface
+     * @throws Exception
      */
     protected function createConnection(string $name): ConnectionInterface
     {

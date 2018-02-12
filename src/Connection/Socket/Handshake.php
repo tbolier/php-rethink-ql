@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /**
  * @license http://www.apache.org/licenses/ Apache License 2.0
@@ -113,7 +113,6 @@ class Handshake implements HandshakeInterface
             $stream->close();
             throw $e;
         }
-
     }
 
     /**
@@ -123,9 +122,11 @@ class Handshake implements HandshakeInterface
      */
     private function nextMessage(string $response = null): ?string
     {
+        if ($response === null) {
+            return $this->createHandshakeMessage();
+        }
+
         switch ($this->state) {
-            case 0:
-                return $this->createHandshakeMessage($response);
             case 1:
                 return $this->verifyProtocol($response);
             case 2:
@@ -145,7 +146,7 @@ class Handshake implements HandshakeInterface
      */
     private function pkbdf2Hmac(string $password, string $salt, int $iterations): string
     {
-        $t = hash_hmac('sha256', $salt . "\x00\x00\x00\x01", $password, true);
+        $t = hash_hmac('sha256', $salt."\x00\x00\x00\x01", $password, true);
         $u = $t;
         for ($i = 0; $i < $iterations - 1; ++$i) {
             $t = hash_hmac('sha256', $t, $password, true);
@@ -156,15 +157,12 @@ class Handshake implements HandshakeInterface
     }
 
     /**
-     * @param null|string $response
      * @return string
      */
-    private function createHandshakeMessage(?string $response): string
+    private function createHandshakeMessage(): string
     {
-        $response === null or die('Illegal handshake state');
-
         $this->myR = base64_encode(openssl_random_pseudo_bytes(18));
-        $this->clientFirstMessage = 'n=' . $this->username . ',r=' . $this->myR;
+        $this->clientFirstMessage = 'n='.$this->username.',r='.$this->myR;
 
         $binaryVersion = pack('V', $this->version);
 
@@ -176,7 +174,7 @@ class Handshake implements HandshakeInterface
                 [
                     'protocol_version' => $this->protocolVersion,
                     'authentication_method' => 'SCRAM-SHA-256',
-                    'authentication' => 'n,,' . $this->clientFirstMessage,
+                    'authentication' => 'n,,'.$this->clientFirstMessage,
                 ]
             )
             . \chr(0);
@@ -199,7 +197,7 @@ class Handshake implements HandshakeInterface
 
         $json = json_decode($response, true);
         if ($json['success'] === false) {
-            throw new Exception('Handshake failed: ' . $json["error"]);
+            throw new Exception('Handshake failed: '.$json["error"]);
         }
         if ($this->protocolVersion > $json['max_protocol_version']
             || $this->protocolVersion < $json['min_protocol_version']) {
@@ -220,7 +218,7 @@ class Handshake implements HandshakeInterface
     {
         $json = json_decode($response, true);
         if ($json['success'] === false) {
-            throw new Exception('Handshake failed: ' . $json['error']);
+            throw new Exception('Handshake failed: '.$json['error']);
         }
         $serverFirstMessage = $json['authentication'];
         $authentication = [];
@@ -233,15 +231,15 @@ class Handshake implements HandshakeInterface
             throw new Exception('Invalid nonce from server.');
         }
         $salt = base64_decode($authentication['s']);
-        $iterations = (int)$authentication['i'];
+        $iterations = (int) $authentication['i'];
 
-        $clientFinalMessageWithoutProof = 'c=biws,r=' . $serverR;
+        $clientFinalMessageWithoutProof = 'c=biws,r='.$serverR;
         $saltedPassword = $this->pkbdf2Hmac($this->password, $salt, $iterations);
         $clientKey = hash_hmac('sha256', 'Client Key', $saltedPassword, true);
         $storedKey = hash('sha256', $clientKey, true);
 
         $authMessage =
-            $this->clientFirstMessage . ',' . $serverFirstMessage . ',' . $clientFinalMessageWithoutProof;
+            $this->clientFirstMessage.','.$serverFirstMessage.','.$clientFinalMessageWithoutProof;
 
         $clientSignature = hash_hmac('sha256', $authMessage, $storedKey, true);
 
@@ -256,7 +254,7 @@ class Handshake implements HandshakeInterface
         return
             json_encode(
                 [
-                    'authentication' => $clientFinalMessageWithoutProof . ',p=' . base64_encode($clientProof),
+                    'authentication' => $clientFinalMessageWithoutProof.',p='.base64_encode($clientProof),
                 ]
             )
             . \chr(0);
@@ -271,7 +269,7 @@ class Handshake implements HandshakeInterface
     {
         $json = json_decode($response, true);
         if ($json['success'] === false) {
-            throw new Exception('Handshake failed: ' . $json['error']);
+            throw new Exception('Handshake failed: '.$json['error']);
         }
         $authentication = [];
         foreach (explode(',', $json['authentication']) as $var) {

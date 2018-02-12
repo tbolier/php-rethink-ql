@@ -1,11 +1,11 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace TBolier\RethinkQL;
 
 use TBolier\RethinkQL\Connection\ConnectionInterface;
 use TBolier\RethinkQL\Query\DatabaseInterface;
-use TBolier\RethinkQL\Query\Table;
+use TBolier\RethinkQL\Query\TableInterface;
 
 interface RethinkInterface
 {
@@ -16,9 +16,9 @@ interface RethinkInterface
 
     /**
      * @param string $name
-     * @return Table
+     * @return TableInterface
      */
-    public function table(string $name): Table;
+    public function table(string $name): TableInterface;
 
     /**
      * @return DatabaseInterface

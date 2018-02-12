@@ -1,33 +1,15 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
-namespace TBolier\RethinkConnect\Test\Connection;
+namespace TBolier\RethinkQL\IntegrationTest\Query;
 
 use ArrayObject;
 use TBolier\RethinkQL\Response\Cursor;
 use TBolier\RethinkQL\Response\ResponseInterface;
-use TBolier\RethinkQL\IntegrationTest\BaseTestCase;
+use TBolier\RethinkQL\IntegrationTest\AbstractTestCase;
 
-class InsertTest extends BaseTestCase
+class InsertTest extends AbstractTableTest
 {
-    public function setUp()
-    {
-        parent::setUp();
-
-        if (!\in_array('tabletest', $this->r()->db()->tableList()->run()->getData(), true)) {
-            $this->r()->db()->tableCreate('tabletest')->run();
-        }
-    }
-
-    public function tearDown()
-    {
-        if (\in_array('tabletest', $this->r()->db()->tableList()->run()->getData(), true)) {
-            $this->r()->db()->tableDrop('tabletest')->run();
-        }
-
-        parent::tearDown();
-    }
-
     /**
      * @throws \Exception
      */
@@ -47,17 +29,17 @@ class InsertTest extends BaseTestCase
             ->table('tabletest')
             ->insert([
                 [
-                    'documentId' => 1,
+                    'id' => 1,
                     'title' => 'Test document',
                     'description' => 'My first document.',
                 ],
                 [
-                    'documentId' => 2,
+                    'id' => 2,
                     'title' => 'Test document',
                     'description' => 'My first document.',
                 ],
                 [
-                    'documentId' => 3,
+                    'id' => 3,
                     'title' => 'Test document',
                     'description' => 'My first document.',
                 ]
@@ -65,25 +47,5 @@ class InsertTest extends BaseTestCase
             ->run();
 
         $this->assertObStatus(['inserted' => 3], $res->getData());
-    }
-
-    /**
-     * @param int $documentId
-     * @return ResponseInterface
-     */
-    private function insertDocument(int $documentId): ResponseInterface
-    {
-        $res = $this->r()
-            ->table('tabletest')
-            ->insert([
-                [
-                    'documentId' => $documentId,
-                    'title' => 'Test document',
-                    'description' => 'My first document.',
-                ],
-            ])
-            ->run();
-
-        return $res;
     }
 }

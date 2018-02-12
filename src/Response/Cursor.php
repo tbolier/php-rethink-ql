@@ -8,7 +8,7 @@ use TBolier\RethinkQL\Connection\ConnectionException;
 use TBolier\RethinkQL\Message\MessageInterface;
 use TBolier\RethinkQL\Types\Response\ResponseType;
 
-class Cursor implements \Iterator
+class Cursor implements \Iterator, \Countable
 {
     /**
      * @var ConnectionCursorInterface
@@ -115,13 +115,21 @@ class Cursor implements \Iterator
     }
 
     /**
+     * @inheritdoc
+     */
+    public function count()
+    {
+        return $this->size;
+    }
+
+    /**
      * @param ResponseInterface $response
      */
     private function addResponse(ResponseInterface $response)
     {
         $this->index = 0;
         $this->isComplete = $response->getType() === ResponseType::SUCCESS_SEQUENCE;
-        $this->size = \count($response->getData());
+        $this->size = $response->isAtomic() ? 1 : \count($response->getData());
         $this->response = $response;
     }
 

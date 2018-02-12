@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace TBolier\RethinkQL\UnitTest\Query;
 
@@ -48,7 +48,7 @@ class MessageTest extends BaseUnitTestCase
         $expectedResults = [
             1,
             $query,
-            (object)$options,
+            (object) $options,
         ];
 
         $this->assertEquals($expectedResults, $message->toArray());
@@ -69,7 +69,7 @@ class MessageTest extends BaseUnitTestCase
         $expectedResults = [
             1,
             $query,
-            (object)$options,
+            (object) $options,
         ];
 
         $this->assertEquals($expectedResults, $message->jsonSerialize());

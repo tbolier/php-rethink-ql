@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace TBolier\RethinkQL\Query\Operation;
 
@@ -23,18 +23,18 @@ class Filter extends AbstractOperation
      * @param RethinkInterface $rethink
      * @param MessageInterface $message
      * @param QueryInterface $query
-     * @param array $documents
+     * @param array $predicate
      */
     public function __construct(
         RethinkInterface $rethink,
         MessageInterface $message,
         QueryInterface $query,
-        array $documents
+        array $predicate
     ) {
         parent::__construct($rethink, $message);
 
         $this->query = $query;
-        $this->predicate = $documents;
+        $this->predicate = [$predicate];
         $this->rethink = $rethink;
         $this->message = $message;
     }

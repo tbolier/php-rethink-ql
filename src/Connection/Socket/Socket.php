@@ -1,10 +1,11 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace TBolier\RethinkQL\Connection\Socket;
 
 use Psr\Http\Message\StreamInterface;
 use TBolier\RethinkQL\Connection\OptionsInterface;
+use TBolier\RethinkQL\Connection\Socket\Exception;
 
 class Socket implements StreamInterface
 {
@@ -25,11 +26,12 @@ class Socket implements StreamInterface
 
     /**
      * @param OptionsInterface $options
+     * @throws Exception
      */
     public function __construct(OptionsInterface $options)
     {
         $this->openStream(
-            ($options->isSsl() ? 'ssl' : 'tcp') . '://' . $options->getHostname() . ':' . $options->getPort(),
+            ($options->isSsl() ? 'ssl' : 'tcp').'://'.$options->getHostname().':'.$options->getPort(),
             $options->getTimeout(),
             $options->getTimeoutStream()
         );
@@ -39,10 +41,11 @@ class Socket implements StreamInterface
      * @param string $remote_socket
      * @param float $timeout
      * @param int $timeoutStream
+     * @throws Exception
      */
     private function openStream(string $remote_socket, float $timeout, int $timeoutStream): void
     {
-        $this->stream = stream_socket_client(
+        $stream = stream_socket_client(
             $remote_socket,
             $errno,
             $errstr,
@@ -50,6 +53,11 @@ class Socket implements StreamInterface
             STREAM_CLIENT_CONNECT
         );
 
+        if (!$stream) {
+            throw new Exception('Failed to create a socket stream.');
+        }
+
+        $this->stream = $stream;
         stream_set_timeout($this->stream, $timeoutStream);
     }
 

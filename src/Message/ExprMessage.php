@@ -89,7 +89,7 @@ class ExprMessage implements MessageInterface
         return [
             $this->queryType,
             $this->query,
-            (object)$this->getOptions(),
+            (object) $this->getOptions(),
         ];
     }
 

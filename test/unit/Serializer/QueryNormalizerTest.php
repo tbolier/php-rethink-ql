@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace TBolier\RethinkQL\UnitTest\Serializer;
 
@@ -26,7 +26,6 @@ class QueryNormalizerTest extends BaseUnitTestCase
         $serializer = new Serializer([$this->normalizer]);
 
         $this->normalizer->setSerializer($serializer);
-
     }
 
     /**
