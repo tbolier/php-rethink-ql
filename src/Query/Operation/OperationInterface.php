@@ -4,7 +4,7 @@ namespace TBolier\RethinkQL\Query\Operation;
 
 use TBolier\RethinkQL\Query\QueryInterface;
 
-interface OperationInterface
+interface OperationInterface extends QueryInterface
 {
     /**
      * @return QueryInterface
