@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace TBolier\RethinkQL\IntegrationTest;
 
+use ArrayObject;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -102,5 +103,38 @@ class BaseTestCase extends TestCase
         }
 
         Mockery::close();
+    }
+
+    /**
+     * @param $status
+     * @param $data
+     * @throws \Exception
+     */
+    protected function assertObStatus($status, $data)
+    {
+        $res = [];
+        $statuses = [
+            'tables_created',
+            'tables_dropped',
+            'unchanged',
+            'skipped',
+            'replaced',
+            'inserted',
+            'errors',
+            'deleted',
+        ];
+        $data = new ArrayObject($data);
+
+        foreach ($statuses as $s) {
+            $status[$s] = $status[$s] ?? 0;
+        }
+
+        $data->setFlags($data::ARRAY_AS_PROPS);
+
+        foreach ($statuses as $s) {
+            $res[$s] = $data[$s] ?? 0;
+        }
+
+        $this->assertEquals($status, $res);
     }
 }
