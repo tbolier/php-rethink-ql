@@ -1,33 +1,13 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
-namespace TBolier\RethinkConnect\Test\Connection;
+namespace TBolier\RethinkQL\IntegrationTest\Query;
 
-use ArrayObject;
-use TBolier\RethinkQL\Response\Cursor;
+use TBolier\RethinkQL\IntegrationTest\Query\AbstractTableTest;
 use TBolier\RethinkQL\Response\ResponseInterface;
-use TBolier\RethinkQL\IntegrationTest\BaseTestCase;
 
-class CountTest extends BaseTestCase
+class CountTest extends AbstractTableTest
 {
-    public function setUp()
-    {
-        parent::setUp();
-
-        if (!\in_array('tabletest', $this->r()->db()->tableList()->run()->getData(), true)) {
-            $this->r()->db()->tableCreate('tabletest')->run();
-        }
-    }
-
-    public function tearDown()
-    {
-        if (\in_array('tabletest', $this->r()->db()->tableList()->run()->getData(), true)) {
-            $this->r()->db()->tableDrop('tabletest')->run();
-        }
-
-        parent::tearDown();
-    }
-
     /**
      * @throws \Exception
      */
@@ -57,34 +37,31 @@ class CountTest extends BaseTestCase
         /** @var ResponseInterface $res */
         $res = $this->r()
             ->table('tabletest')
-            ->filter([
-                [
-                    'title' => 'Test document',
-                ],
-            ])
+            ->filter(['id' => 1])
+            ->count()
+            ->run();
+
+        $this->assertEquals(1, $res->getData());
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function testFilterCountOnMultipleDocuments()
+    {
+        $this->insertDocument(1);
+        $this->insertDocument(2);
+        $this->insertDocument(3);
+        $this->insertDocument(4);
+        $this->insertDocument(5);
+
+        /** @var ResponseInterface $res */
+        $res = $this->r()
+            ->table('tabletest')
+            ->filter(['description' => 'A document description.'])
             ->count()
             ->run();
 
         $this->assertEquals(5, $res->getData());
-    }
-
-    /**
-     * @param int $documentId
-     * @return ResponseInterface
-     */
-    private function insertDocument(int $documentId): ResponseInterface
-    {
-        $res = $this->r()
-            ->table('tabletest')
-            ->insert([
-                [
-                    'documentId' => $documentId,
-                    'title' => 'Test document',
-                    'description' => 'My first document.',
-                ],
-            ])
-            ->run();
-
-        return $res;
     }
 }

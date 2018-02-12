@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace TBolier\RethinkQL\Query;
 
@@ -40,7 +40,7 @@ class Builder implements BuilderInterface
 
     /**
      * @param string $name
-     * @return Table
+     * @return TableInterface
      */
     public function table(string $name): TableInterface
     {

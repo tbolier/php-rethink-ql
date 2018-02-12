@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace TBolier\RethinkQL\Query\Operation;
 
@@ -14,7 +14,7 @@ class Insert extends AbstractQuery
     /**
      * @var array
      */
-    private $predicate;
+    private $documents;
     /**
      * @var QueryInterface
      */
@@ -35,7 +35,7 @@ class Insert extends AbstractQuery
         parent::__construct($rethink, $message);
 
         $this->query = $query;
-        $this->predicate = [$documents];
+        $this->documents = [$documents];
         $this->rethink = $rethink;
         $this->message = $message;
     }
@@ -46,7 +46,7 @@ class Insert extends AbstractQuery
     public function toArray(): array
     {
         $jsonDocuments = [];
-        foreach ($this->predicate as $key => $document) {
+        foreach ($this->documents as $key => $document) {
             $jsonDocuments[] = json_encode($document);
         }
 

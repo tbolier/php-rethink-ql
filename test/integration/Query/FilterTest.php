@@ -1,33 +1,12 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
-namespace TBolier\RethinkConnect\Test\Connection;
+namespace TBolier\RethinkQL\IntegrationTest\Query;
 
-use ArrayObject;
 use TBolier\RethinkQL\Response\Cursor;
-use TBolier\RethinkQL\Response\ResponseInterface;
-use TBolier\RethinkQL\IntegrationTest\BaseTestCase;
 
-class FilterTest extends BaseTestCase
+class FilterTest extends AbstractTableTest
 {
-    public function setUp()
-    {
-        parent::setUp();
-
-        if (!\in_array('tabletest', $this->r()->db()->tableList()->run()->getData(), true)) {
-            $this->r()->db()->tableCreate('tabletest')->run();
-        }
-    }
-
-    public function tearDown()
-    {
-        if (\in_array('tabletest', $this->r()->db()->tableList()->run()->getData(), true)) {
-            $this->r()->db()->tableDrop('tabletest')->run();
-        }
-
-        parent::tearDown();
-    }
-
     /**
      * @throws \Exception
      */
@@ -38,11 +17,7 @@ class FilterTest extends BaseTestCase
         /** @var Cursor $cursor */
         $cursor = $this->r()
             ->table('tabletest')
-            ->filter([
-                [
-                    'title' => 'Test document',
-                ],
-            ])
+            ->filter(['title' => 'Test document 1'])
             ->run();
 
         $this->assertInstanceOf(\Iterator::class, $cursor);
@@ -50,22 +25,22 @@ class FilterTest extends BaseTestCase
     }
 
     /**
-     * @param int $documentId
-     * @return ResponseInterface
+     * @throws \Exception
      */
-    private function insertDocument(int $documentId): ResponseInterface
+    public function testFilterOnMultipleDocuments()
     {
-        $res = $this->r()
+        $this->insertDocument(1);
+        $this->insertDocument(2);
+        $this->insertDocument(3);
+        $this->insertDocument(4);
+        $this->insertDocument(5);
+
+        /** @var Cursor $cursor */
+        $cursor = $this->r()
             ->table('tabletest')
-            ->insert([
-                [
-                    'documentId' => $documentId,
-                    'title' => 'Test document',
-                    'description' => 'My first document.',
-                ],
-            ])
+            ->filter(['title' => 'Test document 1'])
             ->run();
 
-        return $res;
+        $this->assertCount(1, $cursor);
     }
 }

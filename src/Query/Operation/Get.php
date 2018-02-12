@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace TBolier\RethinkQL\Query\Operation;
 
@@ -13,7 +13,7 @@ class Get extends AbstractOperation
     /**
      * @var string
      */
-    private $predicate;
+    private $key;
 
     /**
      * @var QueryInterface
@@ -24,18 +24,18 @@ class Get extends AbstractOperation
      * @param RethinkInterface $rethink
      * @param MessageInterface $message
      * @param QueryInterface $query
-     * @param string $documents
+     * @param string|int $key
      */
     public function __construct(
         RethinkInterface $rethink,
         MessageInterface $message,
         QueryInterface $query,
-        string $documents
+        $key
     ) {
         parent::__construct($rethink, $message);
 
         $this->query = $query;
-        $this->predicate = $documents;
+        $this->key = $key;
         $this->rethink = $rethink;
         $this->message = $message;
     }
@@ -51,7 +51,7 @@ class Get extends AbstractOperation
                 $this->query->toArray(),
                 [
                     TermType::DATUM,
-                    $this->predicate,
+                    $this->key,
                 ],
             ],
         ];

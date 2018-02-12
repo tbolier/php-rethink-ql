@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace TBolier\RethinkQL\Connection;
 
@@ -155,7 +155,13 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
      */
     public function expr(string $string): ResponseInterface
     {
-        return $this->run(new ExprMessage(QueryType::START, 'foo'));
+        $response = $this->run(new ExprMessage(QueryType::START, 'foo'));
+
+        if ($response instanceof ResponseInterface) {
+            return $response;
+        }
+
+        return new Response();
     }
 
     /**
@@ -179,7 +185,7 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
             $this->writeQuery($token, $message);
 
             if ($this->noReply) {
-                return null;
+                return new Response();
             }
 
             $response = $this->receiveResponse($token, $message);
@@ -277,9 +283,9 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
         }
 
         $requestSize = pack('V', \strlen($request));
-        $binaryToken = pack('V', $token) . pack('V', 0);
+        $binaryToken = pack('V', $token).pack('V', 0);
 
-        return $this->stream->write($binaryToken . $requestSize . $request);
+        return $this->stream->write($binaryToken.$requestSize.$request);
     }
 
     /**
@@ -385,27 +391,27 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
         int $token,
         MessageInterface $message
     ): void {
-        if (!$response->getType()) {
+        if ($response->getType() === null) {
             throw new ConnectionException('Response message has no type.');
         }
 
         if ($response->getType() === ResponseType::CLIENT_ERROR) {
-            throw new ConnectionException('Client error: ' . $response->getData()[0] . ' jsonQuery: ' . json_encode($message));
+            throw new ConnectionException('Client error: '.$response->getData()[0].' jsonQuery: '.json_encode($message));
         }
 
         if ($responseToken !== $token) {
             throw new ConnectionException(
                 'Received wrong token. Response does not match the request. '
-                . 'Expected ' . $token . ', received ' . $responseToken
+                . 'Expected '.$token.', received '.$responseToken
             );
         }
 
         if ($response->getType() === ResponseType::COMPILE_ERROR) {
-            throw new ConnectionException('Compile error: ' . $response->getData()[0] . ', jsonQuery: ' . json_encode($message));
+            throw new ConnectionException('Compile error: '.$response->getData()[0].', jsonQuery: '.json_encode($message));
         }
 
         if ($response->getType() === ResponseType::RUNTIME_ERROR) {
-            throw new ConnectionException('Runtime error: ' . $response->getData()[0] . ', jsonQuery: ' . json_encode($message));
+            throw new ConnectionException('Runtime error: '.$response->getData()[0].', jsonQuery: '.json_encode($message));
         }
     }
 }

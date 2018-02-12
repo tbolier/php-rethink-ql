@@ -23,10 +23,10 @@ interface OperationInterface extends QueryInterface
     public function filter(array $predicate): OperationInterface;
 
     /**
-     * @param array $document
+     * @param array $elements
      * @return QueryInterface
      */
-    public function update(array $document): QueryInterface;
+    public function update(array $elements): QueryInterface;
 
     /**
      * @param array $document

@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace TBolier\RethinkQL;
 
@@ -8,19 +8,28 @@ use TBolier\RethinkQL\Message\Message;
 use TBolier\RethinkQL\Query\Builder;
 use TBolier\RethinkQL\Query\BuilderInterface;
 use TBolier\RethinkQL\Query\DatabaseInterface;
-use TBolier\RethinkQL\Query\Table;
+use TBolier\RethinkQL\Query\TableInterface;
+
 
 class Rethink implements RethinkInterface
 {
+    /**
+     * @var BuilderInterface
+     */
+    private $builder;
     /**
      * @var ConnectionInterface
      */
     private $connection;
 
     /**
-     * @var BuilderInterface
+     * @param ConnectionInterface $connection
      */
-    private $builder;
+    public function __construct(ConnectionInterface $connection)
+    {
+        $this->connection = $connection;
+        $this->builder = new Builder($this, new Message());
+    }
 
     /**
      * @inheritdoc
@@ -57,15 +66,6 @@ class Rethink implements RethinkInterface
     }
 
     /**
-     * @param ConnectionInterface $connection
-     */
-    public function __construct(ConnectionInterface $connection)
-    {
-        $this->connection = $connection;
-        $this->builder = new Builder($this, new Message());
-    }
-
-    /**
      * @inheritdoc
      */
     public function connection(): ConnectionInterface
@@ -76,7 +76,7 @@ class Rethink implements RethinkInterface
     /**
      * @inheritdoc
      */
-    public function table(string $name): Table
+    public function table(string $name): TableInterface
     {
         return $this->builder->table($name);
     }

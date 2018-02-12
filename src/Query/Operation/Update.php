@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace TBolier\RethinkQL\Query\Operation;
 
@@ -14,7 +14,7 @@ class Update extends AbstractQuery
     /**
      * @var array
      */
-    private $documents;
+    private $elements;
 
     /**
      * @var QueryInterface
@@ -25,18 +25,18 @@ class Update extends AbstractQuery
      * @param RethinkInterface $rethink
      * @param MessageInterface $message
      * @param QueryInterface $query
-     * @param array $documents
+     * @param array $elements
      */
     public function __construct(
         RethinkInterface $rethink,
         MessageInterface $message,
         QueryInterface $query,
-        array $documents
+        array $elements
     ) {
         parent::__construct($rethink, $message);
 
         $this->query = $query;
-        $this->documents = $documents;
+        $this->elements = $elements;
         $this->rethink = $rethink;
         $this->message = $message;
     }
@@ -46,10 +46,7 @@ class Update extends AbstractQuery
      */
     public function toArray(): array
     {
-        $jsonDocuments = [];
-        foreach ($this->documents as $key => $document) {
-            $jsonDocuments[] = json_encode($document);
-        }
+        $jsonElements = json_encode($this->elements);
 
         return [
             TermType::UPDATE,
@@ -57,7 +54,9 @@ class Update extends AbstractQuery
                 $this->query->toArray(),
                 [
                     TermType::JSON,
-                    $jsonDocuments,
+                    [
+                        $jsonElements
+                    ],
                 ],
             ],
         ];

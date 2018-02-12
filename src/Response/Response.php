@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace TBolier\RethinkQL\Response;
 
@@ -67,7 +67,7 @@ class Response implements ResponseInterface
      */
     public function isAtomic(): bool
     {
-        return \count($this->data) === 1;
+        return \is_string($this->data) || \count($this->data) === 1;
     }
 
     /**

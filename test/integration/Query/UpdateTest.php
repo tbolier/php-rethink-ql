@@ -1,33 +1,12 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
-namespace TBolier\RethinkConnect\Test\Connection;
+namespace TBolier\RethinkQL\IntegrationTest\Query;
 
-use ArrayObject;
-use TBolier\RethinkQL\Response\Cursor;
 use TBolier\RethinkQL\Response\ResponseInterface;
-use TBolier\RethinkQL\IntegrationTest\BaseTestCase;
 
-class UpdateTest extends BaseTestCase
+class UpdateTest extends AbstractTableTest
 {
-    public function setUp()
-    {
-        parent::setUp();
-
-        if (!\in_array('tabletest', $this->r()->db()->tableList()->run()->getData(), true)) {
-            $this->r()->db()->tableCreate('tabletest')->run();
-        }
-    }
-
-    public function tearDown()
-    {
-        if (\in_array('tabletest', $this->r()->db()->tableList()->run()->getData(), true)) {
-            $this->r()->db()->tableDrop('tabletest')->run();
-        }
-
-        parent::tearDown();
-    }
-
     /**
      * @throws \Exception
      */
@@ -37,58 +16,65 @@ class UpdateTest extends BaseTestCase
 
         $this->r()
             ->table('tabletest')
-            ->insert([
-                [
-                    'title' => 'Update document',
-                ],
-            ])
+            ->insert(['title' => 'Update document'])
             ->run();
 
         /** @var ResponseInterface $count */
         $count = $this->r()
             ->table('tabletest')
-            ->filter([
-                [
-                    'title' => 'Update document',
-                ],
-            ])
+            ->filter(['title' => 'Update document'])
             ->count()
             ->run();
+
         /** @var ResponseInterface $res */
         $res = $this->r()
             ->table('tabletest')
-            ->filter([
-                [
-                    'title' => 'Update document',
-                ],
-            ])
-            ->update([
-                [
-                    'title' => 'Updated document',
-                ],
-            ])
+            ->filter(['title' => 'Update document'])
+            ->update(['title' => 'Updated document'])
             ->run();
 
         $this->assertObStatus(['replaced' => $count->getData()], $res->getData());
     }
 
     /**
-     * @param int $documentId
-     * @return ResponseInterface
+     * @throws \Exception
      */
-    private function insertDocument(int $documentId): ResponseInterface
+    public function testFilterUpdate()
     {
+        $this->insertDocument(1);
+        $this->insertDocument(2);
+        $this->insertDocument(3);
+        $this->insertDocument(4);
+        $this->insertDocument(5);
+
+        /** @var ResponseInterface $res */
         $res = $this->r()
             ->table('tabletest')
-            ->insert([
-                [
-                    'documentId' => $documentId,
-                    'title' => 'Test document',
-                    'description' => 'My first document.',
-                ],
-            ])
+            ->filter(['id' => 5])
+            ->update(['title' => 'Updated document'])
             ->run();
 
-        return $res;
+        $this->assertObStatus(['replaced' => 1], $res->getData());
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function testFilterUpdateWithMultipleDocuments()
+    {
+        $this->insertDocument(1);
+        $this->insertDocument(2);
+        $this->insertDocument(3);
+        $this->insertDocument(4);
+        $this->insertDocument(5);
+
+        /** @var ResponseInterface $res */
+        $res = $this->r()
+            ->table('tabletest')
+            ->filter(['description' => 'A document description.'])
+            ->update(['title' => 'Updated document'])
+            ->run();
+
+        $this->assertObStatus(['replaced' => 5], $res->getData());
     }
 }

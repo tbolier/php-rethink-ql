@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace TBolier\RethinkQL\Query;
 
@@ -40,7 +40,7 @@ class Table extends AbstractOperation implements TableInterface
     /**
      * @inheritdoc
      */
-    public function get(string $value): OperationInterface
+    public function get($value): OperationInterface
     {
         return new Get($this->rethink, $this->message, $this, $value);
     }

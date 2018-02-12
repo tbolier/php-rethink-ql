@@ -1,31 +1,12 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace TBolier\RethinkQL\IntegrationTest\Query;
 
-use TBolier\RethinkQL\IntegrationTest\BaseTestCase;
 use TBolier\RethinkQL\Response\ResponseInterface;
 
-class CursorTest extends BaseTestCase
+class CursorTest extends AbstractTableTest
 {
-    public function setUp()
-    {
-        parent::setUp();
-
-        if (!\in_array('cursortest', $this->r()->db()->tableList()->run()->getData(), true)) {
-            $this->r()->db()->tableCreate('cursortest')->run();
-        }
-    }
-
-    public function tearDown()
-    {
-        if (\in_array('cursortest', $this->r()->db()->tableList()->run()->getData(), true)) {
-            $this->r()->db()->tableDrop('cursortest')->run();
-        }
-
-        parent::tearDown();
-    }
-
     /**
      * @throws \Exception
      */
@@ -34,7 +15,7 @@ class CursorTest extends BaseTestCase
         $this->insertDocuments();
 
         $response = $this->r()
-            ->table('cursortest')
+            ->table('tabletest')
             ->count()
             ->run();
 
@@ -51,7 +32,7 @@ class CursorTest extends BaseTestCase
 
         for ($i = 1; $i <= 1000; $i++) {
             $documents[] = [
-                'documentId' => $i,
+                'id' => $i,
                 'title' => 'Test document',
                 'description' => 'My first document.',
             ];
@@ -59,7 +40,7 @@ class CursorTest extends BaseTestCase
 
         /** @var ResponseInterface $res */
         $res = $this->r()
-            ->table('cursortest')
+            ->table('tabletest')
             ->insert($documents)
             ->run();
 

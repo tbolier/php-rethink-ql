@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace TBolier\RethinkQL\Serializer;
 
@@ -21,7 +21,7 @@ class QueryNormalizer extends AbstractNormalizer
         }
 
         if (!$object instanceof \JsonSerializable && !$object instanceof \stdClass) {
-            throw new InvalidArgumentException(sprintf('The ' . get_class($object) . ' must implement "%s".', \JsonSerializable::class));
+            throw new InvalidArgumentException(sprintf('The '.get_class($object).' must implement "%s".', \JsonSerializable::class));
         }
 
         if (!$this->serializer instanceof NormalizerInterface) {
@@ -29,11 +29,11 @@ class QueryNormalizer extends AbstractNormalizer
         }
 
         if ($object instanceof \stdClass) {
-            return (array)$object;
+            return (array) $object;
         }
 
         if ($object instanceof OptionsInterface) {
-            return (object)$object->jsonSerialize();
+            return (object) $object->jsonSerialize();
         }
 
         return $this->serializer->normalize($object->jsonSerialize(), $format, $context);

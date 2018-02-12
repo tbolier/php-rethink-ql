@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace TBolier\RethinkQL\UnitTest\Connection;
 
@@ -7,7 +7,7 @@ use TBolier\RethinkQL\Message\MessageInterface;
 use TBolier\RethinkQL\Response\ResponseInterface;
 use TBolier\RethinkQL\Types\Response\ResponseType;
 
-class ConnectionQueryTest extends BaseConnectionTestCase
+class ConnectionQueryTest extends ConnectionTestCase
 {
     public function testWriteQuery()
     {

@@ -1,33 +1,12 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
-namespace TBolier\RethinkConnect\Test\Connection;
+namespace TBolier\RethinkQL\IntegrationTest\Query;
 
-use ArrayObject;
-use TBolier\RethinkQL\Response\Cursor;
 use TBolier\RethinkQL\Response\ResponseInterface;
-use TBolier\RethinkQL\IntegrationTest\BaseTestCase;
 
-class EmptyTableTest extends BaseTestCase
+class EmptyTableTest extends AbstractTableTest
 {
-    public function setUp()
-    {
-        parent::setUp();
-
-        if (!\in_array('tabletest', $this->r()->db()->tableList()->run()->getData(), true)) {
-            $this->r()->db()->tableCreate('tabletest')->run();
-        }
-    }
-
-    public function tearDown()
-    {
-        if (\in_array('tabletest', $this->r()->db()->tableList()->run()->getData(), true)) {
-            $this->r()->db()->tableDrop('tabletest')->run();
-        }
-
-        parent::tearDown();
-    }
-
     /**
      * @throws \Exception
      */
@@ -36,11 +15,7 @@ class EmptyTableTest extends BaseTestCase
         /** @var ResponseInterface $count */
         $count = $this->r()
             ->table('tabletest')
-            ->filter([
-                [
-                    'title' => 'Test document',
-                ],
-            ])
+            ->filter(['title' => 'Test document'])
             ->count()
             ->run();
 

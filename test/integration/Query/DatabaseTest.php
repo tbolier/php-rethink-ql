@@ -1,12 +1,9 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
-namespace TBolier\RethinkConnect\Test\Connection;
+namespace TBolier\RethinkQL\IntegrationTest\Query;
 
-use ArrayObject;
-use TBolier\RethinkQL\IntegrationTest\BaseTestCase;
-
-class DatabaseTest extends BaseTestCase
+class DatabaseTest extends AbstractTableTest
 {
     /**
      * @throws \Exception
@@ -32,6 +29,11 @@ class DatabaseTest extends BaseTestCase
             ->run();
 
         $this->assertObStatus(['tables_created' => 1], $res->getData());
+
+        $this->r()
+            ->db()
+            ->tableDrop('createtable')
+            ->run();
     }
 
     /**

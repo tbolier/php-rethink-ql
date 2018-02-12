@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace TBolier\RethinkQL\Query\Operation;
 
@@ -27,17 +27,17 @@ abstract class AbstractOperation extends AbstractQuery implements OperationInter
     /**
      * @inheritdoc
      */
-    public function filter(array $documents): OperationInterface
+    public function filter(array $predicate): OperationInterface
     {
-        return new Filter($this->rethink, $this->message, $this, $documents);
+        return new Filter($this->rethink, $this->message, $this, $predicate);
     }
 
     /**
      * @inheritdoc
      */
-    public function update(array $document): QueryInterface
+    public function update(array $elements): QueryInterface
     {
-        return new Update($this->rethink, $this->message, $this, $document);
+        return new Update($this->rethink, $this->message, $this, $elements);
     }
 
     /**

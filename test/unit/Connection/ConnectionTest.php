@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace TBolier\RethinkQL\UnitTest\Connection;
 
@@ -11,7 +11,7 @@ use TBolier\RethinkQL\Response\ResponseInterface;
 use TBolier\RethinkQL\Types\Query\QueryType;
 use TBolier\RethinkQL\Types\Response\ResponseType;
 
-class ConnectionTest extends BaseConnectionTestCase
+class ConnectionTest extends ConnectionTestCase
 {
     /**
      * @return void
@@ -80,6 +80,7 @@ class ConnectionTest extends BaseConnectionTestCase
         $response = \Mockery::mock(ResponseInterface::class);
         $response->shouldReceive('getType')->atLeast()->andReturn(ResponseType::SUCCESS_PARTIAL);
         $response->shouldReceive('getData')->atLeast()->andReturn(['yolo']);
+        $response->shouldReceive('isAtomic')->once()->andReturn(true);
 
         $this->setExpectations($response);
 
@@ -100,6 +101,7 @@ class ConnectionTest extends BaseConnectionTestCase
         $response = \Mockery::mock(ResponseInterface::class);
         $response->shouldReceive('getType')->atLeast()->andReturn(ResponseType::SUCCESS_SEQUENCE);
         $response->shouldReceive('getData')->atLeast()->andReturn(['yolo']);
+        $response->shouldReceive('isAtomic')->once()->andReturn(true);
 
         $this->setExpectations($response);
 

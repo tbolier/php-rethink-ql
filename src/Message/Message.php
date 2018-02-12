@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace TBolier\RethinkQL\Message;
 
@@ -90,7 +90,7 @@ class Message implements MessageInterface
         return [
             $this->queryType,
             $this->query,
-            (object)$this->getOptions()
+            (object) $this->getOptions()
         ];
     }
 

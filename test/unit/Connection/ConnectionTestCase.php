@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace TBolier\RethinkQL\UnitTest\Connection;
 
@@ -12,7 +12,7 @@ use TBolier\RethinkQL\Connection\ConnectionInterface;
 use TBolier\RethinkQL\Connection\Socket\HandshakeInterface;
 use TBolier\RethinkQL\UnitTest\BaseUnitTestCase;
 
-class BaseConnectionTestCase extends BaseUnitTestCase
+abstract class ConnectionTestCase extends BaseUnitTestCase
 {
     /**
      * @var Connection

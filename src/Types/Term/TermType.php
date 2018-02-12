@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace TBolier\RethinkQL\Types\Term;
 
@@ -104,8 +104,8 @@ class TermType
     public const INDEX_RENAME       = 156;
     public const FUNCALL            = 64;
     public const BRANCH             = 65;
-    public const OR                 = 66;
-    public const AND                = 67;
+    public const OR = 66;
+    public const AND = 67;
     public const FOR_EACH           = 68;
     public const FUNC               = 69;
     public const ASC                = 73;
