@@ -8,7 +8,6 @@ use TBolier\RethinkQL\Query\Aggregation\Limit;
 use TBolier\RethinkQL\Query\Aggregation\OrderBy;
 use TBolier\RethinkQL\Query\Operation\AbstractOperation;
 use TBolier\RethinkQL\Query\Operation\Get;
-use TBolier\RethinkQL\Query\Operation\OperationInterface;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Term\TermType;
 

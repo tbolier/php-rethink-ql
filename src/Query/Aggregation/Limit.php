@@ -4,12 +4,11 @@ declare(strict_types = 1);
 namespace TBolier\RethinkQL\Query\Aggregation;
 
 use TBolier\RethinkQL\Message\MessageInterface;
-use TBolier\RethinkQL\Query\AbstractQuery;
 use TBolier\RethinkQL\Query\QueryInterface;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Term\TermType;
 
-class Limit extends AbstractQuery
+class Limit extends AbstractAggregation
 {
     /**
      * @var int
@@ -31,7 +30,7 @@ class Limit extends AbstractQuery
         RethinkInterface $rethink,
         MessageInterface $message,
         QueryInterface $query,
-        $n
+        int $n
     ) {
         parent::__construct($rethink, $message);
 
