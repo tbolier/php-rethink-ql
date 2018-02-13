@@ -13,6 +13,6 @@ indent_style = space
 indent_size = 4
 
 # Matches the exact files
-[{composer.json}]
+[{composer.json,*.js}]
 indent_style = space
-indent_size = 2
+indent_size = 4
