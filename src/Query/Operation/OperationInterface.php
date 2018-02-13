@@ -1,10 +1,12 @@
 <?php
+declare(strict_types = 1);
 
 namespace TBolier\RethinkQL\Query\Operation;
 
+use TBolier\RethinkQL\Query\Aggregation\AggregationInterface;
 use TBolier\RethinkQL\Query\QueryInterface;
 
-interface OperationInterface extends QueryInterface
+interface OperationInterface extends AggregationInterface
 {
     /**
      * @return QueryInterface
