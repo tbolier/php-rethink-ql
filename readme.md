@@ -2,7 +2,7 @@
     A PHP RethinkDB driver for the RethinkDB query language (ReQL).
     License: Apache License 2.0
 
-PHP-RETHINK-QL [![by](https://img.shields.io/badge/by-%40tbolier-ff69b4.svg?style=flat-square)](https://github.com/tbolier) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/tbolier/php-rethink-ql/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/tbolier/php-rethink-ql/?branch=master) [![Code Coverage](https://scrutinizer-ci.com/g/tbolier/php-rethink-ql/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/tbolier/php-rethink-ql/?branch=master) [![Build Status](https://scrutinizer-ci.com/g/tbolier/php-rethink-ql/badges/build.png?b=master)](https://scrutinizer-ci.com/g/tbolier/php-rethink-ql/build-status/master)
+PHP-RETHINK-QL [![by](https://img.shields.io/badge/by-%40tbolier-blue.svg)](https://github.com/tbolier) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/tbolier/php-rethink-ql/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/tbolier/php-rethink-ql/?branch=master) [![Code Coverage](https://scrutinizer-ci.com/g/tbolier/php-rethink-ql/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/tbolier/php-rethink-ql/?branch=master) [![Build Status](https://scrutinizer-ci.com/g/tbolier/php-rethink-ql/badges/build.png?b=master)](https://scrutinizer-ci.com/g/tbolier/php-rethink-ql/build-status/master)
 ========================
 
 # License
@@ -79,7 +79,7 @@ Please read the [contributing guidelines](docs/contributing.md) if you would lik
 ## Authors
 
 * **Timon Bolier** - *Creator* - [tbolier](https://github.com/tbolier)
-* **Marc Geurts** - *Collaborator* - [mgeurts](https://github.com/marcgeurts)
+* **Marc Geurts** - *Collaborator* - [marcgeurts](https://github.com/marcgeurts)
 * **Michel Maas** - *Collaborator* - [AxaliaN](https://github.com/AxaliaN)
 
 See also the list of [contributors](https://github.com/tbolier/php-rethink-ql/contributors) who participated in this project.
