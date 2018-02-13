@@ -2,11 +2,27 @@
     "name": "tbolier/php-rethink-ql",
     "description": "A clean and solid RethinkDB driver for PHP.",
     "type": "library",
+    "license": "Apache-2.0",
+    "homepage": "https://github.com/tbolier/php-rethink-ql/",
     "authors": [
         {
             "name": "Timon Bolier",
             "email": "timonb@gmail.com"
         }
+    ],
+    "keywords": [
+        "adapter",
+        "database",
+        "driver",
+        "rethinkdb",
+        "nosql",
+        "nosql-database",
+        "php",
+        "php-rethinkdb",
+        "php-rethinkdb-driver",
+        "rethinkdb-adapter",
+        "reql",
+        "rethinkdb-ql"
     ],
     "minimum-stability": "dev",
     "require": {
@@ -24,5 +40,10 @@
             "TBolier\\RethinkQL\\UnitTest\\": "test/unit/",
             "TBolier\\RethinkQL\\IntegrationTest\\": "test/integration/"
         }
+    },
+    "support": {
+        "docs": "https://github.com/tbolier/php-rethink-ql/tree/master/docs/",
+        "issues": "https://github.com/tbolier/php-rethink-ql/issues/",
+        "source": "https://github.com/tbolier/php-rethink-ql/"
     }
 }
