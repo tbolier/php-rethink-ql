@@ -8,11 +8,6 @@ use TBolier\RethinkQL\Response\ResponseInterface;
 class OrderByTest extends AbstractTableTest
 {
     /**
-     * @var array
-     */
-    private $array;
-
-    /**
      * @return void
      * @throws \Exception
      */
@@ -30,8 +25,6 @@ class OrderByTest extends AbstractTableTest
             ->orderby('id')
             ->run();
 
-        $this->array = $res->getData();
-
-        $this->assertArraySubset(['id' => 1], $this->array[0]);
+        $this->assertArraySubset(['id' => 1], $res->getData()[0]);
     }
 }
