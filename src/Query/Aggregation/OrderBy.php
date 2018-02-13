@@ -24,7 +24,7 @@ class OrderBy extends AbstractAggregation
      * @param RethinkInterface $rethink
      * @param MessageInterface $message
      * @param QueryInterface $query
-     * @param $key
+     * @param string $key
      */
     public function __construct(
         RethinkInterface $rethink,
