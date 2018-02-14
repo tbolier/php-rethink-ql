@@ -22,6 +22,15 @@ class OrderByTest extends AbstractTableTest
         /** @var ResponseInterface $res */
         $res = $this->r()
             ->table('tabletest')
+            ->orderby($this->r()->ordening('id'))
+            ->run();
+
+
+        $this->assertArraySubset(['id' => 5], $res->getData()[0]);
+
+        /** @var ResponseInterface $res */
+        $res = $this->r()
+            ->table('tabletest')
             ->orderby('id')
             ->run();
 

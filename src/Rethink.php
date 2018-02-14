@@ -8,6 +8,7 @@ use TBolier\RethinkQL\Message\Message;
 use TBolier\RethinkQL\Query\Builder;
 use TBolier\RethinkQL\Query\BuilderInterface;
 use TBolier\RethinkQL\Query\DatabaseInterface;
+use TBolier\RethinkQL\Query\OrdeningInterface;
 use TBolier\RethinkQL\Query\TableInterface;
 
 
@@ -79,5 +80,13 @@ class Rethink implements RethinkInterface
     public function table(string $name): TableInterface
     {
         return $this->builder->table($name);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function ordening(string $key): OrdeningInterface
+    {
+        return $this->builder->ordening($key);
     }
 }

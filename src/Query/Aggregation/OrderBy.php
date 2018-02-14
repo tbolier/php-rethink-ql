@@ -31,7 +31,7 @@ class OrderBy extends AbstractAggregation
         MessageInterface $message,
         QueryInterface $query,
         string $key
-    ) {
+    ){
         parent::__construct($rethink, $message);
 
         $this->query = $query;
