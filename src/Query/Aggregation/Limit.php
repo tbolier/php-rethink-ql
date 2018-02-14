@@ -9,7 +9,7 @@ use TBolier\RethinkQL\Query\QueryInterface;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Term\TermType;
 
-class Limit extends AbstractQuery
+class Limit extends AbstractAggregation
 {
     /**
      * @var int

@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace TBolier\RethinkQL;
 
@@ -44,8 +44,14 @@ interface RethinkInterface
     public function dbList(): DatabaseInterface;
 
     /**
-     * @param string $key
+     * @param mixed $key
      * @return OrdeningInterface
      */
-    public function ordening(string $key): OrdeningInterface;
+    public function desc($key): OrdeningInterface;
+
+    /**
+     * @param mixed $key
+     * @return OrdeningInterface
+     */
+    public function asc($key): OrdeningInterface;
 }

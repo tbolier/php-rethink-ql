@@ -1,8 +1,9 @@
 <?php
 declare(strict_types = 1);
 
-namespace TBolier\RethinkQL\IntegrationTest\Query;
+namespace TBolier\RethinkQL\IntegrationTest\Aggregation;
 
+use TBolier\RethinkQL\IntegrationTest\Query\AbstractTableTest;
 use TBolier\RethinkQL\Response\Cursor;
 
 class LimitTest extends AbstractTableTest

@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace TBolier\RethinkQL;
 
@@ -85,8 +85,16 @@ class Rethink implements RethinkInterface
     /**
      * @inheritdoc
      */
-    public function ordening(string $key): OrdeningInterface
+    public function desc($key): OrdeningInterface
     {
-        return $this->builder->ordening($key);
+        return $this->builder->ordening($key)->desc($key);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function asc($key): OrdeningInterface
+    {
+        return $this->builder->ordening($key)->asc($key);
     }
 }

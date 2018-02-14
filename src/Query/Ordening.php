@@ -61,6 +61,6 @@ class Ordening extends AbstractQuery implements OrdeningInterface
      */
     public function toArray(): array
     {
-        return $this->query->toArray();
+        return $this->query;
     }
 }

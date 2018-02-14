@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace TBolier\RethinkQL\Query;
 
+use TBolier\RethinkQL\Query\Aggregation\AggregationInterface;
 use TBolier\RethinkQL\Query\Operation\OperationInterface;
 
 interface TableInterface extends OperationInterface
@@ -15,13 +16,13 @@ interface TableInterface extends OperationInterface
 
     /**
      * @param int $n
-     * @return QueryInterface
+     * @return AggregationInterface
      */
-    public function limit($n): QueryInterface;
+    public function limit($n): AggregationInterface;
 
     /**
      * @param string $value
-     * @return QueryInterface
+     * @return AggregationInterface
      */
-    public function orderby($value): QueryInterface;
+    public function orderBy($value): AggregationInterface;
 }
