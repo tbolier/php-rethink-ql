@@ -1,32 +1,44 @@
 <?php
 declare(strict_types = 1);
 
-namespace TBolier\RethinkQL\Query\Operation;
+namespace TBolier\RethinkQL\Query\Aggregation;
 
 use TBolier\RethinkQL\Message\MessageInterface;
 use TBolier\RethinkQL\Query\AbstractQuery;
+use TBolier\RethinkQL\Query\QueryInterface;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Term\TermType;
 
-class TableCreate extends AbstractQuery
+class Limit extends AbstractAggregation
 {
     /**
-     * @var string
+     * @var int
      */
-    private $name;
+    private $n;
+
+    /**
+     * @var QueryInterface
+     */
+    private $query;
 
     /**
      * @param RethinkInterface $rethink
      * @param MessageInterface $message
-     * @param string $name
+     * @param QueryInterface $query
+     * @param $n
      */
-    public function __construct(RethinkInterface $rethink, MessageInterface $message, string $name)
-    {
+    public function __construct(
+        RethinkInterface $rethink,
+        MessageInterface $message,
+        QueryInterface $query,
+        int $n
+    ) {
         parent::__construct($rethink, $message);
 
+        $this->query = $query;
+        $this->n = $n;
         $this->rethink = $rethink;
         $this->message = $message;
-        $this->name = $name;
     }
 
     /**
@@ -35,11 +47,12 @@ class TableCreate extends AbstractQuery
     public function toArray(): array
     {
         return [
-            TermType::TABLE_CREATE,
+            TermType::LIMIT,
             [
+                $this->query->toArray(),
                 [
                     TermType::DATUM,
-                    $this->name,
+                    $this->n,
                 ],
             ],
         ];

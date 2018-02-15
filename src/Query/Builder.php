@@ -24,6 +24,11 @@ class Builder implements BuilderInterface
     private $database;
 
     /**
+     * @var OrdeningInterface
+     */
+    private $ordering;
+
+    /**
      * @var MessageInterface
      */
     private $message;
@@ -65,5 +70,20 @@ class Builder implements BuilderInterface
         $this->database = new Database($this->rethink, $this->message);
 
         return $this->database;
+    }
+
+    /**
+     * @param string $key
+     * @return OrdeningInterface
+     */
+    public function ordening(string $key): OrdeningInterface
+    {
+        if ($this->ordering) {
+            unset($this->ordering);
+        }
+
+        $this->ordering = new Ordening($key, $this->rethink, $this->message);
+
+        return $this->ordering;
     }
 }
