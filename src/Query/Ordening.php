@@ -10,7 +10,7 @@ use TBolier\RethinkQL\Types\Term\TermType;
 class Ordening extends AbstractQuery implements OrdeningInterface
 {
     /**
-     * @var QueryInterface
+     * @var array
      */
     private $query;
 
