@@ -10,9 +10,9 @@ interface TableInterface extends OperationInterface
 {
     /**
      * @param string|int $value
-     * @return QueryInterface
+     * @return AbstractQuery
      */
-    public function get($value): QueryInterface;
+    public function get($value): AbstractQuery;
 
     /**
      * @param int $n
