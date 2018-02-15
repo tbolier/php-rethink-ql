@@ -3,7 +3,6 @@ declare(strict_types = 1);
 
 namespace TBolier\RethinkQL\Query\Aggregation;
 
-use MongoDB\Driver\Query;
 use TBolier\RethinkQL\Message\MessageInterface;
 use TBolier\RethinkQL\Query\QueryInterface;
 use TBolier\RethinkQL\RethinkInterface;
@@ -12,7 +11,7 @@ use TBolier\RethinkQL\Types\Term\TermType;
 class OrderBy extends AbstractAggregation
 {
     /**
-     * @var string
+     * @var mixed|QueryInterface
      */
     private $key;
 
@@ -32,7 +31,7 @@ class OrderBy extends AbstractAggregation
         MessageInterface $message,
         QueryInterface $query,
         $key
-    ){
+    ) {
         parent::__construct($rethink, $message);
 
         $this->query = $query;

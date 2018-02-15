@@ -32,7 +32,7 @@ class Limit extends AbstractAggregation
         MessageInterface $message,
         QueryInterface $query,
         int $n
-    ){
+    ) {
         parent::__construct($rethink, $message);
 
         $this->query = $query;

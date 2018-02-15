@@ -23,7 +23,7 @@ class OrderByTest extends AbstractTableTest
         /** @var ResponseInterface $res */
         $res = $this->r()
             ->table('tabletest')
-            ->orderby($this->r()->desc('id'))
+            ->orderBy($this->r()->desc('id'))
             ->run();
 
         $this->assertArraySubset(['id' => 5], $res->getData()[0]);
@@ -44,7 +44,7 @@ class OrderByTest extends AbstractTableTest
         /** @var ResponseInterface $res */
         $res = $this->r()
             ->table('tabletest')
-            ->orderby($this->r()->asc('id'))
+            ->orderBy($this->r()->asc('id'))
             ->run();
 
         $this->assertArraySubset(['id' => 1], $res->getData()[0]);

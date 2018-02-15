@@ -21,8 +21,8 @@ interface TableInterface extends OperationInterface
     public function limit($n): AggregationInterface;
 
     /**
-     * @param string $value
+     * @param mixed|QueryInterface $key
      * @return AggregationInterface
      */
-    public function orderBy($value): AggregationInterface;
+    public function orderBy($key): AggregationInterface;
 }

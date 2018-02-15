@@ -58,9 +58,9 @@ class Table extends AbstractOperation implements TableInterface
     /**
      * @inheritdoc
      */
-    public function orderBy($value): AggregationInterface
+    public function orderBy($key): AggregationInterface
     {
-        return new OrderBy($this->rethink, $this->message, $this, $value);
+        return new OrderBy($this->rethink, $this->message, $this, $key);
     }
 
     /**
