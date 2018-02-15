@@ -4,9 +4,11 @@ declare(strict_types = 1);
 namespace TBolier\RethinkQL\Query;
 
 use TBolier\RethinkQL\Message\MessageInterface;
+use TBolier\RethinkQL\Query\Aggregation\Limit;
+use TBolier\RethinkQL\Query\Aggregation\OrderBy;
+use TBolier\RethinkQL\Query\Aggregation\AggregationInterface;
 use TBolier\RethinkQL\Query\Operation\AbstractOperation;
 use TBolier\RethinkQL\Query\Operation\Get;
-use TBolier\RethinkQL\Query\Operation\OperationInterface;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Term\TermType;
 
@@ -40,9 +42,25 @@ class Table extends AbstractOperation implements TableInterface
     /**
      * @inheritdoc
      */
-    public function get($value): OperationInterface
+    public function get($value): QueryInterface
     {
         return new Get($this->rethink, $this->message, $this, $value);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function limit($value): AggregationInterface
+    {
+        return new Limit($this->rethink, $this->message, $this, $value);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function orderBy($key): AggregationInterface
+    {
+        return new OrderBy($this->rethink, $this->message, $this, $key);
     }
 
     /**

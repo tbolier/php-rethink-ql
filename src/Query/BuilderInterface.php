@@ -7,7 +7,6 @@ interface BuilderInterface
 {
     /**
      * @param string $name
-     *
      * @return TableInterface
      */
     public function table(string $name): TableInterface;
@@ -16,4 +15,10 @@ interface BuilderInterface
      * @return DatabaseInterface
      */
     public function database(): DatabaseInterface;
+
+    /**
+     * @param string $key
+     * @return OrdeningInterface
+     */
+    public function ordening(string $key): OrdeningInterface;
 }

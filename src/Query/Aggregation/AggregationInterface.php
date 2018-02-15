@@ -1,19 +1,14 @@
 <?php
 declare(strict_types = 1);
 
-namespace TBolier\RethinkQL\Query;
+namespace TBolier\RethinkQL\Query\Aggregation;
 
 use TBolier\RethinkQL\Response\ResponseInterface;
 
-interface QueryInterface
+interface AggregationInterface
 {
     /**
      * @return Iterable|ResponseInterface
      */
     public function run();
-
-    /**
-     * @return array
-     */
-    public function toArray(): array;
 }
