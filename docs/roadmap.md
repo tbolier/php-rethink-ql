@@ -5,7 +5,7 @@
 ## current and next versions
 
 | method | Version 1.0 | Version 1.1 | Version x |
-| --- | :---: | :---: |
+| --- | :---: | :---: | :---: |
 | **Accessing ReQL**
 | r                      | ✓ | ✓ | |
 | connection             | ✓ | ✓ | | 
@@ -18,18 +18,18 @@
 | noreplyWait            | ✓ | ✓ | |
 | server                 | ✓ | ✓ | |
 | optArg                 | ✘ | ✘ | |
-| | | |
+| | | | |
 | **Cursors** 
 | next                   | ✓ | ✓ | |
 | for                    | ✓ | ✓ | |
 | toList                 | ✓ | ✓ | |
 | close                  | ✓ | ✓ | |
-| | | | 
+| | | |  |
 | **Manipulating databases** 
 | dbCreate               | ✓ | ✓ | |
 | dbDrop                 | ✓ | ✓ | |
 | dbList                 | ✓ | ✓ | |
-| | | |
+| | | | |
 | **Manipulating tables**
 | tableCreate            | ✓ | ✓ | |
 | tableDrop              | ✓ | ✓ | |
@@ -40,14 +40,14 @@
 | indexRename            | ✘ | ✘ | |
 | indexStatus            | ✘ | ✘ | |
 | indexWait              | ✘ | ✘ | |
-| | | |
+| | | | |
 | **Writing data**
 | insert                 | ✓ | ✓ | |
 | update                 | ✓ | ✓ | |
 | replace                | ✓ | ✓ | |
 | delete                 | ✓ | ✓ | |
 | sync                   | ✘ | ✘ | |
-| | | |
+| | | | |
 | **Selecting data** 
 | db                     | ✓ | ✓ | |
 | table                  | ✓ | ✓ | |
@@ -60,7 +60,7 @@
 | outerJoin              | ✘ | ✘ | |
 | eqJoin                 | ✘ | ✘ | |
 | zip                    | ✘ | ✘ | |
-| | | |
+| | | | |
 | **Transformations** 
 | map                    | ✘ | ✘ | |
 | withFields             | ✘ | ✘ | |
@@ -74,7 +74,7 @@
 | isEmpty                | ✘ | ✘ | |
 | union                  | ✘ | ✘ | |
 | sample                 | ✘ | ✘ | |
-| | | |
+| | | | |
 | **Aggregation** 
 | group                  | ✘ | ✘ | |
 | ungroup                | ✘ | ✘ | |
@@ -87,7 +87,7 @@
 | max                    | ✘ | ✘ | |
 | distinct               | ✘ | ✘ | |
 | contains               | ✘ | ✘ | |
-| | | |
+| | | | |
 | **Document manipulation** 
 | row                    | ✘ | ✘ | |
 | pluck                  | ✘ | ✘ | |
@@ -135,7 +135,7 @@
 | round                  | ✘ | ✘ | |
 | ceil                   | ✘ | ✘ | |
 | floor                  | ✘ | ✘ | |
-| | | |
+| | | | |
 | **Dates and times** 
 | now                    | ✘ | ✘ | |
 | time                   | ✘ | ✘ | |
@@ -156,7 +156,7 @@
 | seconds                | ✘ | ✘ | |
 | toISO8601              | ✘ | ✘ | |
 | toEpochTime            | ✘ | ✘ | |
-| | | |
+| | | | |
 | **Control structures** 
 | array                  | ✘ | ✘ | | 
 | hashMap                | ✘ | ✘ | | 
@@ -191,7 +191,7 @@
 | point                  | ✘ | ✘ | | 
 | polygon                | ✘ | ✘ | | 
 | polygonSub             | ✘ | ✘ | | 
-| | | |
+| | | | |
 | **Administration**
 | grant                  | ✘ | ✘ | | 
 | config                 | ✘ | ✘ | | 
