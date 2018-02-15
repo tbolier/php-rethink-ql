@@ -5,6 +5,7 @@ namespace TBolier\RethinkQL;
 
 use TBolier\RethinkQL\Connection\ConnectionInterface;
 use TBolier\RethinkQL\Query\DatabaseInterface;
+use TBolier\RethinkQL\Query\OrdeningInterface;
 use TBolier\RethinkQL\Query\TableInterface;
 
 interface RethinkInterface
@@ -41,4 +42,16 @@ interface RethinkInterface
      * @return DatabaseInterface
      */
     public function dbList(): DatabaseInterface;
+
+    /**
+     * @param mixed $key
+     * @return OrdeningInterface
+     */
+    public function desc($key): OrdeningInterface;
+
+    /**
+     * @param mixed $key
+     * @return OrdeningInterface
+     */
+    public function asc($key): OrdeningInterface;
 }

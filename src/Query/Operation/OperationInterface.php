@@ -1,10 +1,13 @@
 <?php
+declare(strict_types = 1);
 
 namespace TBolier\RethinkQL\Query\Operation;
 
+use TBolier\RethinkQL\Query\Aggregation\AggregationInterface;
 use TBolier\RethinkQL\Query\QueryInterface;
+use TBolier\RethinkQL\Response\ResponseInterface;
 
-interface OperationInterface extends QueryInterface
+interface OperationInterface extends AggregationInterface
 {
     /**
      * @return QueryInterface
@@ -33,4 +36,9 @@ interface OperationInterface extends QueryInterface
      * @return QueryInterface
      */
     public function insert(array $document): QueryInterface;
+
+    /**
+     * @return Iterable|ResponseInterface
+     */
+    public function run();
 }
