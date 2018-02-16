@@ -3,10 +3,10 @@ declare(strict_types = 1);
 
 namespace TBolier\RethinkQL\Query\Operation;
 
-use TBolier\RethinkQL\Query\AbstractQuery;
+use TBolier\RethinkQL\Query\Aggregation\AbstractAggregation;
 use TBolier\RethinkQL\Query\QueryInterface;
 
-abstract class AbstractOperation extends AbstractQuery implements OperationInterface
+abstract class AbstractOperation extends AbstractAggregation implements OperationInterface
 {
     /**
      * @inheritdoc
