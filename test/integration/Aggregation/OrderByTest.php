@@ -54,7 +54,7 @@ class OrderByTest extends AbstractTableTest
      * @return void
      * @throws \Exception
      */
-    public function testFilerAndOrderByAsc(): void
+    public function testFilterAndOrderByAsc(): void
     {
         $this->insertDocument(5);
         $this->insertDocument(4);
