@@ -9,6 +9,11 @@ use TBolier\RethinkQL\Response\ResponseInterface;
 interface AggregationInterface
 {
     /**
+     * @return QueryInterface
+     */
+    public function isEmpty(): QueryInterface;
+
+    /**
      * @param int $n
      * @return AggregationInterface
      */
