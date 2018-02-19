@@ -52,7 +52,7 @@
 | db                     | ✓ | ✓ | |
 | table                  | ✓ | ✓ | |
 | get                    | ✓ | ✓ | |
-| getAll                 | ✓ | ✓ | |
+| getAll                 | ✘ | ✓ | |
 | between                | ✘ | ✘ | |
 | filter                 | ✓ | ✓ | |
 | Joins                  | ✘ | ✘ | |

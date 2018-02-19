@@ -35,6 +35,14 @@ abstract class AbstractOperation extends AbstractAggregation implements Operatio
     /**
      * @inheritdoc
      */
+    public function getAll(...$keys): OperationInterface
+    {
+        return new GetAll($this->rethink, $this->message, $this, $keys);
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function update(array $elements): QueryInterface
     {
         return new Update($this->rethink, $this->message, $this, $elements);

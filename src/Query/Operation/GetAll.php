@@ -4,17 +4,16 @@ declare(strict_types = 1);
 namespace TBolier\RethinkQL\Query\Operation;
 
 use TBolier\RethinkQL\Message\MessageInterface;
-use TBolier\RethinkQL\Query\AbstractQuery;
 use TBolier\RethinkQL\Query\QueryInterface;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Term\TermType;
 
-class Get extends AbstractQuery
+class GetAll extends AbstractOperation
 {
     /**
-     * @var string|int
+     * @var array
      */
-    private $key;
+    private $keys;
 
     /**
      * @var QueryInterface
@@ -25,18 +24,18 @@ class Get extends AbstractQuery
      * @param RethinkInterface $rethink
      * @param MessageInterface $message
      * @param QueryInterface $query
-     * @param string|int $key
+     * @param array $keys
      */
     public function __construct(
         RethinkInterface $rethink,
         MessageInterface $message,
         QueryInterface $query,
-        $key
+        array $keys
     ) {
         parent::__construct($rethink, $message);
 
         $this->query = $query;
-        $this->key = $key;
+        $this->keys = $keys;
         $this->rethink = $rethink;
         $this->message = $message;
     }
@@ -47,12 +46,12 @@ class Get extends AbstractQuery
     public function toArray(): array
     {
         return [
-            TermType::GET,
+            TermType::GET_ALL,
             [
                 $this->query->toArray(),
                 [
-                    TermType::DATUM,
-                    $this->key,
+                    TermType::MAKE_ARRAY,
+                    $this->keys,
                 ],
             ],
         ];

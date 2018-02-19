@@ -8,8 +8,8 @@ use TBolier\RethinkQL\Query\Operation\OperationInterface;
 interface TableInterface extends OperationInterface
 {
     /**
-     * @param string|int $value
+     * @param string|int $key
      * @return AbstractQuery
      */
-    public function get($value): AbstractQuery;
+    public function get($key): AbstractQuery;
 }
