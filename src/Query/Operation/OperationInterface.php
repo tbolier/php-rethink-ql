@@ -26,6 +26,12 @@ interface OperationInterface extends AggregationInterface
     public function filter(array $predicate): OperationInterface;
 
     /**
+     * @param array $keys
+     * @return OperationInterface
+     */
+    public function getAll(...$keys): OperationInterface;
+
+    /**
      * @param array $elements
      * @return QueryInterface
      */

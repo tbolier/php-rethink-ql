@@ -20,8 +20,11 @@ class FilterTest extends AbstractTableTest
             ->filter(['title' => 'Test document 1'])
             ->run();
 
+        /** @var array $array */
+        $array = $cursor->current();
+
         $this->assertInstanceOf(\Iterator::class, $cursor);
-        $this->assertInternalType('array', $cursor->current());
+        $this->assertArraySubset(['title' => 'Test document 1'], $array);
     }
 
     /**

@@ -3,10 +3,7 @@ declare(strict_types = 1);
 
 namespace TBolier\RethinkQL\IntegrationTest\Query;
 
-use ArrayObject;
-use TBolier\RethinkQL\Response\Cursor;
 use TBolier\RethinkQL\Response\ResponseInterface;
-use TBolier\RethinkQL\IntegrationTest\AbstractTestCase;
 
 class DeleteTest extends AbstractTableTest
 {

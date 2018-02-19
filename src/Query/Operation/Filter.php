@@ -14,6 +14,7 @@ class Filter extends AbstractOperation
      * @var array
      */
     private $predicate;
+
     /**
      * @var QueryInterface
      */

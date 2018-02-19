@@ -39,9 +39,9 @@ class Table extends AbstractOperation implements TableInterface
     /**
      * @inheritdoc
      */
-    public function get($value): AbstractQuery
+    public function get($key): AbstractQuery
     {
-        return new Get($this->rethink, $this->message, $this, $value);
+        return new Get($this->rethink, $this->message, $this, $key);
     }
 
     /**

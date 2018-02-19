@@ -30,16 +30,16 @@ abstract class AbstractTableTest extends AbstractTestCase
 
 
     /**
-     * @param int $documentId
+     * @param int|string $id
      * @return ResponseInterface
      */
-    protected function insertDocument(int $documentId): ResponseInterface
+    protected function insertDocument($id): ResponseInterface
     {
         $res = $this->r()
             ->table('tabletest')
             ->insert([
-                'id' => $documentId,
-                'title' => 'Test document '.$documentId,
+                'id' => $id,
+                'title' => 'Test document '.$id,
                 'description' => 'A document description.',
             ])
             ->run();
