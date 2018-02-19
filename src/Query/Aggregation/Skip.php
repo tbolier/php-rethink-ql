@@ -8,7 +8,7 @@ use TBolier\RethinkQL\Query\QueryInterface;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Term\TermType;
 
-class Limit extends AbstractAggregation
+class Skip extends AbstractAggregation
 {
     /**
      * @var int
@@ -46,7 +46,7 @@ class Limit extends AbstractAggregation
     public function toArray(): array
     {
         return [
-            TermType::LIMIT,
+            TermType::SKIP,
             [
                 $this->query->toArray(),
                 [
