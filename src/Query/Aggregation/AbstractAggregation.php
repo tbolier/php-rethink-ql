@@ -4,9 +4,18 @@ declare(strict_types = 1);
 namespace TBolier\RethinkQL\Query\Aggregation;
 
 use TBolier\RethinkQL\Query\AbstractQuery;
+use TBolier\RethinkQL\Query\QueryInterface;
 
 abstract class AbstractAggregation extends AbstractQuery implements AggregationInterface
 {
+    /**
+     * @inheritdoc
+     */
+    public function isEmpty(): QueryInterface
+    {
+        return new IsEmpty($this->rethink, $this->message, $this);
+    }
+
     /**
      * @inheritdoc
      */

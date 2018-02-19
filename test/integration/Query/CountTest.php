@@ -3,7 +3,6 @@ declare(strict_types = 1);
 
 namespace TBolier\RethinkQL\IntegrationTest\Query;
 
-use TBolier\RethinkQL\IntegrationTest\Query\AbstractTableTest;
 use TBolier\RethinkQL\Response\ResponseInterface;
 
 class CountTest extends AbstractTableTest

@@ -71,7 +71,7 @@
 | slice                  | ✘ | ✘ | |
 | nth                    | ✘ | ✘ | |
 | offsetsOf              | ✘ | ✘ | |
-| isEmpty                | ✘ | ✘ | |
+| isEmpty                | ✘ | ✓ | |
 | union                  | ✘ | ✘ | |
 | sample                 | ✘ | ✘ | |
 | | | | |
@@ -80,7 +80,7 @@
 | ungroup                | ✘ | ✘ | |
 | reduce                 | ✘ | ✘ | |
 | fold                   | ✘ | ✘ | |
-| count                  | ✘ | ✘ | |
+| count                  | ✓ | ✓ | |
 | sum                    | ✘ | ✘ | |
 | avg                    | ✘ | ✘ | |
 | min                    | ✘ | ✘ | |
