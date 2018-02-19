@@ -15,6 +15,12 @@ interface AggregationInterface
     public function limit($n): AggregationInterface;
 
     /**
+     * @param int $n
+     * @return AggregationInterface
+     */
+    public function skip($n): AggregationInterface;
+
+    /**
      * @param mixed|QueryInterface $key
      * @return AggregationInterface
      */

@@ -66,7 +66,7 @@
 | withFields             | ✘ | ✘ | |
 | concatMap              | ✘ | ✘ | |
 | orderBy                | ✘ | ✓ | |
-| skip                   | ✘ | ✘ | |
+| skip                   | ✘ | ✓ | |
 | limit                  | ✘ | ✓ | |
 | slice                  | ✘ | ✘ | |
 | nth                    | ✘ | ✘ | |

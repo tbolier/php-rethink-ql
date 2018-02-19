@@ -18,6 +18,14 @@ abstract class AbstractAggregation extends AbstractQuery implements AggregationI
     /**
      * @inheritdoc
      */
+    public function skip($value): AggregationInterface
+    {
+        return new Skip($this->rethink, $this->message, $this, $value);
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function orderBy($key): AggregationInterface
     {
         return new OrderBy($this->rethink, $this->message, $this, $key);
