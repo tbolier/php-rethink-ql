@@ -26,6 +26,6 @@ class AvgTest extends AbstractTableTest
             ->avg('number')
             ->run();
 
-        $this->assertInternalType('float', $res->getData());
+        $this->assertTrue(is_float($res->getData()) || is_int($res->getData()));
     }
 }

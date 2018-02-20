@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace TBolier\RethinkQL\Query\Operation;
+namespace TBolier\RethinkQL\Query\Aggregation;
 
 use TBolier\RethinkQL\Message\MessageInterface;
 use TBolier\RethinkQL\Query\AbstractQuery;

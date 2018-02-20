@@ -1,20 +1,16 @@
 <?php
 declare(strict_types = 1);
 
-namespace TBolier\RethinkQL\Query\Aggregation;
+namespace TBolier\RethinkQL\Query\Transformation;
 
 use TBolier\RethinkQL\Message\MessageInterface;
+use TBolier\RethinkQL\Query\AbstractQuery;
 use TBolier\RethinkQL\Query\QueryInterface;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Term\TermType;
 
-class OrderBy extends AbstractAggregation
+class IsEmpty extends AbstractQuery
 {
-    /**
-     * @var mixed|QueryInterface
-     */
-    private $key;
-
     /**
      * @var QueryInterface
      */
@@ -24,18 +20,12 @@ class OrderBy extends AbstractAggregation
      * @param RethinkInterface $rethink
      * @param MessageInterface $message
      * @param QueryInterface $query
-     * @param mixed $key
      */
-    public function __construct(
-        RethinkInterface $rethink,
-        MessageInterface $message,
-        QueryInterface $query,
-        $key
-    ) {
+    public function __construct(RethinkInterface $rethink, MessageInterface $message, QueryInterface $query)
+    {
         parent::__construct($rethink, $message);
 
         $this->query = $query;
-        $this->key = $key;
         $this->rethink = $rethink;
         $this->message = $message;
     }
@@ -45,13 +35,10 @@ class OrderBy extends AbstractAggregation
      */
     public function toArray(): array
     {
-        $ordering = $this->key instanceof QueryInterface ? $this->key->toArray() : $this->key;
-
         return [
-            TermType::ORDER_BY,
+            TermType::IS_EMPTY,
             [
                 $this->query->toArray(),
-                $ordering
             ],
         ];
     }
