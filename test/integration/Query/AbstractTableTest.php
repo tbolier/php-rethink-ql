@@ -40,6 +40,7 @@ abstract class AbstractTableTest extends AbstractTestCase
             ->insert([
                 'id' => $id,
                 'title' => 'Test document '.$id,
+                'number' => rand(15, 60),
                 'description' => 'A document description.',
             ])
             ->run();

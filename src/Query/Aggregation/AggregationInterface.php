@@ -32,6 +32,30 @@ interface AggregationInterface
     public function orderBy($key): AggregationInterface;
 
     /**
+     * @param string $key
+     * @return AggregationInterface
+     */
+    public function sum($key): AggregationInterface;
+
+    /**
+     * @param string $key
+     * @return AggregationInterface
+     */
+    public function avg($key): AggregationInterface;
+
+    /**
+     * @param string $key
+     * @return AggregationInterface
+     */
+    public function min($key): AggregationInterface;
+
+    /**
+     * @param string $key
+     * @return AggregationInterface
+     */
+    public function max($key): AggregationInterface;
+
+    /**
      * @return Iterable|ResponseInterface
      */
     public function run();

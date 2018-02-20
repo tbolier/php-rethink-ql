@@ -39,4 +39,36 @@ abstract class AbstractAggregation extends AbstractQuery implements AggregationI
     {
         return new OrderBy($this->rethink, $this->message, $this, $key);
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function sum($key): AggregationInterface
+    {
+        return new Sum($this->rethink, $this->message, $this, $key);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function avg($key): AggregationInterface
+    {
+        return new Avg($this->rethink, $this->message, $this, $key);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function min($key): AggregationInterface
+    {
+        return new Min($this->rethink, $this->message, $this, $key);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function max($key): AggregationInterface
+    {
+        return new Max($this->rethink, $this->message, $this, $key);
+    }
 }
