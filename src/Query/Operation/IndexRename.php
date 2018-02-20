@@ -4,16 +4,22 @@ declare(strict_types = 1);
 namespace TBolier\RethinkQL\Query\Operation;
 
 use TBolier\RethinkQL\Message\MessageInterface;
+use TBolier\RethinkQL\Query\AbstractQuery;
 use TBolier\RethinkQL\Query\QueryInterface;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Term\TermType;
 
-class GetAll extends AbstractOperation
+class IndexRename extends AbstractQuery
 {
     /**
-     * @var array
+     * @var string
      */
-    private $keys;
+    private $oldValue;
+
+    /**
+     * @var string
+     */
+    private $newValue;
 
     /**
      * @var QueryInterface
@@ -23,21 +29,24 @@ class GetAll extends AbstractOperation
     /**
      * @param RethinkInterface $rethink
      * @param MessageInterface $message
-     * @param QueryInterface   $query
-     * @param array            $keys
+     * @param QueryInterface $query
+     * @param string $oldValue
+     * @param string $newValue
      */
     public function __construct(
         RethinkInterface $rethink,
         MessageInterface $message,
         QueryInterface $query,
-        array $keys
+        string $oldValue,
+        string $newValue
     ) {
         parent::__construct($rethink, $message);
 
-        $this->query   = $query;
-        $this->keys    = $keys;
+        $this->query = $query;
         $this->rethink = $rethink;
         $this->message = $message;
+        $this->oldValue = $oldValue;
+        $this->newValue = $newValue;
     }
 
     /**
@@ -46,10 +55,18 @@ class GetAll extends AbstractOperation
     public function toArray(): array
     {
         return [
-            TermType::GET_ALL,
-            array_merge([$this->query->toArray()],
-                array_values($this->keys)
-            ),
+            TermType::INDEX_RENAME,
+            [
+                $this->query->toArray(),
+                [
+                    TermType::DATUM,
+                    $this->oldValue,
+                ],
+                [
+                    TermType::DATUM,
+                    $this->newValue,
+                ],
+            ],
         ];
     }
 }

@@ -26,9 +26,7 @@ class GetAllTest extends AbstractTableTest
         /** @var array $array */
         $array = $cursor->current();
 
-        // todo: remove assertNull
-        $this->assertNull($array);
-//        $this->assertArraySubset(['title' => 'Test document 1'], $array);
+        $this->assertArraySubset(['description' => 'A document description.'], $array);
     }
 
     /**
@@ -38,16 +36,15 @@ class GetAllTest extends AbstractTableTest
     public function testGetAllAndCount(): void
     {
         $this->insertDocument(1);
-        $this->insertDocument(2);
+        $this->insertDocument('stringId');
 
         /** @var ResponseInterface $res */
         $res = $this->r()
                     ->table('tabletest')
-                    ->getAll(1, 2)
+                    ->getAll(1, 'stringId')
                     ->count()
                     ->run();
 
-        // todo: change to 2
-        $this->assertEquals(0, $res->getData());
+        $this->assertEquals(2, $res->getData());
     }
 }

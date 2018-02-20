@@ -126,6 +126,9 @@ abstract class AbstractTestCase extends TestCase
         $statuses = [
             'tables_created',
             'tables_dropped',
+            'created',
+            'dropped',
+            'renamed',
             'unchanged',
             'skipped',
             'replaced',

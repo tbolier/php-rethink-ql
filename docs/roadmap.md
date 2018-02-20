@@ -34,10 +34,10 @@
 | tableCreate            | ✓ | ✓ | |
 | tableDrop              | ✓ | ✓ | |
 | tableList              | ✓ | ✓ | |
-| indexCreate            | ✘ | ✘ | |
-| indexDrop              | ✘ | ✘ | | 
-| indexList              | ✘ | ✘ | |
-| indexRename            | ✘ | ✘ | |
+| indexCreate            | ✘ | ✓ | |
+| indexDrop              | ✘ | ✓ | | 
+| indexList              | ✘ | ✓ | |
+| indexRename            | ✘ | ✓ | |
 | indexStatus            | ✘ | ✘ | |
 | indexWait              | ✘ | ✘ | |
 | | | | |
