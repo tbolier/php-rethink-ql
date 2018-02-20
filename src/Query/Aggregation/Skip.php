@@ -24,7 +24,7 @@ class Skip extends AbstractAggregation
      * @param RethinkInterface $rethink
      * @param MessageInterface $message
      * @param QueryInterface $query
-     * @param $n
+     * @param int $n
      */
     public function __construct(
         RethinkInterface $rethink,
