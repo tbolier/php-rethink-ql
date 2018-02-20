@@ -12,11 +12,6 @@ interface OperationInterface extends AggregationInterface
     /**
      * @return QueryInterface
      */
-    public function count(): QueryInterface;
-
-    /**
-     * @return QueryInterface
-     */
     public function delete(): QueryInterface;
 
     /**

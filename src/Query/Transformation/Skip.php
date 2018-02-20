@@ -1,14 +1,14 @@
 <?php
 declare(strict_types = 1);
 
-namespace TBolier\RethinkQL\Query\Aggregation;
+namespace TBolier\RethinkQL\Query\Transformation;
 
 use TBolier\RethinkQL\Message\MessageInterface;
 use TBolier\RethinkQL\Query\QueryInterface;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Term\TermType;
 
-class Limit extends AbstractAggregation
+class Skip extends AbstractTransformation
 {
     /**
      * @var int
@@ -24,7 +24,7 @@ class Limit extends AbstractAggregation
      * @param RethinkInterface $rethink
      * @param MessageInterface $message
      * @param QueryInterface $query
-     * @param $n
+     * @param int $n
      */
     public function __construct(
         RethinkInterface $rethink,
@@ -46,7 +46,7 @@ class Limit extends AbstractAggregation
     public function toArray(): array
     {
         return [
-            TermType::LIMIT,
+            TermType::SKIP,
             [
                 $this->query->toArray(),
                 [

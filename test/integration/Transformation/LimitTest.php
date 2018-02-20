@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace TBolier\RethinkQL\IntegrationTest\Aggregation;
+namespace TBolier\RethinkQL\IntegrationTest\Transformation;
 
 use TBolier\RethinkQL\IntegrationTest\Query\AbstractTableTest;
 use TBolier\RethinkQL\Response\Cursor;

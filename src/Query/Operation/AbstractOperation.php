@@ -11,14 +11,6 @@ abstract class AbstractOperation extends AbstractAggregation implements Operatio
     /**
      * @inheritdoc
      */
-    public function count(): QueryInterface
-    {
-        return new Count($this->rethink, $this->message, $this);
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function delete(): QueryInterface
     {
         return new Delete($this->rethink, $this->message, $this);
