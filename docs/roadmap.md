@@ -81,10 +81,10 @@
 | reduce                 | ✘ | ✘ | |
 | fold                   | ✘ | ✘ | |
 | count                  | ✓ | ✓ | |
-| sum                    | ✘ | ✘ | |
-| avg                    | ✘ | ✘ | |
-| min                    | ✘ | ✘ | |
-| max                    | ✘ | ✘ | |
+| sum                    | ✘ | ✓ | |
+| avg                    | ✘ | ✓ | |
+| min                    | ✘ | ✓ | |
+| max                    | ✘ | ✓ | |
 | distinct               | ✘ | ✘ | |
 | contains               | ✘ | ✘ | |
 | | | | |

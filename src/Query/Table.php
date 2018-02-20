@@ -54,7 +54,6 @@ class Table extends AbstractOperation implements TableInterface
     public function indexCreate(string $name): AbstractQuery
     {
         return new IndexCreate($this->rethink, $this->message, $this, $name);
-
     }
 
     /**
@@ -63,7 +62,6 @@ class Table extends AbstractOperation implements TableInterface
     public function indexDrop(string $name): AbstractQuery
     {
         return new IndexDrop($this->rethink, $this->message, $this, $name);
-
     }
 
     /**
@@ -80,7 +78,6 @@ class Table extends AbstractOperation implements TableInterface
     public function indexRename(string $oldValue, string $newValue): AbstractQuery
     {
         return new IndexRename($this->rethink, $this->message, $this, $oldValue, $newValue);
-
     }
 
     /**
