@@ -4,16 +4,17 @@ declare(strict_types = 1);
 namespace TBolier\RethinkQL\Query\Operation;
 
 use TBolier\RethinkQL\Message\MessageInterface;
+use TBolier\RethinkQL\Query\AbstractQuery;
 use TBolier\RethinkQL\Query\QueryInterface;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Term\TermType;
 
-class GetAll extends AbstractOperation
+class IndexCreate extends AbstractQuery
 {
     /**
-     * @var array
+     * @var string
      */
-    private $keys;
+    private $name;
 
     /**
      * @var QueryInterface
@@ -23,21 +24,21 @@ class GetAll extends AbstractOperation
     /**
      * @param RethinkInterface $rethink
      * @param MessageInterface $message
-     * @param QueryInterface   $query
-     * @param array            $keys
+     * @param QueryInterface $query
+     * @param string $name
      */
     public function __construct(
         RethinkInterface $rethink,
         MessageInterface $message,
         QueryInterface $query,
-        array $keys
+        string $name
     ) {
         parent::__construct($rethink, $message);
 
-        $this->query   = $query;
-        $this->keys    = $keys;
+        $this->query = $query;
         $this->rethink = $rethink;
         $this->message = $message;
+        $this->name = $name;
     }
 
     /**
@@ -46,10 +47,14 @@ class GetAll extends AbstractOperation
     public function toArray(): array
     {
         return [
-            TermType::GET_ALL,
-            array_merge([$this->query->toArray()],
-                array_values($this->keys)
-            ),
+            TermType::INDEX_CREATE,
+            [
+                $this->query->toArray(),
+                [
+                    TermType::DATUM,
+                    $this->name,
+                ],
+            ],
         ];
     }
 }
