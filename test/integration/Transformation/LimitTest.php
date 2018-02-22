@@ -41,6 +41,8 @@ class LimitTest extends AbstractTableTest
         $this->insertDocument(4);
         $this->insertDocument(5);
 
+        // todo: check
+
         /** @var Cursor $cursor */
         $cursor = $this->r()
                        ->table('tabletest')

@@ -47,4 +47,42 @@ class GetAllTest extends AbstractTableTest
 
         $this->assertEquals(2, $res->getData());
     }
+
+    /**
+     * @return void
+     * @throws \Exception
+     */
+    public function testGetAllAndSum(): void
+    {
+        $this->insertDocument(1);
+        $this->insertDocument('stringId');
+
+        /** @var ResponseInterface $res */
+        $res = $this->r()
+                       ->table('tabletest')
+                       ->getAll(1, 'stringId')
+                       ->sum('number')
+                       ->run();
+
+        $this->assertInternalType('int', $res->getData());
+    }
+
+//    /**
+//     * @return void
+//     * @throws \Exception
+//     */
+//    public function testGetAllAndIsEmpty(): void
+//    {
+//        $this->insertDocument(1);
+//        $this->insertDocument('stringId');
+//
+//        /** @var ResponseInterface $res */
+//        $res = $this->r()
+//                    ->table('tabletest')
+//                    ->getAll(1, 'stringId')
+//                    ->isEmpty()
+//                    ->run();
+//
+//        $this->assertFalse($res->getData());
+//    }
 }

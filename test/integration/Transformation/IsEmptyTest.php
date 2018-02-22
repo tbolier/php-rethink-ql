@@ -34,4 +34,24 @@ class IsEmptyTest extends AbstractTableTest
 
         $this->assertFalse($res->getData());
     }
+
+    /**
+     * @throws \Exception
+     */
+    public function testFilterIsNotEmpty()
+    {
+        $this->insertDocument(1);
+        $this->insertDocument(2);
+        $this->insertDocument(3);
+        $this->insertDocument(4);
+        $this->insertDocument(5);
+
+        $res = $this->r()
+                    ->table('tabletest')
+                    ->filter(['description' => 'A document description.'])
+                    ->isEmpty()
+                    ->run();
+
+        $this->assertFalse($res->getData());
+    }
 }

@@ -3,10 +3,10 @@ declare(strict_types = 1);
 
 namespace TBolier\RethinkQL\Query\Aggregation;
 
+use TBolier\RethinkQL\Query\AbstractQuery;
 use TBolier\RethinkQL\Query\QueryInterface;
-use TBolier\RethinkQL\Query\Transformation\AbstractTransformation;
 
-abstract class AbstractAggregation extends AbstractTransformation implements AggregationInterface
+abstract class AbstractAggregation extends AbstractQuery implements AggregationInterface
 {
     /**
      * @inheritdoc
@@ -19,7 +19,7 @@ abstract class AbstractAggregation extends AbstractTransformation implements Agg
     /**
      * @inheritdoc
      */
-    public function sum($key): AggregationInterface
+    public function sum($key): QueryInterface
     {
         return new Sum($this->rethink, $this->message, $this, $key);
     }
@@ -27,7 +27,7 @@ abstract class AbstractAggregation extends AbstractTransformation implements Agg
     /**
      * @inheritdoc
      */
-    public function avg($key): AggregationInterface
+    public function avg($key): QueryInterface
     {
         return new Avg($this->rethink, $this->message, $this, $key);
     }

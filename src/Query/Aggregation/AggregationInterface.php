@@ -4,10 +4,9 @@ declare(strict_types = 1);
 namespace TBolier\RethinkQL\Query\Aggregation;
 
 use TBolier\RethinkQL\Query\QueryInterface;
-use TBolier\RethinkQL\Query\Transformation\TransformationInterface;
 use TBolier\RethinkQL\Response\ResponseInterface;
 
-interface AggregationInterface extends TransformationInterface
+interface AggregationInterface
 {
     /**
      * @return QueryInterface
@@ -16,15 +15,15 @@ interface AggregationInterface extends TransformationInterface
 
     /**
      * @param string $key
-     * @return AggregationInterface
+     * @return QueryInterface
      */
-    public function sum($key): AggregationInterface;
+    public function sum($key): QueryInterface;
 
     /**
      * @param string $key
-     * @return AggregationInterface
+     * @return QueryInterface
      */
-    public function avg($key): AggregationInterface;
+    public function avg($key): QueryInterface;
 
     /**
      * @param string $key
