@@ -49,26 +49,4 @@ class OrderByTest extends AbstractTableTest
 
         $this->assertArraySubset(['id' => 1], $res->getData()[0]);
     }
-
-    /**
-     * @return void
-     * @throws \Exception
-     */
-    public function testFilterAndOrderByAsc(): void
-    {
-        $this->insertDocument(5);
-        $this->insertDocument(4);
-        $this->insertDocument(3);
-        $this->insertDocument(2);
-        $this->insertDocument(1);
-
-        /** @var ResponseInterface $res */
-        $res = $this->r()
-                    ->table('tabletest')
-                    ->filter(['description' => 'A document description.'])
-                    ->orderBy($this->r()->asc('id'))
-                    ->run();
-
-        $this->assertArraySubset(['id' => 1], $res->getData()[0]);
-    }
 }
