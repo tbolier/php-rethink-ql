@@ -4,16 +4,16 @@ declare(strict_types = 1);
 namespace TBolier\RethinkQL\Query;
 
 use TBolier\RethinkQL\Message\MessageInterface;
-use TBolier\RethinkQL\Query\Operation\AbstractOperation;
 use TBolier\RethinkQL\Query\Operation\Get;
 use TBolier\RethinkQL\Query\Operation\IndexCreate;
 use TBolier\RethinkQL\Query\Operation\IndexDrop;
 use TBolier\RethinkQL\Query\Operation\IndexList;
 use TBolier\RethinkQL\Query\Operation\IndexRename;
+use TBolier\RethinkQL\Query\Transformation\AbstractTransformationCompound;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Term\TermType;
 
-class Table extends AbstractOperation implements TableInterface
+class Table extends AbstractTransformationCompound implements TableInterface
 {
     /**
      * @var array

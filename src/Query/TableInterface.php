@@ -4,8 +4,9 @@ declare(strict_types = 1);
 namespace TBolier\RethinkQL\Query;
 
 use TBolier\RethinkQL\Query\Operation\OperationInterface;
+use TBolier\RethinkQL\Query\Transformation\TransformationInterface;
 
-interface TableInterface extends OperationInterface
+interface TableInterface extends OperationInterface, TransformationInterface
 {
     /**
      * @param string|int $key
