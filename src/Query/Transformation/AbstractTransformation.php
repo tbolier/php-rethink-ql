@@ -19,7 +19,7 @@ abstract class AbstractTransformation extends AbstractQuery implements Transform
     /**
      * @inheritdoc
      */
-    public function limit($value): TransformationInterface
+    public function limit($value): TransformationCompoundInterface
     {
         return new Limit($this->rethink, $this->message, $this, $value);
     }
@@ -27,7 +27,7 @@ abstract class AbstractTransformation extends AbstractQuery implements Transform
     /**
      * @inheritdoc
      */
-    public function skip($value): TransformationInterface
+    public function skip($value): TransformationCompoundInterface
     {
         return new Skip($this->rethink, $this->message, $this, $value);
     }
@@ -35,7 +35,7 @@ abstract class AbstractTransformation extends AbstractQuery implements Transform
     /**
      * @inheritdoc
      */
-    public function orderBy($key): TransformationInterface
+    public function orderBy($key): TransformationCompoundInterface
     {
         return new OrderBy($this->rethink, $this->message, $this, $key);
     }

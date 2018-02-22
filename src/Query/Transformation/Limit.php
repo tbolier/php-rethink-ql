@@ -8,7 +8,7 @@ use TBolier\RethinkQL\Query\QueryInterface;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Term\TermType;
 
-class Limit extends AbstractTransformation
+class Limit extends AbstractTransformationCompound
 {
     /**
      * @var int

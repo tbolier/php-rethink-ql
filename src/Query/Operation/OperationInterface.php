@@ -5,6 +5,7 @@ namespace TBolier\RethinkQL\Query\Operation;
 
 use TBolier\RethinkQL\Query\Aggregation\AggregationInterface;
 use TBolier\RethinkQL\Query\QueryInterface;
+use TBolier\RethinkQL\Query\Transformation\TransformationCompoundInterface;
 use TBolier\RethinkQL\Response\ResponseInterface;
 
 interface OperationInterface extends AggregationInterface
@@ -16,15 +17,15 @@ interface OperationInterface extends AggregationInterface
 
     /**
      * @param array $predicate
-     * @return OperationInterface
+     * @return TransformationCompoundInterface
      */
-    public function filter(array $predicate): OperationInterface;
+    public function filter(array $predicate): TransformationCompoundInterface;
 
     /**
      * @param int|string|array $keys
-     * @return OperationInterface
+     * @return TransformationCompoundInterface
      */
-    public function getAll(...$keys): OperationInterface;
+    public function getAll(...$keys): TransformationCompoundInterface;
 
     /**
      * @param array $elements

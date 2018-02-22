@@ -17,25 +17,25 @@ interface AggregationInterface
      * @param string $key
      * @return QueryInterface
      */
-    public function sum($key): QueryInterface;
+    public function sum(string $key): QueryInterface;
 
     /**
      * @param string $key
      * @return QueryInterface
      */
-    public function avg($key): QueryInterface;
+    public function avg(string $key): QueryInterface;
 
     /**
      * @param string $key
      * @return AggregationInterface
      */
-    public function min($key): AggregationInterface;
+    public function min(string $key): AggregationInterface;
 
     /**
      * @param string $key
      * @return AggregationInterface
      */
-    public function max($key): AggregationInterface;
+    public function max(string $key): AggregationInterface;
 
     /**
      * @return Iterable|ResponseInterface

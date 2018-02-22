@@ -33,6 +33,25 @@ class GetAllTest extends AbstractTableTest
      * @return void
      * @throws \Exception
      */
+    public function testGetAllAndIsEmpty(): void
+    {
+        $this->insertDocument(1);
+        $this->insertDocument('stringId');
+
+        /** @var ResponseInterface $res */
+        $res = $this->r()
+            ->table('tabletest')
+            ->getAll(1, 'stringId')
+            ->isEmpty()
+            ->run();
+
+        $this->assertFalse($res->getData());
+    }
+
+    /**
+     * @return void
+     * @throws \Exception
+     */
     public function testGetAllAndCount(): void
     {
         $this->insertDocument(1);
@@ -52,37 +71,132 @@ class GetAllTest extends AbstractTableTest
      * @return void
      * @throws \Exception
      */
+    public function testGetAllAndAvg(): void
+    {
+        $this->insertDocumentWithNumber(1, 50);
+        $this->insertDocumentWithNumber(2, 100);
+
+        /** @var ResponseInterface $res */
+        $res = $this->r()
+            ->table('tabletest')
+            ->getAll(1, 2)
+            ->avg('number')
+            ->run();
+
+        $this->assertEquals(75, $res->getData());
+    }
+
+    /**
+     * @return void
+     * @throws \Exception
+     */
     public function testGetAllAndSum(): void
+    {
+        $this->insertDocumentWithNumber(1, 50);
+        $this->insertDocumentWithNumber(2, 100);
+
+        /** @var ResponseInterface $res */
+        $res = $this->r()
+                       ->table('tabletest')
+                       ->getAll(1, 2)
+                       ->sum('number')
+                       ->run();
+
+        $this->assertEquals(150, $res->getData());
+    }
+
+    /**
+     * @return void
+     * @throws \Exception
+     */
+    public function testGetAllAndLimit(): void
+    {
+        $this->insertDocument(1);
+        $this->insertDocument('stringId');
+
+        /** @var ResponseInterface $res */
+        $cursor = $this->r()
+            ->table('tabletest')
+            ->getAll(1, 'stringId')
+            ->limit(1)
+            ->run();
+
+        $this->assertCount(1, $cursor);
+    }
+
+    /**
+     * @return void
+     * @throws \Exception
+     */
+    public function testGetAllAndSkip(): void
+    {
+        $this->insertDocument(1);
+        $this->insertDocument('stringId');
+
+        /** @var ResponseInterface $res */
+        $cursor = $this->r()
+            ->table('tabletest')
+            ->getAll(1, 'stringId')
+            ->skip(1)
+            ->run();
+
+        $this->assertCount(1, $cursor);
+    }
+
+    /**
+     * @return void
+     * @throws \Exception
+     */
+    public function testGetAllAndOrderBy(): void
     {
         $this->insertDocument(1);
         $this->insertDocument('stringId');
 
         /** @var ResponseInterface $res */
         $res = $this->r()
-                       ->table('tabletest')
-                       ->getAll(1, 'stringId')
-                       ->sum('number')
-                       ->run();
+            ->table('tabletest')
+            ->getAll(1, 'stringId')
+            ->orderBy($this->r()->desc('id'))
+            ->run();
 
-        $this->assertInternalType('int', $res->getData());
+        $this->assertArraySubset(['id' => 'stringId'], $res->getData()[0]);
     }
 
-//    /**
-//     * @return void
-//     * @throws \Exception
-//     */
-//    public function testGetAllAndIsEmpty(): void
-//    {
-//        $this->insertDocument(1);
-//        $this->insertDocument('stringId');
-//
-//        /** @var ResponseInterface $res */
-//        $res = $this->r()
-//                    ->table('tabletest')
-//                    ->getAll(1, 'stringId')
-//                    ->isEmpty()
-//                    ->run();
-//
-//        $this->assertFalse($res->getData());
-//    }
+    /**
+     * @return void
+     * @throws \Exception
+     */
+    public function testGetAllAndMin(): void
+    {
+        $this->insertDocumentWithNumber(1, 77);
+        $this->insertDocumentWithNumber(2, 99);
+
+        /** @var ResponseInterface $res */
+        $res = $this->r()
+            ->table('tabletest')
+            ->getAll(1, 2)
+            ->min('number')
+            ->run();
+
+        $this->assertArraySubset(['number' => 77], $res->getData());
+    }
+
+    /**
+     * @return void
+     * @throws \Exception
+     */
+    public function testGetAllAndMax(): void
+    {
+        $this->insertDocumentWithNumber(1, 77);
+        $this->insertDocumentWithNumber(2, 99);
+
+        /** @var ResponseInterface $res */
+        $res = $this->r()
+            ->table('tabletest')
+            ->getAll(1, 2)
+            ->max('number')
+            ->run();
+
+        $this->assertArraySubset(['number' => 99], $res->getData());
+    }
 }

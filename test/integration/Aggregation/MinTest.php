@@ -14,11 +14,11 @@ class MinTest extends AbstractTableTest
      */
     public function testMin(): void
     {
-        $this->insertDocument(5);
-        $this->insertDocument(4);
-        $this->insertDocument(3);
-        $this->insertDocument(2);
-        $this->insertDocument(1);
+        $this->insertDocumentWithNumber(5, 99);
+        $this->insertDocumentWithNumber(4, 77);
+        $this->insertDocumentWithNumber(3, 1045);
+        $this->insertDocumentWithNumber(2,4);
+        $this->insertDocumentWithNumber(1, 43534);
 
         /** @var ResponseInterface $res */
         $res = $this->r()
@@ -29,6 +29,6 @@ class MinTest extends AbstractTableTest
         /** @var array $array */
         $array = $res->getData();
 
-        $this->assertArraySubset(['description' => 'A document description.'], $array);
+        $this->assertArraySubset(['number' => 4], $array);
     }
 }

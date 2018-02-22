@@ -8,7 +8,7 @@ use TBolier\RethinkQL\Query\QueryInterface;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Term\TermType;
 
-class OrderBy extends AbstractTransformation
+class OrderBy extends AbstractTransformationCompound
 {
     /**
      * @var mixed|QueryInterface
