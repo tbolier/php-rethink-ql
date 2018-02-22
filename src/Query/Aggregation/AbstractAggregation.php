@@ -19,7 +19,7 @@ abstract class AbstractAggregation extends AbstractQuery implements AggregationI
     /**
      * @inheritdoc
      */
-    public function sum($key): QueryInterface
+    public function sum(string $key): QueryInterface
     {
         return new Sum($this->rethink, $this->message, $this, $key);
     }
@@ -27,7 +27,7 @@ abstract class AbstractAggregation extends AbstractQuery implements AggregationI
     /**
      * @inheritdoc
      */
-    public function avg($key): QueryInterface
+    public function avg(string $key): QueryInterface
     {
         return new Avg($this->rethink, $this->message, $this, $key);
     }
@@ -35,7 +35,7 @@ abstract class AbstractAggregation extends AbstractQuery implements AggregationI
     /**
      * @inheritdoc
      */
-    public function min($key): AggregationInterface
+    public function min(string $key): AggregationInterface
     {
         return new Min($this->rethink, $this->message, $this, $key);
     }
@@ -43,7 +43,7 @@ abstract class AbstractAggregation extends AbstractQuery implements AggregationI
     /**
      * @inheritdoc
      */
-    public function max($key): AggregationInterface
+    public function max(string $key): AggregationInterface
     {
         return new Max($this->rethink, $this->message, $this, $key);
     }

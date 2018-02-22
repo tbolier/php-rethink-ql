@@ -3,10 +3,11 @@ declare(strict_types = 1);
 
 namespace TBolier\RethinkQL\Query\Transformation;
 
+use TBolier\RethinkQL\Query\Operation\OperationInterface;
 use TBolier\RethinkQL\Query\QueryInterface;
 use TBolier\RethinkQL\Response\ResponseInterface;
 
-interface TransformationInterface
+interface TransformationCompoundInterface extends OperationInterface
 {
     /**
      * @return QueryInterface

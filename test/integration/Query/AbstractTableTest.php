@@ -28,7 +28,6 @@ abstract class AbstractTableTest extends AbstractTestCase
         parent::tearDown();
     }
 
-
     /**
      * @param int|string $id
      * @return ResponseInterface
@@ -40,7 +39,26 @@ abstract class AbstractTableTest extends AbstractTestCase
             ->insert([
                 'id' => $id,
                 'title' => 'Test document '.$id,
-                'number' => rand(15, 60),
+                'description' => 'A document description.',
+            ])
+            ->run();
+
+        return $res;
+    }
+
+    /**
+     * @param int|string $id
+     * @param int $number
+     * @return ResponseInterface
+     */
+    protected function insertDocumentWithNumber($id, int $number): ResponseInterface
+    {
+        $res = $this->r()
+            ->table('tabletest')
+            ->insert([
+                'id' => $id,
+                'title' => 'Test document '.$id,
+                'number' => $number,
                 'description' => 'A document description.',
             ])
             ->run();

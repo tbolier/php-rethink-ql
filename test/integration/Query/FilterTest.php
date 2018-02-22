@@ -49,94 +49,173 @@ class FilterTest extends AbstractTableTest
     }
 
     /**
+     * @return void
      * @throws \Exception
      */
-    public function testFilterAndAvg()
+    public function testFilterAndIsEmpty(): void
     {
         $this->insertDocument(1);
-        $this->insertDocument(2);
-        $this->insertDocument(3);
-        $this->insertDocument(4);
-        $this->insertDocument(5);
+        $this->insertDocument('stringId');
 
-        /** @var ResponseInterface $cursor */
+        /** @var ResponseInterface $res */
         $res = $this->r()
-                       ->table('tabletest')
-                       ->filter(['title' => 'Test document 1'])
-                       ->avg('number')
-                       ->run();
+            ->table('tabletest')
+            ->filter(['id' => 1])
+            ->isEmpty()
+            ->run();
 
-        $this->assertTrue(is_float($res->getData()) || is_int($res->getData()));
+        $this->assertFalse($res->getData());
     }
 
     /**
+     * @return void
      * @throws \Exception
      */
-    public function testFilterAndSum()
+    public function testFilterAndCount(): void
     {
         $this->insertDocument(1);
-        $this->insertDocument(2);
-        $this->insertDocument(3);
-        $this->insertDocument(4);
-        $this->insertDocument(5);
+        $this->insertDocument('stringId');
 
-        /** @var ResponseInterface $cursor */
+        /** @var ResponseInterface $res */
         $res = $this->r()
-                    ->table('tabletest')
-                    ->filter(['title' => 'Test document 1'])
-                    ->sum('number')
-                    ->run();
+            ->table('tabletest')
+            ->filter(['description' => 'A document description.'])
+            ->count()
+            ->run();
 
-        $this->assertTrue(is_float($res->getData()) || is_int($res->getData()));
+        $this->assertEquals(2, $res->getData());
     }
 
     /**
+     * @return void
      * @throws \Exception
      */
-    public function testFilterAndMin()
+    public function testFilterAndAvg(): void
     {
-        $this->insertDocument(1);
-        $this->insertDocument(2);
-        $this->insertDocument(3);
-        $this->insertDocument(4);
-        $this->insertDocument(5);
+        $this->insertDocumentWithNumber(1, 50);
+        $this->insertDocumentWithNumber(2, 100);
 
-        /** @var ResponseInterface $cursor */
+        /** @var ResponseInterface $res */
         $res = $this->r()
-                    ->table('tabletest')
-                    ->filter(['title' => 'Test document 1'])
-                    ->min('number')
-                    ->run();
+            ->table('tabletest')
+            ->filter(['description' => 'A document description.'])
+            ->avg('number')
+            ->run();
 
-        /** @var array $array */
-        $array = $res->getData();
-
-        $this->assertArraySubset(['description' => 'A document description.'], $array);
+        $this->assertEquals(75, $res->getData());
     }
 
     /**
+     * @return void
      * @throws \Exception
      */
-    public function testFilterAndMax()
+    public function testFilterAndSum(): void
     {
-        $this->insertDocument(1);
-        $this->insertDocument(2);
-        $this->insertDocument(3);
-        $this->insertDocument(4);
-        $this->insertDocument(5);
+        $this->insertDocumentWithNumber(1, 50);
+        $this->insertDocumentWithNumber(2, 100);
 
-        /** @var ResponseInterface $cursor */
+        /** @var ResponseInterface $res */
         $res = $this->r()
-                    ->table('tabletest')
-                    ->filter(['title' => 'Test document 1'])
-                    ->max('number')
-                    ->run();
+            ->table('tabletest')
+            ->filter(['description' => 'A document description.'])
+            ->sum('number')
+            ->run();
 
-        /** @var array $array */
-        $array = $res->getData();
-
-        $this->assertArraySubset(['description' => 'A document description.'], $array);
+        $this->assertEquals(150, $res->getData());
     }
 
+    /**
+     * @return void
+     * @throws \Exception
+     */
+    public function testFilterAndLimit(): void
+    {
+        $this->insertDocument(1);
+        $this->insertDocument('stringId');
 
+        /** @var ResponseInterface $res */
+        $cursor = $this->r()
+            ->table('tabletest')
+            ->filter(['description' => 'A document description.'])
+            ->limit(1)
+            ->run();
+
+        $this->assertCount(1, $cursor);
+    }
+
+    /**
+     * @return void
+     * @throws \Exception
+     */
+    public function testFilterAndSkip(): void
+    {
+        $this->insertDocument(1);
+        $this->insertDocument('stringId');
+
+        /** @var ResponseInterface $res */
+        $cursor = $this->r()
+            ->table('tabletest')
+            ->filter(['description' => 'A document description.'])
+            ->skip(1)
+            ->run();
+
+        $this->assertCount(1, $cursor);
+    }
+
+    /**
+     * @return void
+     * @throws \Exception
+     */
+    public function testFilterAndOrderBy(): void
+    {
+        $this->insertDocument(1);
+        $this->insertDocument('stringId');
+
+        /** @var ResponseInterface $res */
+        $res = $this->r()
+            ->table('tabletest')
+            ->filter(['description' => 'A document description.'])
+            ->orderBy($this->r()->desc('id'))
+            ->run();
+
+        $this->assertArraySubset(['id' => 'stringId'], $res->getData()[0]);
+    }
+
+    /**
+     * @return void
+     * @throws \Exception
+     */
+    public function testFilterAndMin(): void
+    {
+        $this->insertDocumentWithNumber(1, 77);
+        $this->insertDocumentWithNumber(2, 99);
+
+        /** @var ResponseInterface $res */
+        $res = $this->r()
+            ->table('tabletest')
+            ->filter(['description' => 'A document description.'])
+            ->min('number')
+            ->run();
+
+        $this->assertArraySubset(['number' => 77], $res->getData());
+    }
+
+    /**
+     * @return void
+     * @throws \Exception
+     */
+    public function testFilterAndMax(): void
+    {
+        $this->insertDocumentWithNumber(1, 77);
+        $this->insertDocumentWithNumber(2, 99);
+
+        /** @var ResponseInterface $res */
+        $res = $this->r()
+            ->table('tabletest')
+            ->filter(['description' => 'A document description.'])
+            ->max('number')
+            ->run();
+
+        $this->assertArraySubset(['number' => 99], $res->getData());
+    }
 }
