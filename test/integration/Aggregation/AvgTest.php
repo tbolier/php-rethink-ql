@@ -14,11 +14,11 @@ class AvgTest extends AbstractTableTest
      */
     public function testAvg(): void
     {
-        $this->insertDocument(5);
-        $this->insertDocument(4);
-        $this->insertDocument(3);
-        $this->insertDocument(2);
-        $this->insertDocument(1);
+        $this->insertDocumentWithNumber(5, 5);
+        $this->insertDocumentWithNumber(4, 10);
+        $this->insertDocumentWithNumber(3, 15);
+        $this->insertDocumentWithNumber(2, 20);
+        $this->insertDocumentWithNumber(1, 25);
 
         /** @var ResponseInterface $res */
         $res = $this->r()
@@ -26,50 +26,6 @@ class AvgTest extends AbstractTableTest
             ->avg('number')
             ->run();
 
-        $this->assertTrue(is_float($res->getData()) || is_int($res->getData()));
-    }
-
-    /**
-     * @return void
-     * @throws \Exception
-     */
-    public function testFilterAndAvg(): void
-    {
-        $this->insertDocument(5);
-        $this->insertDocument(4);
-        $this->insertDocument(3);
-        $this->insertDocument(2);
-        $this->insertDocument(1);
-
-        /** @var ResponseInterface $res */
-        $res = $this->r()
-                    ->table('tabletest')
-                    ->filter(['description' => 'A document description.'])
-                    ->avg('number')
-                    ->run();
-
-        $this->assertTrue(is_float($res->getData()) || is_int($res->getData()));
-    }
-
-    /**
-     * @return void
-     * @throws \Exception
-     */
-    public function testGetAllAndAvg(): void
-    {
-        $this->insertDocument(5);
-        $this->insertDocument(4);
-        $this->insertDocument(3);
-        $this->insertDocument(2);
-        $this->insertDocument(1);
-
-        /** @var ResponseInterface $res */
-        $res = $this->r()
-                    ->table('tabletest')
-                    ->getAll(1, 2, 3, 4, 5)
-                    ->avg('number')
-                    ->run();
-
-        $this->assertTrue(is_float($res->getData()) || is_int($res->getData()));
+        $this->assertEquals(15, $res->getData());
     }
 }
