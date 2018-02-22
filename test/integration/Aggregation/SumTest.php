@@ -14,11 +14,11 @@ class SumTest extends AbstractTableTest
      */
     public function testSum(): void
     {
-        $this->insertDocument(5);
-        $this->insertDocument(4);
-        $this->insertDocument(3);
-        $this->insertDocument(2);
-        $this->insertDocument(1);
+        $this->insertDocumentWithNumber(5, 5);
+        $this->insertDocumentWithNumber(4, 10);
+        $this->insertDocumentWithNumber(3, 15);
+        $this->insertDocumentWithNumber(2, 20);
+        $this->insertDocumentWithNumber(1, 25);
 
         /** @var ResponseInterface $res */
         $res = $this->r()
@@ -26,50 +26,6 @@ class SumTest extends AbstractTableTest
             ->sum('number')
             ->run();
 
-        $this->assertInternalType('int', $res->getData());
-    }
-
-    /**
-     * @return void
-     * @throws \Exception
-     */
-    public function testFilterAndSum(): void
-    {
-        $this->insertDocument(5);
-        $this->insertDocument(4);
-        $this->insertDocument(3);
-        $this->insertDocument(2);
-        $this->insertDocument(1);
-
-        /** @var ResponseInterface $res */
-        $res = $this->r()
-                    ->table('tabletest')
-                    ->filter(['description' => 'A document description.'])
-                    ->sum('number')
-                    ->run();
-
-        $this->assertInternalType('int', $res->getData());
-    }
-
-    /**
-     * @return void
-     * @throws \Exception
-     */
-    public function testGetAllAndSum(): void
-    {
-        $this->insertDocument(5);
-        $this->insertDocument(4);
-        $this->insertDocument(3);
-        $this->insertDocument(2);
-        $this->insertDocument(1);
-
-        /** @var ResponseInterface $res */
-        $res = $this->r()
-                    ->table('tabletest')
-                    ->getAll(1, 2, 3, 4, 5)
-                    ->sum('number')
-                    ->run();
-
-        $this->assertInternalType('int', $res->getData());
+        $this->assertEquals(75, $res->getData());
     }
 }
