@@ -46,16 +46,19 @@ abstract class AbstractTestCase extends TestCase
             return $this->r;
         }
 
+        $name = 'phpunit_default';
+        $options = new Options(PHPUNIT_CONNECTIONS[$name]);
+
         /** @var ConnectionInterface $connection */
-        $connection = $this->createConnection('phpunit_default')->connect();
-        $connection->connect()->use('test');
+        $connection = $this->createConnection($name)->connect();
+        $connection->connect()->use($options->getDbName());
 
         $this->r = new Rethink($connection);
 
         /** @var ResponseInterface $res */
         $res = $this->r->dbList()->run();
-        if (\is_array($res->getData()) && !\in_array('test', $res->getData(), true)) {
-            $this->r->dbCreate('test')->run();
+        if (\is_array($res->getData()) && !\in_array($options->getDbName(), $res->getData(), true)) {
+            $this->r->dbCreate($options->getDbName())->run();
         }
 
         return $this->r;
@@ -67,10 +70,13 @@ abstract class AbstractTestCase extends TestCase
             return;
         }
 
+        $name = 'phpunit_default';
+        $options = new Options(PHPUNIT_CONNECTIONS[$name]);
+
         /** @var ResponseInterface $res */
         $res = $this->r->dbList()->run();
-        if (\is_array($res->getData()) && \in_array('test', $res->getData(), true)) {
-            $this->r->dbDrop('test')->run();
+        if (\is_array($res->getData()) && \in_array($options->getDbName(), $res->getData(), true)) {
+            $this->r->dbDrop($options->getDbName())->run();
         }
     }
 

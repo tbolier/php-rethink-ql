@@ -109,8 +109,11 @@ class Cursor implements \Iterator, \Countable
      */
     public function rewind(): void
     {
-        $this->close();
+        if ($this->index === 0) {
+            return;
+        }
 
+        $this->close();
         $this->addResponse($this->connection->rewindFromCursor($this->message));
     }
 
@@ -139,11 +142,7 @@ class Cursor implements \Iterator, \Countable
      */
     private function seek(): void
     {
-        while ($this->index === $this->size) {
-            if ($this->isComplete) {
-                return;
-            }
-
+        if ($this->index >= $this->size && !$this->isComplete) {
             $this->request();
         }
     }

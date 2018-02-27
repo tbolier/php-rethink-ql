@@ -24,8 +24,6 @@ abstract class AbstractTableTest extends AbstractTestCase
         if (\is_array($res->getData()) && \in_array('tabletest', $res->getData(), true)) {
             $this->r()->db()->tableDrop('tabletest')->run();
         }
-
-        parent::tearDown();
     }
 
     /**

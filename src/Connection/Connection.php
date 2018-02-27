@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace TBolier\RethinkQL\Connection;
 
@@ -132,10 +132,7 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
      */
     public function continueQuery(int $token): ResponseInterface
     {
-        $message = (new Message())->setQuery(
-            [QueryType::CONTINUE]
-        );
-
+        $message = new Message(QueryType::CONTINUE);
         $this->writeQuery($token, $message);
 
         // Await the response
@@ -224,10 +221,10 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
         try {
             $token = $this->generateToken();
 
-            $query = new Message(QueryType::SERVER_INFO);
-            $this->writeQuery($token, $query);
+            $message = new Message(QueryType::SERVER_INFO);
+            $this->writeQuery($token, $message);
 
-            $response = $this->receiveResponse($token, $query);
+            $response = $this->receiveResponse($token, $message);
 
             if ($response->getType() !== 5) {
                 throw new ConnectionException('Unexpected response type for server query.');
@@ -245,9 +242,7 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
      */
     public function stopQuery(int $token): ResponseInterface
     {
-        $message = (new Message())->setQuery(
-            [QueryType::STOP]
-        );
+        $message = new Message(QueryType::STOP);
 
         $this->writeQuery($token, $message);
 
@@ -283,9 +278,9 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
         }
 
         $requestSize = pack('V', \strlen($request));
-        $binaryToken = pack('V', $token).pack('V', 0);
+        $binaryToken = pack('V', $token) . pack('V', 0);
 
-        return $this->stream->write($binaryToken.$requestSize.$request);
+        return $this->stream->write($binaryToken . $requestSize . $request);
     }
 
     /**
@@ -298,10 +293,10 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
         try {
             $token = $this->generateToken();
 
-            $query = new Message(QueryType::NOREPLY_WAIT);
-            $this->writeQuery($token, $query);
+            $message = new Message(QueryType::NOREPLY_WAIT);
+            $this->writeQuery($token, $message);
 
-            $response = $this->receiveResponse($token, $query);
+            $response = $this->receiveResponse($token, $message);
 
             if ($response->getType() !== 4) {
                 throw new ConnectionException('Unexpected response type for noreplyWait query.');
@@ -396,22 +391,22 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
         }
 
         if ($response->getType() === ResponseType::CLIENT_ERROR) {
-            throw new ConnectionException('Client error: '.$response->getData()[0].' jsonQuery: '.json_encode($message));
+            throw new ConnectionException('Client error: ' . $response->getData()[0] . ' jsonQuery: ' . json_encode($message));
         }
 
         if ($responseToken !== $token) {
             throw new ConnectionException(
                 'Received wrong token. Response does not match the request. '
-                . 'Expected '.$token.', received '.$responseToken
+                . 'Expected ' . $token . ', received ' . $responseToken
             );
         }
 
         if ($response->getType() === ResponseType::COMPILE_ERROR) {
-            throw new ConnectionException('Compile error: '.$response->getData()[0].', jsonQuery: '.json_encode($message));
+            throw new ConnectionException('Compile error: ' . $response->getData()[0] . ', jsonQuery: ' . json_encode($message));
         }
 
         if ($response->getType() === ResponseType::RUNTIME_ERROR) {
-            throw new ConnectionException('Runtime error: '.$response->getData()[0].', jsonQuery: '.json_encode($message));
+            throw new ConnectionException('Runtime error: ' . $response->getData()[0] . ', jsonQuery: ' . json_encode($message));
         }
     }
 }
