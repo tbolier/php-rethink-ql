@@ -391,7 +391,9 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
         }
 
         if ($response->getType() === ResponseType::CLIENT_ERROR) {
-            throw new ConnectionException('Client error: ' . $response->getData()[0] . ' jsonQuery: ' . json_encode($message));
+            throw new ConnectionException(
+                'Client error: ' . $response->getData()[0] . ' jsonQuery: ' . json_encode($message)
+            );
         }
 
         if ($responseToken !== $token) {
@@ -402,11 +404,15 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
         }
 
         if ($response->getType() === ResponseType::COMPILE_ERROR) {
-            throw new ConnectionException('Compile error: ' . $response->getData()[0] . ', jsonQuery: ' . json_encode($message));
+            throw new ConnectionException(
+                'Compile error: ' . $response->getData()[0] . ', jsonQuery: ' . json_encode($message)
+            );
         }
 
         if ($response->getType() === ResponseType::RUNTIME_ERROR) {
-            throw new ConnectionException('Runtime error: ' . $response->getData()[0] . ', jsonQuery: ' . json_encode($message));
+            throw new ConnectionException(
+                'Runtime error: ' . $response->getData()[0] . ', jsonQuery: ' . json_encode($message)
+            );
         }
     }
 }
