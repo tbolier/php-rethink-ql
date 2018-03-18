@@ -14,6 +14,18 @@ interface ManipulationInterface
      * @param mixed $value
      * @return mixed
      */
+    public function eq($value);
+
+    /**
+     * @param mixed $value
+     * @return mixed
+     */
+    public function ne($value);
+
+    /**
+     * @param mixed $value
+     * @return mixed
+     */
     public function lt($value);
 
     /**

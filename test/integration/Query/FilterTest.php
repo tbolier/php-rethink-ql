@@ -253,4 +253,40 @@ class FilterTest extends AbstractTableTest
 
         $this->assertCount(1, $cursor);
     }
+
+    /**
+     * @throws \Exception
+     */
+    public function testFilterWithDateEqualLogic(): void
+    {
+        $this->insertDocumentWithDate(1, $equalDateTime = new \DateTime('-1 days'));
+        $this->insertDocumentWithDate(2, new \DateTime('+1 days'));
+
+        /** @var ResponseInterface $res */
+        $row = $this->r()->row('date')->eq($equalDateTime->format(\DateTime::ATOM));
+        $cursor = $this->r()
+            ->table('tabletest')
+            ->filter($row)
+            ->run();
+
+        $this->assertCount(1, $cursor);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function testFilterWithDateNotEqualLogic(): void
+    {
+        $this->insertDocumentWithDate(1, $notEqualDateTime = new \DateTime('-1 days'));
+        $this->insertDocumentWithDate(2, new \DateTime('+1 days'));
+
+        /** @var ResponseInterface $res */
+        $row = $this->r()->row('date')->ne($notEqualDateTime->format(\DateTime::ATOM));
+        $cursor = $this->r()
+            ->table('tabletest')
+            ->filter($row)
+            ->run();
+
+        $this->assertCount(1, $cursor);
+    }
 }
