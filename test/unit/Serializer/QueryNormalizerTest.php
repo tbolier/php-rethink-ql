@@ -61,7 +61,8 @@ class QueryNormalizerTest extends BaseUnitTestCase
 
     /**
      * @expectedException \Symfony\Component\Serializer\Exception\CircularReferenceException
-     * @expectedExceptionMessage A circular reference has been detected when serializing the object of class "stdClass" (configured limit: 1)
+     * @expectedExceptionMessage A circular reference has been detected when serializing the object of class "stdClass"
+     * (configured limit: 1)
      * @return void
      */
     public function testNormalizeWithCircularReference(): void

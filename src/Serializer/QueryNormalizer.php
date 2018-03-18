@@ -21,7 +21,9 @@ class QueryNormalizer extends AbstractNormalizer
         }
 
         if (!$object instanceof \JsonSerializable && !$object instanceof \stdClass) {
-            throw new InvalidArgumentException(sprintf('The '.get_class($object).' must implement "%s".', \JsonSerializable::class));
+            throw new InvalidArgumentException(
+                sprintf('The '.get_class($object).' must implement "%s".', \JsonSerializable::class)
+            );
         }
 
         if (!$this->serializer instanceof NormalizerInterface) {

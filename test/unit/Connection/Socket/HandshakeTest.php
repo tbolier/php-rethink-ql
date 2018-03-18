@@ -80,7 +80,8 @@ class HandshakeTest extends BaseUnitTestCase
         $stream->shouldReceive('isWritable')->atLeast()->andReturn(true);
         $stream->shouldReceive('close');
         $stream->shouldReceive('write');
-        $stream->shouldReceive('getContents')->atLeast()->andReturn('{"success":true, "max_protocol_version": 1, "min_protocol_version": 1}');
+        $stream->shouldReceive('getContents')->atLeast()
+            ->andReturn('{"success":true, "max_protocol_version": 1, "min_protocol_version": 1}');
 
         $this->handshake->hello($stream);
     }
