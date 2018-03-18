@@ -28,17 +28,33 @@ class RowTest extends AbstractTableTest
     /**
      * @throws \Exception
      */
-    public function testRowWithDateLowerThanLogic(): void
+    public function testRowWithDateEqualLogic(): void
     {
         $this->insertDocumentWithDate(1, new \DateTime('-1 days'));
         $this->insertDocumentWithDate(2, new \DateTime('+1 days'));
 
         /** @var ResponseInterface $res */
         $dateTime = (new \DateTime('now'))->format(\DateTime::ATOM);
-        $row = $this->r()->row('date')->lt($dateTime);
+        $row = $this->r()->row('date')->eq($dateTime);
 
         $this->assertInstanceOf(FuncLogic::class, $row);
-        $this->assertArraySubset($this->equalsParsedQuery(TermType::LT, $dateTime), $row->toArray());
+        $this->assertArraySubset($this->equalsParsedQuery(TermType::EQ, $dateTime), $row->toArray());
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function testRowWithDateNotEqualLogic(): void
+    {
+        $this->insertDocumentWithDate(1, new \DateTime('-1 days'));
+        $this->insertDocumentWithDate(2, new \DateTime('+1 days'));
+
+        /** @var ResponseInterface $res */
+        $dateTime = (new \DateTime('now'))->format(\DateTime::ATOM);
+        $row = $this->r()->row('date')->ne($dateTime);
+
+        $this->assertInstanceOf(FuncLogic::class, $row);
+        $this->assertArraySubset($this->equalsParsedQuery(TermType::NE, $dateTime), $row->toArray());
     }
 
     /**
