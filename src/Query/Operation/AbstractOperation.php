@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace TBolier\RethinkQL\Query\Operation;
 
 use TBolier\RethinkQL\Query\Aggregation\AbstractAggregation;
+use TBolier\RethinkQL\Query\Logic\FuncLogic;
 use TBolier\RethinkQL\Query\Transformation\TransformationCompoundInterface;
 use TBolier\RethinkQL\Query\QueryInterface;
 
@@ -20,9 +21,13 @@ abstract class AbstractOperation extends AbstractAggregation implements Operatio
     /**
      * @inheritdoc
      */
-    public function filter(array $predicate): TransformationCompoundInterface
+    public function filter($value): TransformationCompoundInterface
     {
-        return new Filter($this->rethink, $this->message, $this, $predicate);
+        if ($value instanceof FuncLogic) {
+            return new FilterByFunction($this->rethink, $this->message, $this, $value);
+        }
+
+        return new Filter($this->rethink, $this->message, $this, $value);
     }
 
     /**

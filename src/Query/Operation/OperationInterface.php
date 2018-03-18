@@ -16,10 +16,10 @@ interface OperationInterface extends AggregationInterface
     public function delete(): QueryInterface;
 
     /**
-     * @param array $predicate
+     * @param mixed $predicate
      * @return TransformationCompoundInterface
      */
-    public function filter(array $predicate): TransformationCompoundInterface;
+    public function filter($predicate): TransformationCompoundInterface;
 
     /**
      * @param int|string|array $keys

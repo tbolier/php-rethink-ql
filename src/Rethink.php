@@ -8,9 +8,9 @@ use TBolier\RethinkQL\Message\Message;
 use TBolier\RethinkQL\Query\Builder;
 use TBolier\RethinkQL\Query\BuilderInterface;
 use TBolier\RethinkQL\Query\DatabaseInterface;
+use TBolier\RethinkQL\Query\Manipulation\ManipulationInterface;
 use TBolier\RethinkQL\Query\OrdeningInterface;
 use TBolier\RethinkQL\Query\TableInterface;
-
 
 class Rethink implements RethinkInterface
 {
@@ -29,7 +29,7 @@ class Rethink implements RethinkInterface
     public function __construct(ConnectionInterface $connection)
     {
         $this->connection = $connection;
-        $this->builder = new Builder($this, new Message());
+        $this->builder = new Builder($this);
     }
 
     /**
@@ -96,5 +96,14 @@ class Rethink implements RethinkInterface
     public function asc($key): OrdeningInterface
     {
         return $this->builder->ordening($key)->asc($key);
+    }
+
+    /**
+     * @param string $value
+     * @return ManipulationInterface
+     */
+    public function row(string $value): ManipulationInterface
+    {
+        return $this->builder->row($value);
     }
 }

@@ -1,42 +1,33 @@
 <?php
-declare(strict_types = 1);
 
-namespace TBolier\RethinkQL\Query\Operation;
+namespace TBolier\RethinkQL\Query\Logic;
 
 use TBolier\RethinkQL\Message\MessageInterface;
+use TBolier\RethinkQL\Query\AbstractQuery;
 use TBolier\RethinkQL\Query\QueryInterface;
-use TBolier\RethinkQL\Query\Transformation\AbstractTransformationCompound;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Term\TermType;
 
-class GetAll extends AbstractTransformationCompound
+class FuncLogic extends AbstractQuery
 {
-    /**
-     * @var array
-     */
-    private $keys;
-
     /**
      * @var QueryInterface
      */
-    private $query;
+    private $functions;
 
     /**
      * @param RethinkInterface $rethink
      * @param MessageInterface $message
-     * @param QueryInterface   $query
-     * @param array            $keys
+     * @param QueryInterface $functions
      */
     public function __construct(
         RethinkInterface $rethink,
         MessageInterface $message,
-        QueryInterface $query,
-        array $keys
+        QueryInterface $functions
     ) {
         parent::__construct($rethink, $message);
 
-        $this->query   = $query;
-        $this->keys    = $keys;
+        $this->functions = $functions;
         $this->rethink = $rethink;
         $this->message = $message;
     }
@@ -46,12 +37,18 @@ class GetAll extends AbstractTransformationCompound
      */
     public function toArray(): array
     {
-        return [
-            TermType::GET_ALL,
-            array_merge(
-                [$this->query->toArray()],
-                array_values($this->keys)
-            ),
-        ];
+        return
+            [
+                TermType::FUNC,
+                [
+                    [
+                        TermType::MAKE_ARRAY,
+                        [
+                            TermType::DATUM,
+                        ],
+                    ],
+                    $this->functions->toArray(),
+                ],
+            ];
     }
 }

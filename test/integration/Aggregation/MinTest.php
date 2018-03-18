@@ -17,7 +17,7 @@ class MinTest extends AbstractTableTest
         $this->insertDocumentWithNumber(5, 99);
         $this->insertDocumentWithNumber(4, 77);
         $this->insertDocumentWithNumber(3, 1045);
-        $this->insertDocumentWithNumber(2,4);
+        $this->insertDocumentWithNumber(2, 4);
         $this->insertDocumentWithNumber(1, 43534);
 
         /** @var ResponseInterface $res */
