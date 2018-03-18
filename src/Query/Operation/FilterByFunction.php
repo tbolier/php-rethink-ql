@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace TBolier\RethinkQL\Query\Operation;
 
@@ -9,12 +9,12 @@ use TBolier\RethinkQL\Query\Transformation\AbstractTransformationCompound;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Term\TermType;
 
-class GetAll extends AbstractTransformationCompound
+class FilterByFunction extends AbstractTransformationCompound
 {
     /**
-     * @var array
+     * @var QueryInterface
      */
-    private $keys;
+    private $functionQuery;
 
     /**
      * @var QueryInterface
@@ -24,19 +24,19 @@ class GetAll extends AbstractTransformationCompound
     /**
      * @param RethinkInterface $rethink
      * @param MessageInterface $message
-     * @param QueryInterface   $query
-     * @param array            $keys
+     * @param QueryInterface $query
+     * @param QueryInterface $manipulation
      */
     public function __construct(
         RethinkInterface $rethink,
         MessageInterface $message,
         QueryInterface $query,
-        array $keys
+        QueryInterface $manipulation
     ) {
         parent::__construct($rethink, $message);
 
-        $this->query   = $query;
-        $this->keys    = $keys;
+        $this->query = $query;
+        $this->functionQuery = $manipulation;
         $this->rethink = $rethink;
         $this->message = $message;
     }
@@ -47,11 +47,11 @@ class GetAll extends AbstractTransformationCompound
     public function toArray(): array
     {
         return [
-            TermType::GET_ALL,
-            array_merge(
-                [$this->query->toArray()],
-                array_values($this->keys)
-            ),
+            TermType::FILTER,
+            [
+                $this->query->toArray(),
+                $this->functionQuery->toArray(),
+            ],
         ];
     }
 }

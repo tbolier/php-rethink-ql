@@ -1,32 +1,19 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace TBolier\RethinkQL\Query;
 
+use TBolier\RethinkQL\Message\Message;
 use TBolier\RethinkQL\Message\MessageInterface;
+use TBolier\RethinkQL\Query\Manipulation\ManipulationInterface;
 use TBolier\RethinkQL\RethinkInterface;
 
 class Builder implements BuilderInterface
 {
     /**
-     * @var RethinkInterface
-     */
-    private $rethink;
-
-    /**
-     * @var Table
-     */
-    private $table;
-
-    /**
      * @var DatabaseInterface
      */
     private $database;
-
-    /**
-     * @var OrdeningInterface
-     */
-    private $ordering;
 
     /**
      * @var MessageInterface
@@ -34,13 +21,31 @@ class Builder implements BuilderInterface
     private $message;
 
     /**
-     * @param RethinkInterface $rethink
-     * @param MessageInterface $message
+     * @var OrdeningInterface
      */
-    public function __construct(RethinkInterface $rethink, MessageInterface $message)
+    private $ordering;
+
+    /**
+     * @var RethinkInterface
+     */
+    private $rethink;
+
+    /**
+     * @var ManipulationInterface
+     */
+    private $row;
+
+    /**
+     * @var Table
+     */
+    private $table;
+
+    /**
+     * @param RethinkInterface $rethink
+     */
+    public function __construct(RethinkInterface $rethink)
     {
         $this->rethink = $rethink;
-        $this->message = $message;
     }
 
     /**
@@ -53,7 +58,7 @@ class Builder implements BuilderInterface
             unset($this->table);
         }
 
-        $this->table = new Table($name, $this->rethink, $this->message);
+        $this->table = new Table($name, $this->rethink, new Message());
 
         return $this->table;
     }
@@ -67,7 +72,7 @@ class Builder implements BuilderInterface
             unset($this->database);
         }
 
-        $this->database = new Database($this->rethink, $this->message);
+        $this->database = new Database($this->rethink, new Message());
 
         return $this->database;
     }
@@ -82,8 +87,19 @@ class Builder implements BuilderInterface
             unset($this->ordering);
         }
 
-        $this->ordering = new Ordening($key, $this->rethink, $this->message);
+        $this->ordering = new Ordening($key, $this->rethink, new Message());
 
         return $this->ordering;
+    }
+
+    /**
+     * @param string $value
+     * @return ManipulationInterface
+     */
+    public function row(string $value): ManipulationInterface
+    {
+        $this->row = new Row($this->rethink, new Message(), $value);
+
+        return $this->row;
     }
 }

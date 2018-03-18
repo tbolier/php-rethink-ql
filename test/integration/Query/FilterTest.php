@@ -1,9 +1,8 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace TBolier\RethinkQL\IntegrationTest\Query;
 
-use TBolier\RethinkQL\Response\Cursor;
 use TBolier\RethinkQL\Response\ResponseInterface;
 
 class FilterTest extends AbstractTableTest
@@ -217,5 +216,41 @@ class FilterTest extends AbstractTableTest
             ->run();
 
         $this->assertArraySubset(['number' => 99], $res->getData());
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function testFilterWithDateGreaterThanLogic(): void
+    {
+        $this->insertDocumentWithDate(1, new \DateTime('-1 days'));
+        $this->insertDocumentWithDate(2, new \DateTime('+1 days'));
+
+        /** @var ResponseInterface $res */
+        $row = $this->r()->row('date')->gt((new \DateTime('now'))->format(\DateTime::ATOM));
+        $cursor = $this->r()
+            ->table('tabletest')
+            ->filter($row)
+            ->run();
+
+        $this->assertCount(1, $cursor);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function testFilterWithDateLowerThanLogic(): void
+    {
+        $this->insertDocumentWithDate(1, new \DateTime('-1 days'));
+        $this->insertDocumentWithDate(2, new \DateTime('+1 days'));
+
+        /** @var ResponseInterface $res */
+        $row = $this->r()->row('date')->lt((new \DateTime('now'))->format(\DateTime::ATOM));
+        $cursor = $this->r()
+            ->table('tabletest')
+            ->filter($row)
+            ->run();
+
+        $this->assertCount(1, $cursor);
     }
 }

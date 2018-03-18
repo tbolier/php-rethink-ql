@@ -63,4 +63,24 @@ abstract class AbstractTableTest extends AbstractTestCase
 
         return $res;
     }
+
+    /**
+     * @param int|string $id
+     * @param \DateTimeInterface $dateTime
+     * @return ResponseInterface
+     */
+    protected function insertDocumentWithDate($id, \DateTimeInterface $dateTime): ResponseInterface
+    {
+        $res = $this->r()
+            ->table('tabletest')
+            ->insert([
+                'id' => $id,
+                'title' => 'Test document '.$id,
+                'date' => $dateTime->format(\Datetime::ATOM),
+                'description' => 'A document description.',
+            ])
+            ->run();
+
+        return $res;
+    }
 }

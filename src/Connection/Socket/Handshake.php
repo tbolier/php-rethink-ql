@@ -289,8 +289,11 @@ class Handshake implements HandshakeInterface
      */
     private function checkResponse(?string $handshakeResponse): void
     {
-        if ($handshakeResponse !== null && preg_match('/^ERROR:\s(.+)$/i', $handshakeResponse,
-                $errorMatch)) {
+        if ($handshakeResponse !== null && preg_match(
+            '/^ERROR:\s(.+)$/i',
+            $handshakeResponse,
+            $errorMatch
+        )) {
             throw new Exception($errorMatch[1]);
         }
     }

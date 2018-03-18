@@ -3,6 +3,8 @@ declare(strict_types = 1);
 
 namespace TBolier\RethinkQL\Query;
 
+use TBolier\RethinkQL\Query\Manipulation\ManipulationInterface;
+
 interface BuilderInterface
 {
     /**
@@ -21,4 +23,10 @@ interface BuilderInterface
      * @return OrdeningInterface
      */
     public function ordening(string $key): OrdeningInterface;
+
+    /**
+     * @param string $value
+     * @return ManipulationInterface
+     */
+    public function row(string $value): ManipulationInterface;
 }
