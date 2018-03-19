@@ -4,12 +4,11 @@ declare(strict_types = 1);
 namespace TBolier\RethinkQL;
 
 use TBolier\RethinkQL\Connection\ConnectionInterface;
-use TBolier\RethinkQL\Message\Message;
 use TBolier\RethinkQL\Query\Builder;
 use TBolier\RethinkQL\Query\BuilderInterface;
 use TBolier\RethinkQL\Query\DatabaseInterface;
-use TBolier\RethinkQL\Query\Manipulation\ManipulationInterface;
 use TBolier\RethinkQL\Query\OrdeningInterface;
+use TBolier\RethinkQL\Query\RowInterface;
 use TBolier\RethinkQL\Query\TableInterface;
 
 class Rethink implements RethinkInterface
@@ -100,9 +99,9 @@ class Rethink implements RethinkInterface
 
     /**
      * @param string $value
-     * @return ManipulationInterface
+     * @return RowInterface
      */
-    public function row(string $value): ManipulationInterface
+    public function row(string $value): RowInterface
     {
         return $this->builder->row($value);
     }

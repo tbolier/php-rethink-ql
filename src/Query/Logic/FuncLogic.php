@@ -3,33 +3,33 @@
 namespace TBolier\RethinkQL\Query\Logic;
 
 use TBolier\RethinkQL\Message\MessageInterface;
-use TBolier\RethinkQL\Query\AbstractQuery;
+use TBolier\RethinkQL\Query\Operation\AbstractOperation;
 use TBolier\RethinkQL\Query\QueryInterface;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Term\TermType;
 
-class FuncLogic extends AbstractQuery
+class FuncLogic extends AbstractOperation
 {
     /**
      * @var QueryInterface
      */
-    private $functions;
+    private $query;
 
     /**
      * @param RethinkInterface $rethink
      * @param MessageInterface $message
-     * @param QueryInterface $functions
+     * @param QueryInterface $query
      */
     public function __construct(
         RethinkInterface $rethink,
         MessageInterface $message,
-        QueryInterface $functions
+        QueryInterface $query
     ) {
         parent::__construct($rethink, $message);
 
-        $this->functions = $functions;
         $this->rethink = $rethink;
         $this->message = $message;
+        $this->query = $query;
     }
 
     /**
@@ -47,7 +47,7 @@ class FuncLogic extends AbstractQuery
                             TermType::DATUM,
                         ],
                     ],
-                    $this->functions->toArray(),
+                    $this->query->toArray(),
                 ],
             ];
     }

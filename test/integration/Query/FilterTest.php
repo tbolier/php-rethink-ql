@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace TBolier\RethinkQL\IntegrationTest\Query;
 
+use TBolier\RethinkQL\Response\Cursor;
 use TBolier\RethinkQL\Response\ResponseInterface;
 
 class FilterTest extends AbstractTableTest
@@ -259,11 +260,11 @@ class FilterTest extends AbstractTableTest
      */
     public function testFilterWithDateEqualLogic(): void
     {
-        $this->insertDocumentWithDate(1, $equalDateTime = new \DateTime('-1 days'));
+        $this->insertDocumentWithDate(1, $yesterday = new \DateTime('-1 days'));
         $this->insertDocumentWithDate(2, new \DateTime('+1 days'));
 
         /** @var ResponseInterface $res */
-        $row = $this->r()->row('date')->eq($equalDateTime->format(\DateTime::ATOM));
+        $row = $this->r()->row('date')->eq($yesterday->format(\DateTime::ATOM));
         $cursor = $this->r()
             ->table('tabletest')
             ->filter($row)
@@ -277,16 +278,65 @@ class FilterTest extends AbstractTableTest
      */
     public function testFilterWithDateNotEqualLogic(): void
     {
-        $this->insertDocumentWithDate(1, $notEqualDateTime = new \DateTime('-1 days'));
+        $this->insertDocumentWithDate(1, $yesterday = new \DateTime('-1 days'));
         $this->insertDocumentWithDate(2, new \DateTime('+1 days'));
 
-        /** @var ResponseInterface $res */
-        $row = $this->r()->row('date')->ne($notEqualDateTime->format(\DateTime::ATOM));
+        $row = $this->r()->row('date')->ne($yesterday->format(\DateTime::ATOM));
         $cursor = $this->r()
             ->table('tabletest')
             ->filter($row)
             ->run();
 
         $this->assertCount(1, $cursor);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function testFilterWithDateMultipleAndLogic(): void
+    {
+        $this->insertDocumentWithDate(1, $yesterday = new \DateTime('-1 days'));
+        $this->insertDocumentWithDate(2, $tomorrow = new \DateTime('+1 days'));
+
+        /** @var ResponseInterface $res */
+        $row = $this->r()->row('date')->eq($yesterday->format(\DateTime::ATOM))->and(
+            $this->r()->row('date')->ne($tomorrow->format(\DateTime::ATOM))->and(
+                $this->r()->row('id')->eq(1)->and(
+                    $this->r()->row('id')->ne(2)
+                )
+            )
+        );
+
+        $cursor = $this->r()
+            ->table('tabletest')
+            ->filter($row)
+            ->run();
+
+        $this->assertCount(1, $cursor);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function testFilterWithDateMultipleOrLogic(): void
+    {
+        $this->insertDocumentWithDate(1, $yesterday = new \DateTime('-1 days'));
+        $this->insertDocumentWithDate(2, $tomorrow = new \DateTime('+1 days'));
+
+        /** @var ResponseInterface $res */
+        $row = $this->r()->row('date')->eq($yesterday->format(\DateTime::ATOM))->or(
+            $this->r()->row('date')->eq($tomorrow->format(\DateTime::ATOM))->and(
+                $this->r()->row('id')->gt(0)->or(
+                    $this->r()->row('id')->lt(3)
+                )
+            )
+        );
+
+        $cursor = $this->r()
+            ->table('tabletest')
+            ->filter($row)
+            ->run();
+
+        $this->assertCount(2, $cursor);
     }
 }

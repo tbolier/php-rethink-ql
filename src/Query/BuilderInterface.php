@@ -1,9 +1,7 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace TBolier\RethinkQL\Query;
-
-use TBolier\RethinkQL\Query\Manipulation\ManipulationInterface;
 
 interface BuilderInterface
 {
@@ -26,7 +24,7 @@ interface BuilderInterface
 
     /**
      * @param string $value
-     * @return ManipulationInterface
+     * @return RowInterface
      */
-    public function row(string $value): ManipulationInterface;
+    public function row(string $value): RowInterface;
 }

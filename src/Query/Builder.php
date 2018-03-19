@@ -4,8 +4,7 @@ declare(strict_types=1);
 namespace TBolier\RethinkQL\Query;
 
 use TBolier\RethinkQL\Message\Message;
-use TBolier\RethinkQL\Message\MessageInterface;
-use TBolier\RethinkQL\Query\Manipulation\ManipulationInterface;
+use TBolier\RethinkQL\Query\RowInterface;
 use TBolier\RethinkQL\RethinkInterface;
 
 class Builder implements BuilderInterface
@@ -14,11 +13,6 @@ class Builder implements BuilderInterface
      * @var DatabaseInterface
      */
     private $database;
-
-    /**
-     * @var MessageInterface
-     */
-    private $message;
 
     /**
      * @var OrdeningInterface
@@ -31,7 +25,7 @@ class Builder implements BuilderInterface
     private $rethink;
 
     /**
-     * @var ManipulationInterface
+     * @var RowInterface
      */
     private $row;
 
@@ -94,9 +88,9 @@ class Builder implements BuilderInterface
 
     /**
      * @param string $value
-     * @return ManipulationInterface
+     * @return RowInterface
      */
-    public function row(string $value): ManipulationInterface
+    public function row(string $value): RowInterface
     {
         $this->row = new Row($this->rethink, new Message(), $value);
 

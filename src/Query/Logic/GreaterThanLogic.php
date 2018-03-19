@@ -24,13 +24,13 @@ class GreaterThanLogic extends AbstractOperation
      * @param RethinkInterface $rethink
      * @param MessageInterface $message
      * @param QueryInterface $query
-     * @param string $value
+     * @param $value
      */
     public function __construct(
         RethinkInterface $rethink,
         MessageInterface $message,
         QueryInterface $query,
-        string $value
+        $value
     ) {
         parent::__construct($rethink, $message);
 

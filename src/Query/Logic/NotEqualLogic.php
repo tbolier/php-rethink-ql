@@ -16,7 +16,7 @@ class NotEqualLogic extends AbstractOperation
     private $query;
 
     /**
-     * @var string
+     * @var mixed
      */
     private $value;
 
@@ -24,13 +24,13 @@ class NotEqualLogic extends AbstractOperation
      * @param RethinkInterface $rethink
      * @param MessageInterface $message
      * @param QueryInterface $query
-     * @param string $value
+     * @param mixed $value
      */
     public function __construct(
         RethinkInterface $rethink,
         MessageInterface $message,
         QueryInterface $query,
-        string $value
+        $value
     ) {
         parent::__construct($rethink, $message);
 

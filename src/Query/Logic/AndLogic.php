@@ -8,36 +8,36 @@ use TBolier\RethinkQL\Query\QueryInterface;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Term\TermType;
 
-class LowerThanLogic extends AbstractOperation
+class AndLogic extends AbstractOperation
 {
     /**
      * @var QueryInterface
      */
-    private $query;
+    private $functionOne;
 
     /**
-     * @var mixed
+     * @var QueryInterface
      */
-    private $value;
+    private $functionTwo;
 
     /**
      * @param RethinkInterface $rethink
      * @param MessageInterface $message
-     * @param QueryInterface $query
-     * @param string $value
+     * @param QueryInterface $functionOne
+     * @param QueryInterface $functionTwo
      */
     public function __construct(
         RethinkInterface $rethink,
         MessageInterface $message,
-        QueryInterface $query,
-        $value
+        QueryInterface $functionOne,
+        QueryInterface $functionTwo
     ) {
         parent::__construct($rethink, $message);
 
-        $this->value = $value;
         $this->rethink = $rethink;
         $this->message = $message;
-        $this->query = $query;
+        $this->functionOne = $functionOne;
+        $this->functionTwo = $functionTwo;
     }
 
     /**
@@ -47,10 +47,10 @@ class LowerThanLogic extends AbstractOperation
     {
         return
             [
-                TermType::LT,
+                TermType::AND,
                 [
-                    $this->query->toArray(),
-                    $this->value,
+                    $this->functionOne->toArray(),
+                    $this->functionTwo->toArray(),
                 ],
             ];
     }
