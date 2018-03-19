@@ -9,7 +9,7 @@ use TBolier\RethinkQL\Query\Transformation\AbstractTransformationCompound;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Term\TermType;
 
-class FilterByFunction extends AbstractTransformationCompound
+class FilterByRow extends AbstractTransformationCompound
 {
     /**
      * @var QueryInterface

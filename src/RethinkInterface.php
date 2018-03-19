@@ -4,10 +4,9 @@ declare(strict_types = 1);
 namespace TBolier\RethinkQL;
 
 use TBolier\RethinkQL\Connection\ConnectionInterface;
-use TBolier\RethinkQL\Query\Aggregation\AggregationInterface;
 use TBolier\RethinkQL\Query\DatabaseInterface;
-use TBolier\RethinkQL\Query\Manipulation\ManipulationInterface;
 use TBolier\RethinkQL\Query\OrdeningInterface;
+use TBolier\RethinkQL\Query\RowInterface;
 use TBolier\RethinkQL\Query\TableInterface;
 
 interface RethinkInterface
@@ -59,7 +58,7 @@ interface RethinkInterface
 
     /**
      * @param string $value
-     * @return ManipulationInterface
+     * @return RowInterface
      */
-    public function row(string $value): ManipulationInterface;
+    public function row(string $value): RowInterface;
 }

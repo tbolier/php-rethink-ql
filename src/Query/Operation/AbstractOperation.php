@@ -5,6 +5,7 @@ namespace TBolier\RethinkQL\Query\Operation;
 
 use TBolier\RethinkQL\Query\Aggregation\AbstractAggregation;
 use TBolier\RethinkQL\Query\Logic\FuncLogic;
+use TBolier\RethinkQL\Query\RowInterface;
 use TBolier\RethinkQL\Query\Transformation\TransformationCompoundInterface;
 use TBolier\RethinkQL\Query\QueryInterface;
 
@@ -23,8 +24,8 @@ abstract class AbstractOperation extends AbstractAggregation implements Operatio
      */
     public function filter($value): TransformationCompoundInterface
     {
-        if ($value instanceof FuncLogic) {
-            return new FilterByFunction($this->rethink, $this->message, $this, $value);
+        if ($value instanceof RowInterface) {
+            return new FilterByRow($this->rethink, $this->message, $this, $value);
         }
 
         return new Filter($this->rethink, $this->message, $this, $value);
