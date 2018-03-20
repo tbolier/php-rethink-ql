@@ -42,4 +42,29 @@ build:
                     - php-scrutinizer-run
 
 build_failure_conditions:
+  # No critical issue is introduced (existing ones are tolerated)
+  - 'issues.label("coding-style").exists'
+
+  # No new critical issue is introduced (existing ones are tolerated)
   - 'issues.label("coding-style").new.exists'
+
+  # No critical issue is present
+  - 'issues.severity(= MINOR).exists'
+
+  # No new critical issue is introduced (existing ones are tolerated)
+  - 'issues.severity(= MINOR).new.exists'
+
+  # Class has no tests
+  - 'classes.metric("php_code_coverage.coverage", = 0).exists'
+
+  # Rating is C or worse for existing classes
+  - 'elements.rating(<= D).exists'
+
+  # Rating is C or worse is introduced
+  - 'elements.rating(<= D).new.exists'
+
+  - 'project.metric("scrutinizer.quality", < 9)' # Code Quality Rating drops below 9
+  - 'project.metric("scrutinizer.test_coverage", < 0.85)' # Code Coverage drops below 90%
+
+  # Code Coverage decreased from previous inspection by more than 5%
+  - 'project.metric_change("scrutinizer.test_coverage", < -0.05)'
