@@ -23,21 +23,19 @@ class IndexCreate extends AbstractQuery
 
     /**
      * @param RethinkInterface $rethink
-     * @param MessageInterface $message
      * @param QueryInterface $query
      * @param string $name
      */
     public function __construct(
         RethinkInterface $rethink,
-        MessageInterface $message,
         QueryInterface $query,
         string $name
     ) {
-        parent::__construct($rethink, $message);
+        parent::__construct($rethink);
 
         $this->query = $query;
         $this->rethink = $rethink;
-        $this->message = $message;
+
         $this->name = $name;
     }
 

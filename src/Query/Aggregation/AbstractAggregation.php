@@ -14,7 +14,7 @@ abstract class AbstractAggregation extends AbstractQuery implements AggregationI
      */
     public function count(): QueryInterface
     {
-        return new Count($this->rethink, $this->message, $this);
+        return new Count($this->rethink, $this);
     }
 
     /**
@@ -22,7 +22,7 @@ abstract class AbstractAggregation extends AbstractQuery implements AggregationI
      */
     public function group(string $key): TransformationCompoundInterface
     {
-        return new Group($this->rethink, $this->message, $this, $key);
+        return new Group($this->rethink, $this, $key);
     }
 
     /**
@@ -30,7 +30,7 @@ abstract class AbstractAggregation extends AbstractQuery implements AggregationI
      */
     public function ungroup(): TransformationCompoundInterface
     {
-        return new Ungroup($this->rethink, $this->message, $this);
+        return new Ungroup($this->rethink, $this);
     }
 
     /**
@@ -38,7 +38,7 @@ abstract class AbstractAggregation extends AbstractQuery implements AggregationI
      */
     public function sum(string $key): QueryInterface
     {
-        return new Sum($this->rethink, $this->message, $this, $key);
+        return new Sum($this->rethink, $this, $key);
     }
 
     /**
@@ -46,7 +46,7 @@ abstract class AbstractAggregation extends AbstractQuery implements AggregationI
      */
     public function avg(string $key): QueryInterface
     {
-        return new Avg($this->rethink, $this->message, $this, $key);
+        return new Avg($this->rethink, $this, $key);
     }
 
     /**
@@ -54,7 +54,7 @@ abstract class AbstractAggregation extends AbstractQuery implements AggregationI
      */
     public function min(string $key): AggregationInterface
     {
-        return new Min($this->rethink, $this->message, $this, $key);
+        return new Min($this->rethink, $this, $key);
     }
 
     /**
@@ -62,6 +62,6 @@ abstract class AbstractAggregation extends AbstractQuery implements AggregationI
      */
     public function max(string $key): TransformationCompoundInterface
     {
-        return new Max($this->rethink, $this->message, $this, $key);
+        return new Max($this->rethink, $this, $key);
     }
 }

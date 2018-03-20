@@ -16,7 +16,7 @@ abstract class AbstractOperation extends AbstractAggregation implements Operatio
      */
     public function delete(): QueryInterface
     {
-        return new Delete($this->rethink, $this->message, $this);
+        return new Delete($this->rethink, $this);
     }
 
     /**
@@ -25,10 +25,10 @@ abstract class AbstractOperation extends AbstractAggregation implements Operatio
     public function filter($value): TransformationCompoundInterface
     {
         if ($value instanceof RowInterface) {
-            return new FilterByRow($this->rethink, $this->message, $this, $value);
+            return new FilterByRow($this->rethink, $this, $value);
         }
 
-        return new Filter($this->rethink, $this->message, $this, $value);
+        return new Filter($this->rethink, $this, $value);
     }
 
     /**
@@ -36,7 +36,7 @@ abstract class AbstractOperation extends AbstractAggregation implements Operatio
      */
     public function getAll(...$keys): TransformationCompoundInterface
     {
-        return new GetAll($this->rethink, $this->message, $this, $keys);
+        return new GetAll($this->rethink, $this, $keys);
     }
 
     /**
@@ -44,7 +44,7 @@ abstract class AbstractOperation extends AbstractAggregation implements Operatio
      */
     public function update(array $elements): QueryInterface
     {
-        return new Update($this->rethink, $this->message, $this, $elements);
+        return new Update($this->rethink, $this, $elements);
     }
 
     /**
@@ -52,6 +52,6 @@ abstract class AbstractOperation extends AbstractAggregation implements Operatio
      */
     public function insert(array $document): QueryInterface
     {
-        return new Insert($this->rethink, $this->message, $this, $document);
+        return new Insert($this->rethink, $this, $document);
     }
 }

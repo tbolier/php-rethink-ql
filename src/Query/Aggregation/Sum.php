@@ -22,22 +22,19 @@ class Sum extends AbstractAggregation
 
     /**
      * @param RethinkInterface $rethink
-     * @param MessageInterface $message
      * @param QueryInterface $query
      * @param string $key
      */
     public function __construct(
         RethinkInterface $rethink,
-        MessageInterface $message,
         QueryInterface $query,
         string $key
     ) {
-        parent::__construct($rethink, $message);
+        parent::__construct($rethink);
 
         $this->query = $query;
         $this->key = $key;
         $this->rethink = $rethink;
-        $this->message = $message;
     }
 
     /**

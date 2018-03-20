@@ -18,16 +18,14 @@ class IndexList extends AbstractQuery
 
     /**
      * @param RethinkInterface $rethink
-     * @param MessageInterface $message
      * @param QueryInterface $query
      */
-    public function __construct(RethinkInterface $rethink, MessageInterface $message, QueryInterface $query)
+    public function __construct(RethinkInterface $rethink, QueryInterface $query)
     {
-        parent::__construct($rethink, $message);
+        parent::__construct($rethink);
 
         $this->query = $query;
         $this->rethink = $rethink;
-        $this->message = $message;
     }
 
     /**

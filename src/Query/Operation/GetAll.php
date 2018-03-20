@@ -23,22 +23,19 @@ class GetAll extends AbstractTransformationCompound
 
     /**
      * @param RethinkInterface $rethink
-     * @param MessageInterface $message
-     * @param QueryInterface   $query
-     * @param array            $keys
+     * @param QueryInterface $query
+     * @param array $keys
      */
     public function __construct(
         RethinkInterface $rethink,
-        MessageInterface $message,
         QueryInterface $query,
         array $keys
     ) {
-        parent::__construct($rethink, $message);
+        parent::__construct($rethink);
 
         $this->query   = $query;
         $this->keys    = $keys;
         $this->rethink = $rethink;
-        $this->message = $message;
     }
 
     /**

@@ -34,17 +34,16 @@ class Row extends AbstractQuery implements RowInterface
 
     /**
      * @param RethinkInterface $rethink
-     * @param MessageInterface $message
      * @param string $value
      */
     public function __construct(
         RethinkInterface $rethink,
-        MessageInterface $message,
         string $value
     ) {
+        parent::__construct($rethink);
+
         $this->value = $value;
         $this->rethink = $rethink;
-        $this->message = $message;
     }
 
     /**
@@ -59,14 +58,12 @@ class Row extends AbstractQuery implements RowInterface
 
         $this->function = new EqualLogic(
             $this->rethink,
-            $this->message,
-            new GetFieldLogic($this->rethink, $this->message, $this->value),
+            new GetFieldLogic($this->rethink, $this->value),
             $value
         );
 
         $this->query = new FuncLogic(
             $this->rethink,
-            $this->message,
             $this->function
         );
 
@@ -85,14 +82,12 @@ class Row extends AbstractQuery implements RowInterface
 
         $this->function = new NotEqualLogic(
             $this->rethink,
-            $this->message,
-            new GetFieldLogic($this->rethink, $this->message, $this->value),
+            new GetFieldLogic($this->rethink, $this->value),
             $value
         );
 
         $this->query = new FuncLogic(
             $this->rethink,
-            $this->message,
             $this->function
         );
 
@@ -111,14 +106,12 @@ class Row extends AbstractQuery implements RowInterface
 
         $this->function = new LowerThanLogic(
             $this->rethink,
-            $this->message,
-            new GetFieldLogic($this->rethink, $this->message, $this->value),
+            new GetFieldLogic($this->rethink, $this->value),
             $value
         );
 
         $this->query = new FuncLogic(
             $this->rethink,
-            $this->message,
             $this->function
         );
 
@@ -137,14 +130,12 @@ class Row extends AbstractQuery implements RowInterface
 
         $this->function = new GreaterThanLogic(
             $this->rethink,
-            $this->message,
-            new GetFieldLogic($this->rethink, $this->message, $this->value),
+            new GetFieldLogic($this->rethink, $this->value),
             $value
         );
 
         $this->query = new FuncLogic(
             $this->rethink,
-            $this->message,
             $this->function
         );
 
@@ -159,14 +150,12 @@ class Row extends AbstractQuery implements RowInterface
     {
         $this->function = new AndLogic(
             $this->rethink,
-            $this->message,
             $this->function,
             $row->getFunction()
         );
 
         $this->query = new FuncLogic(
             $this->rethink,
-            $this->message,
             $this->function
         );
 
@@ -181,14 +170,12 @@ class Row extends AbstractQuery implements RowInterface
     {
         $this->function = new OrLogic(
             $this->rethink,
-            $this->message,
             $this->function,
             $row->getFunction()
         );
 
         $this->query = new FuncLogic(
             $this->rethink,
-            $this->message,
             $this->function
         );
 

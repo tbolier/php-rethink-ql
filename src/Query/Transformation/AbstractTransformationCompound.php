@@ -15,7 +15,7 @@ abstract class AbstractTransformationCompound extends AbstractOperation implemen
      */
     public function getField(string $field): TransformationCompoundInterface
     {
-        return new GetFieldLogic($this->rethink, $this->message, $field, $this);
+        return new GetFieldLogic($this->rethink, $field, $this);
     }
 
     /**
@@ -23,7 +23,7 @@ abstract class AbstractTransformationCompound extends AbstractOperation implemen
      */
     public function isEmpty(): QueryInterface
     {
-        return new IsEmpty($this->rethink, $this->message, $this);
+        return new IsEmpty($this->rethink, $this);
     }
 
     /**
@@ -31,7 +31,7 @@ abstract class AbstractTransformationCompound extends AbstractOperation implemen
      */
     public function limit($value): TransformationCompoundInterface
     {
-        return new Limit($this->rethink, $this->message, $this, $value);
+        return new Limit($this->rethink, $this, $value);
     }
 
     /**
@@ -39,7 +39,7 @@ abstract class AbstractTransformationCompound extends AbstractOperation implemen
      */
     public function skip($value): TransformationCompoundInterface
     {
-        return new Skip($this->rethink, $this->message, $this, $value);
+        return new Skip($this->rethink, $this, $value);
     }
 
     /**
@@ -47,6 +47,6 @@ abstract class AbstractTransformationCompound extends AbstractOperation implemen
      */
     public function orderBy($key): TransformationCompoundInterface
     {
-        return new OrderBy($this->rethink, $this->message, $this, $key);
+        return new OrderBy($this->rethink, $this, $key);
     }
 }

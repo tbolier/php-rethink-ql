@@ -13,7 +13,7 @@ abstract class AbstractTransformation extends AbstractQuery implements Transform
      */
     public function isEmpty(): QueryInterface
     {
-        return new IsEmpty($this->rethink, $this->message, $this);
+        return new IsEmpty($this->rethink, $this);
     }
 
     /**
@@ -21,7 +21,7 @@ abstract class AbstractTransformation extends AbstractQuery implements Transform
      */
     public function limit($value): TransformationCompoundInterface
     {
-        return new Limit($this->rethink, $this->message, $this, $value);
+        return new Limit($this->rethink, $this, $value);
     }
 
     /**
@@ -29,7 +29,7 @@ abstract class AbstractTransformation extends AbstractQuery implements Transform
      */
     public function skip($value): TransformationCompoundInterface
     {
-        return new Skip($this->rethink, $this->message, $this, $value);
+        return new Skip($this->rethink, $this, $value);
     }
 
     /**
@@ -37,6 +37,6 @@ abstract class AbstractTransformation extends AbstractQuery implements Transform
      */
     public function orderBy($key): TransformationCompoundInterface
     {
-        return new OrderBy($this->rethink, $this->message, $this, $key);
+        return new OrderBy($this->rethink, $this, $key);
     }
 }

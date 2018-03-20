@@ -22,22 +22,19 @@ class Skip extends AbstractTransformationCompound
 
     /**
      * @param RethinkInterface $rethink
-     * @param MessageInterface $message
      * @param QueryInterface $query
      * @param int $n
      */
     public function __construct(
         RethinkInterface $rethink,
-        MessageInterface $message,
         QueryInterface $query,
         int $n
     ) {
-        parent::__construct($rethink, $message);
+        parent::__construct($rethink);
 
         $this->query = $query;
         $this->n = $n;
         $this->rethink = $rethink;
-        $this->message = $message;
     }
 
     /**

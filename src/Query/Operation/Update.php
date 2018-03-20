@@ -23,22 +23,19 @@ class Update extends AbstractQuery
 
     /**
      * @param RethinkInterface $rethink
-     * @param MessageInterface $message
      * @param QueryInterface $query
      * @param array $elements
      */
     public function __construct(
         RethinkInterface $rethink,
-        MessageInterface $message,
         QueryInterface $query,
         array $elements
     ) {
-        parent::__construct($rethink, $message);
+        parent::__construct($rethink);
 
         $this->query = $query;
         $this->elements = $elements;
         $this->rethink = $rethink;
-        $this->message = $message;
     }
 
     /**

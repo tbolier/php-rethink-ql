@@ -28,23 +28,21 @@ class IndexRename extends AbstractQuery
 
     /**
      * @param RethinkInterface $rethink
-     * @param MessageInterface $message
      * @param QueryInterface $query
      * @param string $oldValue
      * @param string $newValue
      */
     public function __construct(
         RethinkInterface $rethink,
-        MessageInterface $message,
         QueryInterface $query,
         string $oldValue,
         string $newValue
     ) {
-        parent::__construct($rethink, $message);
+        parent::__construct($rethink);
 
         $this->query = $query;
         $this->rethink = $rethink;
-        $this->message = $message;
+
         $this->oldValue = $oldValue;
         $this->newValue = $newValue;
     }

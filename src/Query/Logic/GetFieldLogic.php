@@ -23,21 +23,19 @@ class GetFieldLogic extends AbstractTransformationCompound
 
     /**
      * @param RethinkInterface $rethink
-     * @param MessageInterface $message
      * @param QueryInterface $query
      * @param string $field
      */
     public function __construct(
         RethinkInterface $rethink,
-        MessageInterface $message,
         string $field,
         ?QueryInterface $query = null
     ) {
-        parent::__construct($rethink, $message);
+        parent::__construct($rethink);
 
         $this->field = $field;
         $this->rethink = $rethink;
-        $this->message = $message;
+
         $this->query = $query;
     }
 

@@ -23,22 +23,19 @@ class FilterByRow extends AbstractTransformationCompound
 
     /**
      * @param RethinkInterface $rethink
-     * @param MessageInterface $message
      * @param QueryInterface $query
      * @param QueryInterface $manipulation
      */
     public function __construct(
         RethinkInterface $rethink,
-        MessageInterface $message,
         QueryInterface $query,
         QueryInterface $manipulation
     ) {
-        parent::__construct($rethink, $message);
+        parent::__construct($rethink);
 
         $this->query = $query;
         $this->functionQuery = $manipulation;
         $this->rethink = $rethink;
-        $this->message = $message;
     }
 
     /**

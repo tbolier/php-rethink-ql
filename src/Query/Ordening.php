@@ -17,11 +17,10 @@ class Ordening extends AbstractQuery implements OrdeningInterface
     /**
      * @param string $key
      * @param RethinkInterface $rethink
-     * @param MessageInterface $message
      */
-    public function __construct(string $key, RethinkInterface $rethink, MessageInterface $message)
+    public function __construct(string $key, RethinkInterface $rethink)
     {
-        parent::__construct($rethink, $message);
+        parent::__construct($rethink);
 
         $this->asc($key);
     }
