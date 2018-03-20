@@ -5,6 +5,7 @@ namespace TBolier\RethinkQL\Query\Aggregation;
 
 use TBolier\RethinkQL\Query\AbstractQuery;
 use TBolier\RethinkQL\Query\QueryInterface;
+use TBolier\RethinkQL\Query\Transformation\TransformationCompoundInterface;
 
 abstract class AbstractAggregation extends AbstractQuery implements AggregationInterface
 {
@@ -14,6 +15,22 @@ abstract class AbstractAggregation extends AbstractQuery implements AggregationI
     public function count(): QueryInterface
     {
         return new Count($this->rethink, $this->message, $this);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function group(string $key): TransformationCompoundInterface
+    {
+        return new Group($this->rethink, $this->message, $this, $key);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function ungroup(): TransformationCompoundInterface
+    {
+        return new Ungroup($this->rethink, $this->message, $this);
     }
 
     /**
@@ -43,7 +60,7 @@ abstract class AbstractAggregation extends AbstractQuery implements AggregationI
     /**
      * @inheritdoc
      */
-    public function max(string $key): AggregationInterface
+    public function max(string $key): TransformationCompoundInterface
     {
         return new Max($this->rethink, $this->message, $this, $key);
     }

@@ -1,9 +1,10 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace TBolier\RethinkQL\Query\Aggregation;
 
 use TBolier\RethinkQL\Query\QueryInterface;
+use TBolier\RethinkQL\Query\Transformation\TransformationCompoundInterface;
 use TBolier\RethinkQL\Response\ResponseInterface;
 
 interface AggregationInterface
@@ -12,6 +13,17 @@ interface AggregationInterface
      * @return QueryInterface
      */
     public function count(): QueryInterface;
+
+    /**
+     * @param string $key
+     * @return TransformationCompoundInterface
+     */
+    public function group(string $key): TransformationCompoundInterface;
+
+    /**
+     * @return TransformationCompoundInterface
+     */
+    public function ungroup(): TransformationCompoundInterface;
 
     /**
      * @param string $key
@@ -33,9 +45,9 @@ interface AggregationInterface
 
     /**
      * @param string $key
-     * @return AggregationInterface
+     * @return TransformationCompoundInterface
      */
-    public function max(string $key): AggregationInterface;
+    public function max(string $key): TransformationCompoundInterface;
 
     /**
      * @return Iterable|ResponseInterface

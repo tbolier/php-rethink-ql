@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace TBolier\RethinkQL\Query\Aggregation;
 
@@ -9,7 +9,7 @@ use TBolier\RethinkQL\Query\Transformation\AbstractTransformationCompound;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Term\TermType;
 
-class Max extends AbstractTransformationCompound
+class Group extends AbstractTransformationCompound
 {
     /**
      * @var string
@@ -47,10 +47,10 @@ class Max extends AbstractTransformationCompound
     public function toArray(): array
     {
         return [
-            TermType::MAX,
+            TermType::GROUP,
             [
                 $this->query->toArray(),
-                $this->key
+                $this->key,
             ],
         ];
     }

@@ -10,6 +10,12 @@ use TBolier\RethinkQL\Response\ResponseInterface;
 interface TransformationCompoundInterface extends OperationInterface
 {
     /**
+     * @param string $field
+     * @return TransformationCompoundInterface
+     */
+    public function getField(string $field): TransformationCompoundInterface;
+
+    /**
      * @return QueryInterface
      */
     public function isEmpty(): QueryInterface;

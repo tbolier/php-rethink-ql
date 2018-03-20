@@ -3,11 +3,21 @@ declare(strict_types = 1);
 
 namespace TBolier\RethinkQL\Query\Transformation;
 
+use TBolier\RethinkQL\Query\Logic\GetFieldLogic;
 use TBolier\RethinkQL\Query\Operation\AbstractOperation;
 use TBolier\RethinkQL\Query\QueryInterface;
 
 abstract class AbstractTransformationCompound extends AbstractOperation implements TransformationCompoundInterface
 {
+    /**
+     * @param string $field
+     * @return TransformationCompoundInterface
+     */
+    public function getField(string $field): TransformationCompoundInterface
+    {
+        return new GetFieldLogic($this->rethink, $this->message, $field, $this);
+    }
+
     /**
      * @inheritdoc
      */
