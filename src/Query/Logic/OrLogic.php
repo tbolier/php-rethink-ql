@@ -22,20 +22,18 @@ class OrLogic extends AbstractOperation
 
     /**
      * @param RethinkInterface $rethink
-     * @param MessageInterface $message
      * @param QueryInterface $functionOne
      * @param QueryInterface $functionTwo
      */
     public function __construct(
         RethinkInterface $rethink,
-        MessageInterface $message,
         QueryInterface $functionOne,
         QueryInterface $functionTwo
     ) {
-        parent::__construct($rethink, $message);
+        parent::__construct($rethink);
 
         $this->rethink = $rethink;
-        $this->message = $message;
+
         $this->functionOne = $functionOne;
         $this->functionTwo = $functionTwo;
     }

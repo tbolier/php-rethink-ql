@@ -17,15 +17,14 @@ class DbCreate extends AbstractQuery
 
     /**
      * @param RethinkInterface $rethink
-     * @param MessageInterface $message
      * @param string $name
      */
-    public function __construct(RethinkInterface $rethink, MessageInterface $message, string $name)
+    public function __construct(RethinkInterface $rethink, string $name)
     {
-        parent::__construct($rethink, $message);
+        parent::__construct($rethink);
 
         $this->rethink = $rethink;
-        $this->message = $message;
+        
         $this->name = $name;
     }
 

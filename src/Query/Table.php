@@ -23,14 +23,13 @@ class Table extends AbstractTransformationCompound implements TableInterface
     /**
      * @param string $name
      * @param RethinkInterface $rethink
-     * @param MessageInterface $message
      */
-    public function __construct(string $name, RethinkInterface $rethink, MessageInterface $message)
+    public function __construct(string $name, RethinkInterface $rethink)
     {
-        parent::__construct($rethink, $message);
+        parent::__construct($rethink);
 
         $this->rethink = $rethink;
-        $this->message = $message;
+        
 
         $this->query = [
             TermType::TABLE,
@@ -45,7 +44,7 @@ class Table extends AbstractTransformationCompound implements TableInterface
      */
     public function get($key): AbstractQuery
     {
-        return new Get($this->rethink, $this->message, $this, $key);
+        return new Get($this->rethink, $this, $key);
     }
 
     /**
@@ -53,7 +52,7 @@ class Table extends AbstractTransformationCompound implements TableInterface
      */
     public function indexCreate(string $name): AbstractQuery
     {
-        return new IndexCreate($this->rethink, $this->message, $this, $name);
+        return new IndexCreate($this->rethink, $this, $name);
     }
 
     /**
@@ -61,7 +60,7 @@ class Table extends AbstractTransformationCompound implements TableInterface
      */
     public function indexDrop(string $name): AbstractQuery
     {
-        return new IndexDrop($this->rethink, $this->message, $this, $name);
+        return new IndexDrop($this->rethink, $this, $name);
     }
 
     /**
@@ -69,7 +68,7 @@ class Table extends AbstractTransformationCompound implements TableInterface
      */
     public function indexList(): AbstractQuery
     {
-        return new IndexList($this->rethink, $this->message, $this);
+        return new IndexList($this->rethink, $this);
     }
 
     /**
@@ -77,7 +76,7 @@ class Table extends AbstractTransformationCompound implements TableInterface
      */
     public function indexRename(string $oldValue, string $newValue): AbstractQuery
     {
-        return new IndexRename($this->rethink, $this->message, $this, $oldValue, $newValue);
+        return new IndexRename($this->rethink, $this, $oldValue, $newValue);
     }
 
     /**

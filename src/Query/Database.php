@@ -21,11 +21,11 @@ class Database extends AbstractQuery implements DatabaseInterface
 
     /**
      * @param RethinkInterface $rethink
-     * @param MessageInterface $message
+
      */
-    public function __construct(RethinkInterface $rethink, MessageInterface $message)
+    public function __construct(RethinkInterface $rethink)
     {
-        parent::__construct($rethink, $message);
+        parent::__construct($rethink);
 
         $this->dbList();
     }
@@ -35,7 +35,7 @@ class Database extends AbstractQuery implements DatabaseInterface
      */
     public function dbCreate(string $name): DatabaseInterface
     {
-        $this->query = new DbCreate($this->rethink, $this->message, $name);
+        $this->query = new DbCreate($this->rethink, $name);
 
         return $this;
     }
@@ -45,7 +45,7 @@ class Database extends AbstractQuery implements DatabaseInterface
      */
     public function dbDrop(string $name): DatabaseInterface
     {
-        $this->query = new DbDrop($this->rethink, $this->message, $name);
+        $this->query = new DbDrop($this->rethink, $name);
 
         return $this;
     }
@@ -55,7 +55,7 @@ class Database extends AbstractQuery implements DatabaseInterface
      */
     public function dbList(): DatabaseInterface
     {
-        $this->query = new DbList($this->rethink, $this->message);
+        $this->query = new DbList($this->rethink);
 
         return $this;
     }
@@ -65,7 +65,7 @@ class Database extends AbstractQuery implements DatabaseInterface
      */
     public function tableList(): DatabaseInterface
     {
-        $this->query = new TableList($this->rethink, $this->message);
+        $this->query = new TableList($this->rethink);
 
         return $this;
     }
@@ -75,7 +75,7 @@ class Database extends AbstractQuery implements DatabaseInterface
      */
     public function tableCreate(string $name): DatabaseInterface
     {
-        $this->query = new TableCreate($this->rethink, $this->message, $name);
+        $this->query = new TableCreate($this->rethink, $name);
 
         return $this;
     }
@@ -85,7 +85,7 @@ class Database extends AbstractQuery implements DatabaseInterface
      */
     public function tableDrop(string $name): DatabaseInterface
     {
-        $this->query = new TableDrop($this->rethink, $this->message, $name);
+        $this->query = new TableDrop($this->rethink, $name);
 
         return $this;
     }

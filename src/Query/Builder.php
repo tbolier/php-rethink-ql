@@ -52,7 +52,7 @@ class Builder implements BuilderInterface
             unset($this->table);
         }
 
-        $this->table = new Table($name, $this->rethink, new Message());
+        $this->table = new Table($name, $this->rethink);
 
         return $this->table;
     }
@@ -66,7 +66,7 @@ class Builder implements BuilderInterface
             unset($this->database);
         }
 
-        $this->database = new Database($this->rethink, new Message());
+        $this->database = new Database($this->rethink);
 
         return $this->database;
     }
@@ -81,7 +81,7 @@ class Builder implements BuilderInterface
             unset($this->ordering);
         }
 
-        $this->ordering = new Ordening($key, $this->rethink, new Message());
+        $this->ordering = new Ordening($key, $this->rethink);
 
         return $this->ordering;
     }
@@ -92,7 +92,7 @@ class Builder implements BuilderInterface
      */
     public function row(string $value): RowInterface
     {
-        $this->row = new Row($this->rethink, new Message(), $value);
+        $this->row = new Row($this->rethink, $value);
 
         return $this->row;
     }

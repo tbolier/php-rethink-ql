@@ -22,21 +22,19 @@ class EqualLogic extends AbstractOperation
 
     /**
      * @param RethinkInterface $rethink
-     * @param MessageInterface $message
      * @param QueryInterface $query
      * @param mixed $value
      */
     public function __construct(
         RethinkInterface $rethink,
-        MessageInterface $message,
         QueryInterface $query,
         $value
     ) {
-        parent::__construct($rethink, $message);
+        parent::__construct($rethink);
 
         $this->value = $value;
         $this->rethink = $rethink;
-        $this->message = $message;
+        
         $this->query = $query;
     }
 

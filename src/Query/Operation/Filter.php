@@ -23,22 +23,19 @@ class Filter extends AbstractTransformationCompound
 
     /**
      * @param RethinkInterface $rethink
-     * @param MessageInterface $message
      * @param QueryInterface $query
      * @param array $predicate
      */
     public function __construct(
         RethinkInterface $rethink,
-        MessageInterface $message,
         QueryInterface $query,
         array $predicate
     ) {
-        parent::__construct($rethink, $message);
+        parent::__construct($rethink);
 
         $this->query = $query;
         $this->predicate = [$predicate];
         $this->rethink = $rethink;
-        $this->message = $message;
     }
 
     /**

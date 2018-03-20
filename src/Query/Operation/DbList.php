@@ -12,14 +12,12 @@ class DbList extends AbstractQuery
 {
     /**
      * @param RethinkInterface $rethink
-     * @param MessageInterface $message
      */
-    public function __construct(RethinkInterface $rethink, MessageInterface $message)
+    public function __construct(RethinkInterface $rethink)
     {
-        parent::__construct($rethink, $message);
+        parent::__construct($rethink);
 
         $this->rethink = $rethink;
-        $this->message = $message;
     }
 
     /**

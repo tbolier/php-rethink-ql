@@ -22,22 +22,19 @@ class Insert extends AbstractQuery
 
     /**
      * @param RethinkInterface $rethink
-     * @param MessageInterface $message
      * @param QueryInterface $query
      * @param array $documents
      */
     public function __construct(
         RethinkInterface $rethink,
-        MessageInterface $message,
         QueryInterface $query,
         array $documents
     ) {
-        parent::__construct($rethink, $message);
+        parent::__construct($rethink);
 
         $this->query = $query;
         $this->documents = [$documents];
         $this->rethink = $rethink;
-        $this->message = $message;
     }
 
     /**
