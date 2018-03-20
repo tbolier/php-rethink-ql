@@ -4,10 +4,12 @@ namespace TBolier\RethinkQL\Query\Logic;
 
 use TBolier\RethinkQL\Message\MessageInterface;
 use TBolier\RethinkQL\Query\AbstractQuery;
+use TBolier\RethinkQL\Query\QueryInterface;
+use TBolier\RethinkQL\Query\Transformation\AbstractTransformationCompound;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Term\TermType;
 
-class GetFieldLogic extends AbstractQuery
+class GetFieldLogic extends AbstractTransformationCompound
 {
     /**
      * @var string
@@ -15,20 +17,28 @@ class GetFieldLogic extends AbstractQuery
     private $field;
 
     /**
+     * @var QueryInterface|null
+     */
+    private $query;
+
+    /**
      * @param RethinkInterface $rethink
      * @param MessageInterface $message
+     * @param QueryInterface $query
      * @param string $field
      */
     public function __construct(
         RethinkInterface $rethink,
         MessageInterface $message,
-        string $field
+        string $field,
+        ?QueryInterface $query = null
     ) {
         parent::__construct($rethink, $message);
 
         $this->field = $field;
         $this->rethink = $rethink;
         $this->message = $message;
+        $this->query = $query;
     }
 
     /**
@@ -36,12 +46,22 @@ class GetFieldLogic extends AbstractQuery
      */
     public function toArray(): array
     {
+        if ($this->query !== null) {
+            return [
+                TermType::GET_FIELD,
+                [
+                    $this->query->toArray(),
+                    $this->field
+                ],
+            ];
+        }
+
         return [
             TermType::GET_FIELD,
             [
                 [
-                    13,
-                    [],
+                    TermType::IMPLICIT_VAR,
+                    []
                 ],
                 $this->field
             ],

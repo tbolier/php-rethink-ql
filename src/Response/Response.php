@@ -3,6 +3,9 @@ declare(strict_types = 1);
 
 namespace TBolier\RethinkQL\Response;
 
+use TBolier\RethinkQL\Types\Frame\FrameType;
+use TBolier\RethinkQL\Types\Query\QueryType;
+
 class Response implements ResponseInterface
 {
     /**
@@ -57,6 +60,18 @@ class Response implements ResponseInterface
     {
         if (!\is_array($this->data)) {
             return null;
+        }
+
+        if (isset($this->data[0]['$reql_type$']) && $this->data[0]['$reql_type$'] === 'GROUPED_DATA') {
+            $groups = [];
+            foreach ($this->data[0]['data'] as $group) {
+                $groups[] = [
+                    'group' => $group[0],
+                    'reduction' => $group[1],
+                ];
+            }
+
+            return $groups;
         }
 
         return \count($this->data) === 1 && array_key_exists(0, $this->data) ? $this->data[0] : $this->data;
