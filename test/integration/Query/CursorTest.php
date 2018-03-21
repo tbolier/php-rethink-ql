@@ -96,7 +96,6 @@ class CursorTest extends AbstractTableTest
     private function insertDocuments(): ResponseInterface
     {
         $documents = [];
-
         for ($i = 1; $i <= 1000; $i++) {
             $documents[] = [
                 'id' => $i,
@@ -123,21 +122,22 @@ class CursorTest extends AbstractTableTest
      */
     private function insertBigDocuments(array $data): ResponseInterface
     {
+        $documents = [];
         for ($i = 1; $i <= 100; $i++) {
             $documents = [];
 
             for ($x = 1; $x <= 100; $x++) {
                 $documents[] = $data;
             }
-
-            /** @var ResponseInterface $res */
-            $res = $this->r()
-                ->table('tabletest_big')
-                ->insert($documents)
-                ->run();
-
-            $this->assertEquals(100, $res->getData()['inserted']);
         }
+        
+        /** @var ResponseInterface $res */
+        $res = $this->r()
+            ->table('tabletest_big')
+            ->insert($documents)
+            ->run();
+
+        $this->assertEquals(100, $res->getData()['inserted']);
 
         return $res;
     }
