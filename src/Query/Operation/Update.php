@@ -43,7 +43,11 @@ class Update extends AbstractQuery
      */
     public function toArray(): array
     {
-        $jsonElements = json_encode($this->elements);
+        $jsonDocuments = [];
+
+        foreach ($this->elements as $key => $document) {
+            $jsonDocuments[] = json_encode($document);
+        }
 
         return [
             TermType::UPDATE,
@@ -51,9 +55,7 @@ class Update extends AbstractQuery
                 $this->query->toArray(),
                 [
                     TermType::JSON,
-                    [
-                        $jsonElements
-                    ],
+                    $jsonDocuments
                 ],
             ],
         ];
