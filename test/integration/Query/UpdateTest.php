@@ -30,7 +30,7 @@ class UpdateTest extends AbstractTableTest
         $res = $this->r()
             ->table('tabletest')
             ->filter(['title' => 'Update document'])
-            ->update(['title' => 'Updated document'])
+            ->update([['title' => 'Updated document']])
             ->run();
 
         $this->assertObStatus(['replaced' => $count->getData()], $res->getData());
@@ -51,7 +51,7 @@ class UpdateTest extends AbstractTableTest
         $res = $this->r()
             ->table('tabletest')
             ->filter(['id' => 5])
-            ->update(['title' => 'Updated document'])
+            ->update([['title' => 'Updated document']])
             ->run();
 
         $this->assertObStatus(['replaced' => 1], $res->getData());
@@ -72,7 +72,7 @@ class UpdateTest extends AbstractTableTest
         $res = $this->r()
             ->table('tabletest')
             ->filter(['description' => 'A document description.'])
-            ->update(['title' => 'Updated document'])
+            ->update([['title' => 'Updated document']])
             ->run();
 
         $this->assertObStatus(['replaced' => 5], $res->getData());
