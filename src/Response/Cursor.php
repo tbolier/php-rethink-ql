@@ -132,7 +132,13 @@ class Cursor implements \Iterator, \Countable
     {
         $this->index = 0;
         $this->isComplete = $response->getType() === ResponseType::SUCCESS_SEQUENCE;
-        $this->size = $response->isAtomic() ? 1 : \count($response->getData());
+
+        if (\is_null($response->getData())) {
+            $this->size = 0;
+        } else {
+            $this->size = $response->isAtomic() ? 1 : \count($response->getData());
+        }
+
         $this->response = $response;
     }
 

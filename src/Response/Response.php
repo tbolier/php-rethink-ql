@@ -82,7 +82,7 @@ class Response implements ResponseInterface
      */
     public function isAtomic(): bool
     {
-        return \is_string($this->data) || \count($this->data) === 1;
+        return \is_string($this->data) || (!\is_null($this->data) && \count($this->data) === 1);
     }
 
     /**
