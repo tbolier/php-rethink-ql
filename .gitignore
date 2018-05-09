@@ -2,4 +2,5 @@
 vendor/
 rethinkdb_data
 test/config.php
+composer.lock
 
