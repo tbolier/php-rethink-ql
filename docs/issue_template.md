@@ -2,11 +2,10 @@
 
 Please describe your issue.
 
-## Issue type
-- [ ] Bug
-- [ ] Missing feature
-- [ ] Enhancement
-- [ ] Question
+## Issue checklist
+A checklist overview of items to do before the issue can be marked as done.
+ - [ ] Item one
+ - [ ] Item two
 
 The following sections can be removed only, whenever they are not applicable or you have a simple question.
 
