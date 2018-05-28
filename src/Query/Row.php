@@ -10,7 +10,9 @@ use TBolier\RethinkQL\Query\Logic\EqualLogic;
 use TBolier\RethinkQL\Query\Logic\FuncLogic;
 use TBolier\RethinkQL\Query\Logic\GetFieldLogic;
 use TBolier\RethinkQL\Query\Logic\GreaterThanLogic;
+use TBolier\RethinkQL\Query\Logic\GreaterThanOrEqualToLogic;
 use TBolier\RethinkQL\Query\Logic\LowerThanLogic;
+use TBolier\RethinkQL\Query\Logic\LowerThanOrEqualToLogic;
 use TBolier\RethinkQL\Query\Logic\NotEqualLogic;
 use TBolier\RethinkQL\Query\Logic\OrLogic;
 use TBolier\RethinkQL\RethinkInterface;
@@ -122,6 +124,30 @@ class Row extends AbstractQuery implements RowInterface
      * @inheritdoc
      * @throws QueryException
      */
+    public function le($value): RowInterface
+    {
+        if (!\is_scalar($value)) {
+            throw new QueryException('Only scalar types are supported for lower than or equal manipulations.');
+        }
+
+        $this->function = new LowerThanOrEqualToLogic(
+            $this->rethink,
+            new GetFieldLogic($this->rethink, $this->value),
+            $value
+        );
+
+        $this->query = new FuncLogic(
+            $this->rethink,
+            $this->function
+        );
+
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     * @throws QueryException
+     */
     public function gt($value): RowInterface
     {
         if (!\is_scalar($value)) {
@@ -129,6 +155,30 @@ class Row extends AbstractQuery implements RowInterface
         }
 
         $this->function = new GreaterThanLogic(
+            $this->rethink,
+            new GetFieldLogic($this->rethink, $this->value),
+            $value
+        );
+
+        $this->query = new FuncLogic(
+            $this->rethink,
+            $this->function
+        );
+
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     * @throws QueryException
+     */
+    public function ge($value): RowInterface
+    {
+        if (!\is_scalar($value)) {
+            throw new QueryException('Only scalar types are supported for greater than or equal manipulations.');
+        }
+
+        $this->function = new GreaterThanOrEqualToLogic(
             $this->rethink,
             new GetFieldLogic($this->rethink, $this->value),
             $value
