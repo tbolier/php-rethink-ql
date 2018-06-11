@@ -26,7 +26,19 @@ interface RowInterface extends QueryInterface
      * @param mixed $value
      * @return RowInterface
      */
+    public function le($value): RowInterface;
+
+    /**
+     * @param mixed $value
+     * @return RowInterface
+     */
     public function gt($value): RowInterface;
+
+    /**
+     * @param mixed $value
+     * @return RowInterface
+     */
+    public function ge($value): RowInterface;
 
     /**
      * @param RowInterface $value
