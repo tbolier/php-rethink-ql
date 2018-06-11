@@ -258,6 +258,44 @@ class FilterTest extends AbstractTableTest
     /**
      * @throws \Exception
      */
+    public function testFilterGreaterOrEqualThanLogic(): void
+    {
+        $this->insertDocumentWithNumber(1, 11);
+        $this->insertDocumentWithNumber(2, 22);
+        $this->insertDocumentWithNumber(3, 33);
+
+        /** @var ResponseInterface $res */
+        $row = $this->r()->row('number')->ge(22);
+        $cursor = $this->r()
+            ->table('tabletest')
+            ->filter($row)
+            ->run();
+
+        $this->assertCount(2, $cursor);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function testFilterLowerOrEqualThanLogic(): void
+    {
+        $this->insertDocumentWithNumber(1, 11);
+        $this->insertDocumentWithNumber(2, 22);
+        $this->insertDocumentWithNumber(3, 33);
+
+        /** @var ResponseInterface $res */
+        $row = $this->r()->row('number')->le(22);
+        $cursor = $this->r()
+            ->table('tabletest')
+            ->filter($row)
+            ->run();
+
+        $this->assertCount(2, $cursor);
+    }
+
+    /**
+     * @throws \Exception
+     */
     public function testFilterWithDateEqualLogic(): void
     {
         $this->insertDocumentWithDate(1, $yesterday = new \DateTime('-1 days'));
