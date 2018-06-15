@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace TBolier\RethinkQL\Query\Logic;
 
 use TBolier\RethinkQL\Query\Operation\AbstractOperation;
@@ -26,7 +26,6 @@ class NotLogic extends AbstractOperation
         parent::__construct($rethink);
 
         $this->rethink = $rethink;
-        
         $this->query = $query;
     }
 
