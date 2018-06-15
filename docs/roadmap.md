@@ -130,10 +130,10 @@ https://github.com/tbolier/php-rethink-ql/issues?utf8=%E2%9C%93&q=milestone%3A%2
 | eq                     |   |   | ✓ | ✓ |
 | ne                     |   |   | ✓ | ✓ |
 | gt                     |   |   | ✓ | ✓ |
-| ge                     |   |   |   |   |
+| ge                     |   |   |   | ✓ |
 | lt                     |   |   | ✓ | ✓ |
-| le                     |   |   |   |   |
-| not                    |   |   |   |   |
+| le                     |   |   |   | ✓ |
+| not                    |   |   |   | ✓ |
 | random                 |   |   |   |   |
 | round                  |   |   |   |   |
 | ceil                   |   |   |   |   |
