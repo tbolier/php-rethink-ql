@@ -119,7 +119,8 @@ https://github.com/tbolier/php-rethink-ql/issues?utf8=%E2%9C%93&q=milestone%3A%2
 | split                  |   |   |   |   |
 | upcase                 |   |   |   |   |
 | downcase               |   |   |   |   |
-| Math and logic         |   |   |   |   |
+| | | | | |
+| **Math and logic** 
 | add                    |   |   |   |   |
 | sub                    |   |   |   |   |
 | mul                    |   |   |   |   |
