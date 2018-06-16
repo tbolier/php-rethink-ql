@@ -76,6 +76,10 @@ For more examples about executing queries go to our docs section: [Getting start
 
 Please read the [contributing guidelines](docs/contributing.md) if you would like to contribute to this project.
 
+## Discussions and chat
+
+You can find us at Gitter.im in the `rethinkdb-php` room at https://gitter.im/rethinkdb-php/Lobby
+
 ## Authors
 
 * **Timon Bolier** - *Creator* - [tbolier](https://github.com/tbolier)
