@@ -53,6 +53,11 @@ interface RowInterface extends QueryInterface
     public function or(RowInterface $value): RowInterface;
 
     /**
+     * @return RowInterface
+     */
+    public function not(): RowInterface;
+
+    /**
      * @return QueryInterface
      */
     public function getFunction(): QueryInterface;

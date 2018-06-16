@@ -377,4 +377,24 @@ class FilterTest extends AbstractTableTest
 
         $this->assertCount(2, $cursor);
     }
+
+    /**
+     * @return void
+     * @throws \Exception
+     */
+    public function testNotLogic(): void
+    {
+        $this->insertDocumentWithNumber(1, 55);
+        $this->insertDocumentWithNumber(2, 77);
+        $this->insertDocumentWithNumber(3, 99);
+        $this->insertDocumentWithNumber(4, 111);
+
+        $row = $this->r()->row('number')->eq(77)->not();
+        $cursor = $this->r()
+            ->table('tabletest')
+            ->filter($row)
+            ->run();
+
+        $this->assertCount(3, $cursor);
+    }
 }

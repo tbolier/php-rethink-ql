@@ -14,6 +14,7 @@ use TBolier\RethinkQL\Query\Logic\GreaterThanOrEqualToLogic;
 use TBolier\RethinkQL\Query\Logic\LowerThanLogic;
 use TBolier\RethinkQL\Query\Logic\LowerThanOrEqualToLogic;
 use TBolier\RethinkQL\Query\Logic\NotEqualLogic;
+use TBolier\RethinkQL\Query\Logic\NotLogic;
 use TBolier\RethinkQL\Query\Logic\OrLogic;
 use TBolier\RethinkQL\RethinkInterface;
 
@@ -222,6 +223,25 @@ class Row extends AbstractQuery implements RowInterface
             $this->rethink,
             $this->function,
             $row->getFunction()
+        );
+
+        $this->query = new FuncLogic(
+            $this->rethink,
+            $this->function
+        );
+
+        return $this;
+    }
+
+    /**
+     * @param RowInterface $row
+     * @return RowInterface
+     */
+    public function not(): RowInterface
+    {
+        $this->function = new NotLogic(
+            $this->rethink,
+            $this->function
         );
 
         $this->query = new FuncLogic(
