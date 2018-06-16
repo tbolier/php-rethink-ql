@@ -80,10 +80,11 @@ Please read the [contributing guidelines](docs/contributing.md) if you would lik
 
 You can find us at Gitter.im in the `rethinkdb-php` room at https://gitter.im/rethinkdb-php/Lobby
 
-## Authors
+## Author and collaborators
 
-* **Timon Bolier** - *Creator* - [tbolier](https://github.com/tbolier)
+* **Timon Bolier** - *Author and collaborator* - [tbolier](https://github.com/tbolier)
 * **Marc Geurts** - *Collaborator* - [marcgeurts](https://github.com/marcgeurts)
 * **Michel Maas** - *Collaborator* - [AxaliaN](https://github.com/AxaliaN)
+* **Jérémy** - *Collaborator* - [Th3Mouk](https://github.com/Th3Mouk)
 
 See also the list of [contributors](https://github.com/tbolier/php-rethink-ql/contributors) who participated in this project.
