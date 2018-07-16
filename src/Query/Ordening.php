@@ -1,13 +1,12 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace TBolier\RethinkQL\Query;
 
-use TBolier\RethinkQL\Message\MessageInterface;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Term\TermType;
 
-class Ordening extends AbstractQuery implements OrdeningInterface
+class Ordening extends AbstractQuery
 {
     /**
      * @var array
@@ -28,7 +27,7 @@ class Ordening extends AbstractQuery implements OrdeningInterface
     /**
      * @inheritdoc
      */
-    public function asc(string $key): OrdeningInterface
+    public function asc(string $key): Ordening
     {
         $this->query = [
             TermType::ASC,
@@ -43,7 +42,7 @@ class Ordening extends AbstractQuery implements OrdeningInterface
     /**
      * @inheritdoc
      */
-    public function desc(string $key): OrdeningInterface
+    public function desc(string $key): Ordening
     {
         $this->query = [
             TermType::DESC,

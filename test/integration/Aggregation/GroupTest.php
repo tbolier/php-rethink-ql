@@ -86,12 +86,12 @@ class GroupTest extends AbstractTableTest
         $this->assertCount(3, $res->getData());
 
         $this->assertEquals('Alice', $res->getData()[0]['group']);
-        $this->assertEquals(20, $res->getData()[0]['reduction']);
+        $this->assertEquals(20, $res->getData()[0]['reduction'][0]);
 
         $this->assertEquals('Bob', $res->getData()[1]['group']);
-        $this->assertEquals(10, $res->getData()[1]['reduction']);
+        $this->assertEquals(10, $res->getData()[1]['reduction'][0]);
 
         $this->assertEquals('Harry', $res->getData()[2]['group']);
-        $this->assertEquals(50, $res->getData()[2]['reduction']);
+        $this->assertEquals(50, $res->getData()[2]['reduction'][0]);
     }
 }

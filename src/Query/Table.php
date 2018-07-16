@@ -3,18 +3,23 @@ declare(strict_types = 1);
 
 namespace TBolier\RethinkQL\Query;
 
-use TBolier\RethinkQL\Message\MessageInterface;
+use TBolier\RethinkQL\Query\Aggregation\AggregationTrait;
 use TBolier\RethinkQL\Query\Operation\Get;
 use TBolier\RethinkQL\Query\Operation\IndexCreate;
 use TBolier\RethinkQL\Query\Operation\IndexDrop;
 use TBolier\RethinkQL\Query\Operation\IndexList;
 use TBolier\RethinkQL\Query\Operation\IndexRename;
-use TBolier\RethinkQL\Query\Transformation\AbstractTransformationCompound;
+use TBolier\RethinkQL\Query\Operation\OperationTrait;
+use TBolier\RethinkQL\Query\Transformation\TransformationTrait;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Term\TermType;
 
-class Table extends AbstractTransformationCompound implements TableInterface
+class Table extends AbstractQuery
 {
+    use AggregationTrait;
+    use OperationTrait;
+    use TransformationTrait;
+
     /**
      * @var array
      */

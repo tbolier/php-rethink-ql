@@ -4,7 +4,6 @@ declare(strict_types = 1);
 namespace TBolier\RethinkQL\Query;
 
 use TBolier\RethinkQL\Message\Message;
-use TBolier\RethinkQL\Message\MessageInterface;
 use TBolier\RethinkQL\RethinkInterface;
 
 abstract class AbstractQuery implements QueryInterface

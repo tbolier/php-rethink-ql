@@ -1,16 +1,22 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace TBolier\RethinkQL\Query\Aggregation;
 
-use TBolier\RethinkQL\Message\MessageInterface;
+use TBolier\RethinkQL\Query\AbstractQuery;
+use TBolier\RethinkQL\Query\Logic\LogicTrait;
+use TBolier\RethinkQL\Query\Operation\OperationTrait;
 use TBolier\RethinkQL\Query\QueryInterface;
-use TBolier\RethinkQL\Query\Transformation\AbstractTransformationCompound;
+use TBolier\RethinkQL\Query\Transformation\TransformationTrait;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Term\TermType;
 
-class Max extends AbstractTransformationCompound
+class Max extends AbstractQuery
 {
+    use TransformationTrait;
+    use OperationTrait;
+    use LogicTrait;
+
     /**
      * @var string
      */
@@ -31,7 +37,7 @@ class Max extends AbstractTransformationCompound
         QueryInterface $query,
         string $key
     ) {
-        parent::__construct($rethink);
+        parent::__construct($rethink, $key);
 
         $this->query = $query;
         $this->key = $key;
@@ -47,7 +53,7 @@ class Max extends AbstractTransformationCompound
             TermType::MAX,
             [
                 $this->query->toArray(),
-                $this->key
+                $this->key,
             ],
         ];
     }

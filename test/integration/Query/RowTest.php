@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace TBolier\RethinkQL\IntegrationTest\Query;
 
-use TBolier\RethinkQL\Query\RowInterface;
+use TBolier\RethinkQL\Query\Row;
 use TBolier\RethinkQL\Response\ResponseInterface;
 use TBolier\RethinkQL\Types\Term\TermType;
 
@@ -21,7 +21,7 @@ class RowTest extends AbstractTableTest
         $dateTime = (new \DateTime('now'))->format(\DateTime::ATOM);
         $row = $this->r()->row('date')->gt($dateTime);
 
-        $this->assertInstanceOf(RowInterface::class, $row);
+        $this->assertInstanceOf(Row::class, $row);
         $this->assertArraySubset($this->equalsParsedQuery(TermType::GT, $dateTime), $row->toArray());
     }
 
@@ -37,7 +37,7 @@ class RowTest extends AbstractTableTest
         $dateTime = (new \DateTime('now'))->format(\DateTime::ATOM);
         $row = $this->r()->row('date')->eq($dateTime);
 
-        $this->assertInstanceOf(RowInterface::class, $row);
+        $this->assertInstanceOf(Row::class, $row);
         $this->assertArraySubset($this->equalsParsedQuery(TermType::EQ, $dateTime), $row->toArray());
     }
 
@@ -53,7 +53,7 @@ class RowTest extends AbstractTableTest
         $dateTime = (new \DateTime('now'))->format(\DateTime::ATOM);
         $row = $this->r()->row('date')->ne($dateTime);
 
-        $this->assertInstanceOf(RowInterface::class, $row);
+        $this->assertInstanceOf(Row::class, $row);
         $this->assertArraySubset($this->equalsParsedQuery(TermType::NE, $dateTime), $row->toArray());
     }
 
@@ -76,7 +76,7 @@ class RowTest extends AbstractTableTest
             )
         );
 
-        $this->assertInstanceOf(RowInterface::class, $row);
+        $this->assertInstanceOf(Row::class, $row);
         $this->assertArraySubset(
             [
                 TermType::FUNC,
@@ -150,7 +150,7 @@ class RowTest extends AbstractTableTest
             )
         );
 
-        $this->assertInstanceOf(RowInterface::class, $row);
+        $this->assertInstanceOf(Row::class, $row);
         $this->assertArraySubset(
             [
                 TermType::FUNC,

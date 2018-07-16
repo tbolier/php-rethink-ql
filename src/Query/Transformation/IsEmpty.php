@@ -3,7 +3,6 @@ declare(strict_types = 1);
 
 namespace TBolier\RethinkQL\Query\Transformation;
 
-use TBolier\RethinkQL\Message\MessageInterface;
 use TBolier\RethinkQL\Query\AbstractQuery;
 use TBolier\RethinkQL\Query\QueryInterface;
 use TBolier\RethinkQL\RethinkInterface;

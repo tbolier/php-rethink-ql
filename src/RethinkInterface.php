@@ -1,13 +1,13 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace TBolier\RethinkQL;
 
 use TBolier\RethinkQL\Connection\ConnectionInterface;
-use TBolier\RethinkQL\Query\DatabaseInterface;
-use TBolier\RethinkQL\Query\OrdeningInterface;
-use TBolier\RethinkQL\Query\RowInterface;
-use TBolier\RethinkQL\Query\TableInterface;
+use TBolier\RethinkQL\Query\Database;
+use TBolier\RethinkQL\Query\Ordening;
+use TBolier\RethinkQL\Query\Row;
+use TBolier\RethinkQL\Query\Table;
 
 interface RethinkInterface
 {
@@ -18,47 +18,47 @@ interface RethinkInterface
 
     /**
      * @param string $name
-     * @return TableInterface
+     * @return Table
      */
-    public function table(string $name): TableInterface;
+    public function table(string $name): Table;
 
     /**
-     * @return DatabaseInterface
+     * @return Database
      */
-    public function db(): DatabaseInterface;
-
-    /**
-     * @param string $name
-     * @return DatabaseInterface
-     */
-    public function dbCreate(string $name): DatabaseInterface;
+    public function db(): Database;
 
     /**
      * @param string $name
-     * @return DatabaseInterface
+     * @return Database
      */
-    public function dbDrop(string $name): DatabaseInterface;
+    public function dbCreate(string $name): Database;
 
     /**
-     * @return DatabaseInterface
+     * @param string $name
+     * @return Database
      */
-    public function dbList(): DatabaseInterface;
+    public function dbDrop(string $name): Database;
+
+    /**
+     * @return Database
+     */
+    public function dbList(): Database;
 
     /**
      * @param mixed $key
-     * @return OrdeningInterface
+     * @return Ordening
      */
-    public function desc($key): OrdeningInterface;
+    public function desc($key): Ordening;
 
     /**
      * @param mixed $key
-     * @return OrdeningInterface
+     * @return Ordening
      */
-    public function asc($key): OrdeningInterface;
+    public function asc($key): Ordening;
 
     /**
      * @param string $value
-     * @return RowInterface
+     * @return Row
      */
-    public function row(string $value): RowInterface;
+    public function row(string $value): Row;
 }

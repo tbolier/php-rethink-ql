@@ -1,15 +1,17 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace TBolier\RethinkQL\Query\Aggregation;
 
-use TBolier\RethinkQL\Message\MessageInterface;
+use TBolier\RethinkQL\Query\AbstractQuery;
 use TBolier\RethinkQL\Query\QueryInterface;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Term\TermType;
 
-class Min extends AbstractAggregation
+class Min extends AbstractQuery
 {
+    use AggregationTrait;
+
     /**
      * @var string
      */
@@ -46,7 +48,7 @@ class Min extends AbstractAggregation
             TermType::MIN,
             [
                 $this->query->toArray(),
-                $this->key
+                $this->key,
             ],
         ];
     }

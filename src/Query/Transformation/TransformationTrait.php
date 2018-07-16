@@ -3,10 +3,9 @@ declare(strict_types = 1);
 
 namespace TBolier\RethinkQL\Query\Transformation;
 
-use TBolier\RethinkQL\Query\AbstractQuery;
 use TBolier\RethinkQL\Query\QueryInterface;
 
-abstract class AbstractTransformation extends AbstractQuery implements TransformationInterface
+trait TransformationTrait
 {
     /**
      * @inheritdoc
@@ -19,7 +18,7 @@ abstract class AbstractTransformation extends AbstractQuery implements Transform
     /**
      * @inheritdoc
      */
-    public function limit($value): TransformationCompoundInterface
+    public function limit($value): Limit
     {
         return new Limit($this->rethink, $this, $value);
     }
@@ -27,7 +26,7 @@ abstract class AbstractTransformation extends AbstractQuery implements Transform
     /**
      * @inheritdoc
      */
-    public function skip($value): TransformationCompoundInterface
+    public function skip($value): Skip
     {
         return new Skip($this->rethink, $this, $value);
     }
@@ -35,7 +34,7 @@ abstract class AbstractTransformation extends AbstractQuery implements Transform
     /**
      * @inheritdoc
      */
-    public function orderBy($key): TransformationCompoundInterface
+    public function orderBy($key): OrderBy
     {
         return new OrderBy($this->rethink, $this, $key);
     }

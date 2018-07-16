@@ -3,13 +3,17 @@ declare(strict_types = 1);
 
 namespace TBolier\RethinkQL\Query\Transformation;
 
-use TBolier\RethinkQL\Message\MessageInterface;
+use TBolier\RethinkQL\Query\AbstractQuery;
+use TBolier\RethinkQL\Query\Operation\OperationTrait;
 use TBolier\RethinkQL\Query\QueryInterface;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Term\TermType;
 
-class Skip extends AbstractTransformationCompound
+class Skip extends AbstractQuery
 {
+    use TransformationTrait;
+    use OperationTrait;
+
     /**
      * @var int
      */

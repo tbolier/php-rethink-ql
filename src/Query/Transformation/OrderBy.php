@@ -1,15 +1,19 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace TBolier\RethinkQL\Query\Transformation;
 
-use TBolier\RethinkQL\Message\MessageInterface;
+use TBolier\RethinkQL\Query\AbstractQuery;
+use TBolier\RethinkQL\Query\Operation\OperationTrait;
 use TBolier\RethinkQL\Query\QueryInterface;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Term\TermType;
 
-class OrderBy extends AbstractTransformationCompound
+class OrderBy extends AbstractQuery
 {
+    use TransformationTrait;
+    use OperationTrait;
+
     /**
      * @var mixed|QueryInterface
      */
@@ -48,7 +52,7 @@ class OrderBy extends AbstractTransformationCompound
             TermType::ORDER_BY,
             [
                 $this->query->toArray(),
-                $ordering
+                $ordering,
             ],
         ];
     }

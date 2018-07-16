@@ -99,7 +99,7 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
      * @inheritdoc
      * @throws ConnectionException
      */
-    public function connect(): self
+    public function connect(): Connection
     {
         if ($this->stream !== null && $this->stream->isWritable()) {
             return $this;

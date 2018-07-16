@@ -3,19 +3,17 @@ declare(strict_types=1);
 
 namespace TBolier\RethinkQL\Query;
 
-use TBolier\RethinkQL\Message\Message;
-use TBolier\RethinkQL\Query\RowInterface;
 use TBolier\RethinkQL\RethinkInterface;
 
-class Builder implements BuilderInterface
+class Builder
 {
     /**
-     * @var DatabaseInterface
+     * @var Database
      */
     private $database;
 
     /**
-     * @var OrdeningInterface
+     * @var Ordening
      */
     private $ordering;
 
@@ -25,7 +23,7 @@ class Builder implements BuilderInterface
     private $rethink;
 
     /**
-     * @var RowInterface
+     * @var Row
      */
     private $row;
 
@@ -44,9 +42,9 @@ class Builder implements BuilderInterface
 
     /**
      * @param string $name
-     * @return TableInterface
+     * @return Table
      */
-    public function table(string $name): TableInterface
+    public function table(string $name): Table
     {
         if ($this->table) {
             unset($this->table);
@@ -58,9 +56,9 @@ class Builder implements BuilderInterface
     }
 
     /**
-     * @return DatabaseInterface
+     * @return Database
      */
-    public function database(): DatabaseInterface
+    public function database(): Database
     {
         if ($this->database) {
             unset($this->database);
@@ -73,9 +71,9 @@ class Builder implements BuilderInterface
 
     /**
      * @param string $key
-     * @return OrdeningInterface
+     * @return Ordening
      */
-    public function ordening(string $key): OrdeningInterface
+    public function ordening(string $key): Ordening
     {
         if ($this->ordering) {
             unset($this->ordering);
@@ -88,9 +86,9 @@ class Builder implements BuilderInterface
 
     /**
      * @param string $value
-     * @return RowInterface
+     * @return Row
      */
-    public function row(string $value): RowInterface
+    public function row(string $value): Row
     {
         $this->row = new Row($this->rethink, $value);
 
