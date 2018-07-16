@@ -17,12 +17,7 @@ class NotLogic extends AbstractQuery
      * @var QueryInterface
      */
     private $query;
-
-    /**
-     * @param RethinkInterface $rethink
-     * @param QueryInterface $query
-     * @param mixed $value
-     */
+    
     public function __construct(
         RethinkInterface $rethink,
         QueryInterface $query
@@ -33,9 +28,6 @@ class NotLogic extends AbstractQuery
         $this->query = $query;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function toArray(): array
     {
         return

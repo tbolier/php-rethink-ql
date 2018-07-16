@@ -29,13 +29,6 @@ class Response implements ResponseInterface
      */
     private $type;
 
-    /**
-     * @param int|null $t
-     * @param array|null $r
-     * @param array|null $b
-     * @param array|null $p
-     * @param array|null $n
-     */
     public function __construct(int $t = null, array $r = null, array $b = null, array $p = null, array $n = null)
     {
         !$t ?: $this->type = $t;
@@ -45,17 +38,11 @@ class Response implements ResponseInterface
         !$n ?: $this->note = $n;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getType(): ?int
     {
         return $this->type;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getData()
     {
         if (!\is_array($this->data)) {
@@ -77,33 +64,21 @@ class Response implements ResponseInterface
         return \count($this->data) === 1 && array_key_exists(0, $this->data) ? $this->data[0] : $this->data;
     }
 
-    /**
-     * @return bool
-     */
     public function isAtomic(): bool
     {
         return \is_string($this->data) || (!\is_null($this->data) && \count($this->data) === 1);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getBacktrace(): ?array
     {
         return $this->backtrace;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getProfile(): ?array
     {
         return $this->profile;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getNote(): ?array
     {
         return $this->note;

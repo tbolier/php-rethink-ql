@@ -25,12 +25,6 @@ class IndexRename extends AbstractQuery
      */
     private $query;
 
-    /**
-     * @param RethinkInterface $rethink
-     * @param QueryInterface $query
-     * @param string $oldValue
-     * @param string $newValue
-     */
     public function __construct(
         RethinkInterface $rethink,
         QueryInterface $query,
@@ -46,9 +40,6 @@ class IndexRename extends AbstractQuery
         $this->newValue = $newValue;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function toArray(): array
     {
         return [

@@ -9,9 +9,6 @@ use TBolier\RethinkQL\Types\Term\TermType;
 
 class TableList extends AbstractQuery
 {
-    /**
-     * @param RethinkInterface $rethink
-     */
     public function __construct(RethinkInterface $rethink)
     {
         parent::__construct($rethink);
@@ -19,9 +16,6 @@ class TableList extends AbstractQuery
         $this->rethink = $rethink;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function toArray(): array
     {
         return [

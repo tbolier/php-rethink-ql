@@ -13,10 +13,6 @@ class Ordening extends AbstractQuery
      */
     private $query;
 
-    /**
-     * @param string $key
-     * @param RethinkInterface $rethink
-     */
     public function __construct(string $key, RethinkInterface $rethink)
     {
         parent::__construct($rethink);
@@ -24,9 +20,6 @@ class Ordening extends AbstractQuery
         $this->asc($key);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function asc(string $key): Ordening
     {
         $this->query = [
@@ -39,9 +32,6 @@ class Ordening extends AbstractQuery
         return $this;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function desc(string $key): Ordening
     {
         $this->query = [
@@ -54,9 +44,6 @@ class Ordening extends AbstractQuery
         return $this;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function toArray(): array
     {
         return $this->query;

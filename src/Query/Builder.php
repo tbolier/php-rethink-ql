@@ -32,18 +32,11 @@ class Builder
      */
     private $table;
 
-    /**
-     * @param RethinkInterface $rethink
-     */
     public function __construct(RethinkInterface $rethink)
     {
         $this->rethink = $rethink;
     }
 
-    /**
-     * @param string $name
-     * @return Table
-     */
     public function table(string $name): Table
     {
         if ($this->table) {
@@ -55,9 +48,6 @@ class Builder
         return $this->table;
     }
 
-    /**
-     * @return Database
-     */
     public function database(): Database
     {
         if ($this->database) {
@@ -69,10 +59,6 @@ class Builder
         return $this->database;
     }
 
-    /**
-     * @param string $key
-     * @return Ordening
-     */
     public function ordening(string $key): Ordening
     {
         if ($this->ordering) {
@@ -84,10 +70,6 @@ class Builder
         return $this->ordering;
     }
 
-    /**
-     * @param string $value
-     * @return Row
-     */
     public function row(string $value): Row
     {
         $this->row = new Row($this->rethink, $value);

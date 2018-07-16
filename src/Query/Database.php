@@ -18,10 +18,6 @@ class Database extends AbstractQuery
      */
     private $query;
 
-    /**
-     * @param RethinkInterface $rethink
-
-     */
     public function __construct(RethinkInterface $rethink)
     {
         parent::__construct($rethink);
@@ -29,9 +25,6 @@ class Database extends AbstractQuery
         $this->dbList();
     }
 
-    /**
-     * @inheritdoc
-     */
     public function dbCreate(string $name): Database
     {
         $this->query = new DbCreate($this->rethink, $name);
@@ -39,9 +32,6 @@ class Database extends AbstractQuery
         return $this;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function dbDrop(string $name): Database
     {
         $this->query = new DbDrop($this->rethink, $name);
@@ -49,9 +39,6 @@ class Database extends AbstractQuery
         return $this;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function dbList(): Database
     {
         $this->query = new DbList($this->rethink);
@@ -59,9 +46,6 @@ class Database extends AbstractQuery
         return $this;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function tableList(): Database
     {
         $this->query = new TableList($this->rethink);
@@ -69,9 +53,6 @@ class Database extends AbstractQuery
         return $this;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function tableCreate(string $name): Database
     {
         $this->query = new TableCreate($this->rethink, $name);
@@ -79,9 +60,6 @@ class Database extends AbstractQuery
         return $this;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function tableDrop(string $name): Database
     {
         $this->query = new TableDrop($this->rethink, $name);
@@ -89,9 +67,6 @@ class Database extends AbstractQuery
         return $this;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function toArray(): array
     {
         return $this->query->toArray();

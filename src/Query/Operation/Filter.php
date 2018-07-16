@@ -26,11 +26,6 @@ class Filter extends AbstractQuery
      */
     private $query;
 
-    /**
-     * @param RethinkInterface $rethink
-     * @param QueryInterface $query
-     * @param array $predicate
-     */
     public function __construct(
         RethinkInterface $rethink,
         QueryInterface $query,
@@ -43,9 +38,6 @@ class Filter extends AbstractQuery
         $this->rethink = $rethink;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function toArray(): array
     {
         $jsonDocuments = [];

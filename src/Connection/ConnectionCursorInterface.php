@@ -9,8 +9,6 @@ use TBolier\RethinkQL\Response\ResponseInterface;
 interface ConnectionCursorInterface extends ConnectionQueryInterface
 {
     /**
-     * @param MessageInterface $message
-     * @return Iterable|ResponseInterface
      * @throws ConnectionException
      */
     public function rewindFromCursor(MessageInterface $message): ResponseInterface;

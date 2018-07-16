@@ -22,11 +22,6 @@ class AndLogic extends AbstractQuery
      */
     private $functionTwo;
 
-    /**
-     * @param RethinkInterface $rethink
-     * @param QueryInterface $functionOne
-     * @param QueryInterface $functionTwo
-     */
     public function __construct(
         RethinkInterface $rethink,
         QueryInterface $functionOne,
@@ -40,9 +35,6 @@ class AndLogic extends AbstractQuery
         $this->functionTwo = $functionTwo;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function toArray(): array
     {
         return

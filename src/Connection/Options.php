@@ -45,10 +45,7 @@ class Options implements OptionsInterface
      */
     private $ssl;
 
-    /**
-     * @param array $options
-     */
-    public function __construct($options = [])
+    public function __construct(array $options = [])
     {
         $this->hostname = $options['hostname'] ?? 'localhost';
         $this->port = $options['port'] ?? 28015;
@@ -60,73 +57,46 @@ class Options implements OptionsInterface
         $this->ssl = $options['ssl'] ?? false;
     }
 
-    /**
-     * @return string
-     */
     public function getHostname(): string
     {
         return $this->hostname;
     }
 
-    /**
-     * @return int
-     */
     public function getPort(): int
     {
         return $this->port;
     }
 
-    /**
-     * @return string
-     */
     public function getDbName(): string
     {
         return $this->dbname;
     }
 
-    /**
-     * @return string
-     */
     public function getUser(): string
     {
         return $this->user;
     }
 
-    /**
-     * @return string
-     */
     public function getPassword(): string
     {
         return $this->password;
     }
 
-    /**
-     * @return float
-     */
     public function getTimeout(): float
     {
         return $this->timeout;
     }
 
-    /**
-     * @return int
-     */
     public function getTimeoutStream(): int
     {
         return $this->timeoutStream;
     }
 
-    /**
-     * @return bool
-     */
     public function isSsl(): bool
     {
         return $this->ssl;
     }
 
-    /**
-     * @return bool
-     */
     public function hasDefaultDatabase(): bool
     {
         return !empty($this->dbname);

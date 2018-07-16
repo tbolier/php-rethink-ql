@@ -62,11 +62,6 @@ class Handshake implements HandshakeInterface
      */
     private $version;
 
-    /**
-     * @param string $username
-     * @param string $password
-     * @param int $version
-     */
     public function __construct(string $username, string $password, int $version)
     {
         $this->username = $username;
@@ -76,7 +71,6 @@ class Handshake implements HandshakeInterface
     }
 
     /**
-     * @inheritdoc
      * @throws \RuntimeException
      * @throws Exception
      */
@@ -115,11 +109,6 @@ class Handshake implements HandshakeInterface
         }
     }
 
-    /**
-     * @param $response
-     * @return string
-     * @throws Exception
-     */
     private function nextMessage(string $response = null): ?string
     {
         if ($response === null) {
@@ -138,12 +127,6 @@ class Handshake implements HandshakeInterface
         }
     }
 
-    /**
-     * @param string $password
-     * @param string $salt
-     * @param int $iterations
-     * @return string
-     */
     private function pkbdf2Hmac(string $password, string $salt, int $iterations): string
     {
         $t = hash_hmac('sha256', $salt."\x00\x00\x00\x01", $password, true);
@@ -156,9 +139,6 @@ class Handshake implements HandshakeInterface
         return $u;
     }
 
-    /**
-     * @return string
-     */
     private function createHandshakeMessage(): string
     {
         $this->myR = base64_encode(openssl_random_pseudo_bytes(18));
@@ -180,11 +160,6 @@ class Handshake implements HandshakeInterface
             . \chr(0);
     }
 
-    /**
-     * @param null|string $response
-     * @return string
-     * @throws Exception
-     */
     private function verifyProtocol(?string $response): string
     {
         if (strpos($response, 'ERROR') === 0) {
@@ -210,8 +185,6 @@ class Handshake implements HandshakeInterface
     }
 
     /**
-     * @param $response
-     * @return null|string
      * @throws Exception
      */
     private function createAuthenticationMessage($response): string
@@ -261,8 +234,6 @@ class Handshake implements HandshakeInterface
     }
 
     /**
-     * @param null|string $response
-     * @return string
      * @throws Exception
      */
     private function verifyAuthentication(string $response): string
@@ -284,9 +255,6 @@ class Handshake implements HandshakeInterface
         return 'successful';
     }
 
-    /**
-     * @param null|string $handshakeResponse
-     */
     private function checkResponse(?string $handshakeResponse): void
     {
         if ($handshakeResponse !== null && preg_match(
@@ -299,7 +267,6 @@ class Handshake implements HandshakeInterface
     }
 
     /**
-     * @param string $signature
      * @throws Exception
      */
     private function checkSignature(string $signature): void

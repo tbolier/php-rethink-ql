@@ -34,10 +34,6 @@ class Row extends AbstractQuery
      */
     private $value;
 
-    /**
-     * @param RethinkInterface $rethink
-     * @param string $value
-     */
     public function __construct(
         RethinkInterface $rethink,
         string $value
@@ -49,7 +45,6 @@ class Row extends AbstractQuery
     }
 
     /**
-     * @inheritdoc
      * @throws QueryException
      */
     public function eq($value): Row
@@ -73,7 +68,6 @@ class Row extends AbstractQuery
     }
 
     /**
-     * @inheritdoc
      * @throws QueryException
      */
     public function ne($value): Row
@@ -97,7 +91,6 @@ class Row extends AbstractQuery
     }
 
     /**
-     * @inheritdoc
      * @throws QueryException
      */
     public function lt($value): Row
@@ -121,7 +114,6 @@ class Row extends AbstractQuery
     }
 
     /**
-     * @inheritdoc
      * @throws QueryException
      */
     public function le($value): Row
@@ -145,7 +137,6 @@ class Row extends AbstractQuery
     }
 
     /**
-     * @inheritdoc
      * @throws QueryException
      */
     public function gt($value): Row
@@ -169,7 +160,6 @@ class Row extends AbstractQuery
     }
 
     /**
-     * @inheritdoc
      * @throws QueryException
      */
     public function ge($value): Row
@@ -192,10 +182,6 @@ class Row extends AbstractQuery
         return $this;
     }
 
-    /**
-     * @param Row $row
-     * @return Row
-     */
     public function and(Row $row): Row
     {
         $this->function = new AndLogic(
@@ -212,10 +198,6 @@ class Row extends AbstractQuery
         return $this;
     }
 
-    /**
-     * @param Row $row
-     * @return Row
-     */
     public function or(Row $row): Row
     {
         $this->function = new OrLogic(
@@ -232,10 +214,6 @@ class Row extends AbstractQuery
         return $this;
     }
 
-    /**
-     * @param Row $row
-     * @return Row
-     */
     public function not(): Row
     {
         $this->function = new NotLogic(
@@ -251,17 +229,11 @@ class Row extends AbstractQuery
         return $this;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function toArray(): array
     {
         return $this->query->toArray();
     }
 
-    /**
-     * @return QueryInterface
-     */
     public function getFunction(): QueryInterface
     {
         return $this->function;

@@ -12,10 +12,6 @@ class Options implements OptionsInterface
      */
     private $db;
 
-    /**
-     * @param string $name
-     * @return OptionsInterface
-     */
     public function setDb(string $name): OptionsInterface
     {
         $this->db = [
@@ -26,9 +22,6 @@ class Options implements OptionsInterface
         return $this;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function jsonSerialize()
     {
         if (empty($this->db)) {

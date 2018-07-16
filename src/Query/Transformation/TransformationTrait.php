@@ -7,35 +7,23 @@ use TBolier\RethinkQL\Query\QueryInterface;
 
 trait TransformationTrait
 {
-    /**
-     * @inheritdoc
-     */
     public function isEmpty(): QueryInterface
     {
-        return new IsEmpty($this->rethink, $this);
+        return new IsEmpty($this->rethink, /** @scrutinizer ignore-type */ $this);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function limit($value): Limit
     {
-        return new Limit($this->rethink, $this, $value);
+        return new Limit($this->rethink, /** @scrutinizer ignore-type */ $this, $value);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function skip($value): Skip
     {
-        return new Skip($this->rethink, $this, $value);
+        return new Skip($this->rethink, /** @scrutinizer ignore-type */ $this, $value);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function orderBy($key): OrderBy
     {
-        return new OrderBy($this->rethink, $this, $key);
+        return new OrderBy($this->rethink, /** @scrutinizer ignore-type */ $this, $key);
     }
 }

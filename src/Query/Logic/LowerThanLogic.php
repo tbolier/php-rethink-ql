@@ -22,11 +22,6 @@ class LowerThanLogic extends AbstractQuery
      */
     private $value;
 
-    /**
-     * @param RethinkInterface $rethink
-     * @param QueryInterface $query
-     * @param string $value
-     */
     public function __construct(
         RethinkInterface $rethink,
         QueryInterface $query,
@@ -40,9 +35,6 @@ class LowerThanLogic extends AbstractQuery
         $this->query = $query;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function toArray(): array
     {
         return

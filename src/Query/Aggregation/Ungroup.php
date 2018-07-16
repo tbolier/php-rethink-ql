@@ -20,10 +20,6 @@ class Ungroup extends AbstractQuery
      */
     private $query;
 
-    /**
-     * @param RethinkInterface $rethink
-     * @param QueryInterface $query
-     */
     public function __construct(
         RethinkInterface $rethink,
         QueryInterface $query
@@ -34,9 +30,6 @@ class Ungroup extends AbstractQuery
         $this->rethink = $rethink;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function toArray(): array
     {
         return [

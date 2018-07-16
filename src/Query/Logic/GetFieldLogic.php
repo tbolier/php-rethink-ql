@@ -26,11 +26,6 @@ class GetFieldLogic extends AbstractQuery
      */
     private $query;
 
-    /**
-     * @param RethinkInterface $rethink
-     * @param QueryInterface $query
-     * @param string $field
-     */
     public function __construct(
         RethinkInterface $rethink,
         string $field,
@@ -44,9 +39,6 @@ class GetFieldLogic extends AbstractQuery
         $this->query = $query;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function toArray(): array
     {
         if ($this->query !== null) {

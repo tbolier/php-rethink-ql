@@ -17,10 +17,6 @@ class FuncLogic extends AbstractQuery
      */
     private $query;
 
-    /**
-     * @param RethinkInterface $rethink
-     * @param QueryInterface $query
-     */
     public function __construct(
         RethinkInterface $rethink,
         QueryInterface $query
@@ -32,9 +28,6 @@ class FuncLogic extends AbstractQuery
         $this->query = $query;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function toArray(): array
     {
         return

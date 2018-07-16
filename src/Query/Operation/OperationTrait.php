@@ -8,47 +8,32 @@ use TBolier\RethinkQL\Query\QueryInterface;
 
 trait OperationTrait
 {
-    /**
-     * @inheritdoc
-     */
     public function delete(): QueryInterface
     {
-        return new Delete($this->rethink, $this);
+        return new Delete($this->rethink, /** @scrutinizer ignore-type */ $this);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function filter($value)
     {
         if ($value instanceof Row) {
-            return new FilterByRow($this->rethink, $this, $value);
+            return new FilterByRow($this->rethink, /** @scrutinizer ignore-type */ $this, $value);
         }
 
-        return new Filter($this->rethink, $this, $value);
+        return new Filter($this->rethink, /** @scrutinizer ignore-type */ $this, $value);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getAll(...$keys): GetAll
     {
-        return new GetAll($this->rethink, $this, $keys);
+        return new GetAll($this->rethink, /** @scrutinizer ignore-type */ $this, $keys);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function update(array $elements): QueryInterface
     {
-        return new Update($this->rethink, $this, $elements);
+        return new Update($this->rethink, /** @scrutinizer ignore-type */ $this, $elements);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function insert(array $document): QueryInterface
     {
-        return new Insert($this->rethink, $this, $document);
+        return new Insert($this->rethink, /** @scrutinizer ignore-type */ $this, $document);
     }
 }

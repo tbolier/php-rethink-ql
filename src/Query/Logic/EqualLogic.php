@@ -22,11 +22,6 @@ class EqualLogic extends AbstractQuery
      */
     private $value;
 
-    /**
-     * @param RethinkInterface $rethink
-     * @param QueryInterface $query
-     * @param mixed $value
-     */
     public function __construct(
         RethinkInterface $rethink,
         QueryInterface $query,
@@ -40,9 +35,6 @@ class EqualLogic extends AbstractQuery
         $this->query = $query;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function toArray(): array
     {
         return

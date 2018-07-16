@@ -19,7 +19,6 @@ class Registry implements RegistryInterface
     private $connections;
 
     /**
-     * @param array|null $connections
      * @throws ConnectionException
      */
     public function __construct(array $connections = null)
@@ -36,7 +35,6 @@ class Registry implements RegistryInterface
     }
 
     /**
-     * @inheritdoc
      * @throws ConnectionException
      */
     public function addConnection(string $name, OptionsInterface $options): bool
@@ -67,16 +65,12 @@ class Registry implements RegistryInterface
         return true;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function hasConnection(string $name): bool
     {
         return isset($this->connections[$name]);
     }
 
     /**
-     * @inheritdoc
      * @throws ConnectionException
      */
     public function getConnection(string $name): ConnectionInterface

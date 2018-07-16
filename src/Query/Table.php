@@ -25,10 +25,6 @@ class Table extends AbstractQuery
      */
     private $query;
 
-    /**
-     * @param string $name
-     * @param RethinkInterface $rethink
-     */
     public function __construct(string $name, RethinkInterface $rethink)
     {
         parent::__construct($rethink);
@@ -44,49 +40,31 @@ class Table extends AbstractQuery
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
     public function get($key): AbstractQuery
     {
         return new Get($this->rethink, $this, $key);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function indexCreate(string $name): AbstractQuery
     {
         return new IndexCreate($this->rethink, $this, $name);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function indexDrop(string $name): AbstractQuery
     {
         return new IndexDrop($this->rethink, $this, $name);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function indexList(): AbstractQuery
     {
         return new IndexList($this->rethink, $this);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function indexRename(string $oldValue, string $newValue): AbstractQuery
     {
         return new IndexRename($this->rethink, $this, $oldValue, $newValue);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function toArray(): array
     {
         return $this->query;

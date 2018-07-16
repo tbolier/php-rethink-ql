@@ -27,26 +27,18 @@ class Max extends AbstractQuery
      */
     private $query;
 
-    /**
-     * @param RethinkInterface $rethink
-     * @param QueryInterface $query
-     * @param string $key
-     */
     public function __construct(
         RethinkInterface $rethink,
         QueryInterface $query,
         string $key
     ) {
-        parent::__construct($rethink, $key);
+        parent::__construct($rethink);
 
         $this->query = $query;
         $this->key = $key;
         $this->rethink = $rethink;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function toArray(): array
     {
         return [

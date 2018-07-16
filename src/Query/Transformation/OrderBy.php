@@ -24,11 +24,6 @@ class OrderBy extends AbstractQuery
      */
     private $query;
 
-    /**
-     * @param RethinkInterface $rethink
-     * @param QueryInterface $query
-     * @param mixed $key
-     */
     public function __construct(
         RethinkInterface $rethink,
         QueryInterface $query,
@@ -41,9 +36,6 @@ class OrderBy extends AbstractQuery
         $this->rethink = $rethink;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function toArray(): array
     {
         $ordering = $this->key instanceof QueryInterface ? $this->key->toArray() : $this->key;

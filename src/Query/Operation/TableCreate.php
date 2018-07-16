@@ -14,10 +14,6 @@ class TableCreate extends AbstractQuery
      */
     private $name;
 
-    /**
-     * @param RethinkInterface $rethink
-     * @param string $name
-     */
     public function __construct(RethinkInterface $rethink, string $name)
     {
         parent::__construct($rethink);
@@ -27,9 +23,6 @@ class TableCreate extends AbstractQuery
         $this->name = $name;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function toArray(): array
     {
         return [

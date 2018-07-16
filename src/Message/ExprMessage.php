@@ -23,11 +23,6 @@ class ExprMessage implements MessageInterface
      */
     private $queryType;
 
-    /**
-     * @param int $queryType
-     * @param string $query
-     * @param OptionsInterface $options
-     */
     public function __construct(int $queryType = null, string $query = '', OptionsInterface $options = null)
     {
         $this->queryType = $queryType ?? QueryType::START;
@@ -35,17 +30,11 @@ class ExprMessage implements MessageInterface
         $this->options = $options ?? new Options();
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getQueryType(): int
     {
         return $this->queryType;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function setCommand(int $queryType): MessageInterface
     {
         $this->queryType = $queryType;
@@ -53,9 +42,6 @@ class ExprMessage implements MessageInterface
         return $this;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function setQuery($query): MessageInterface
     {
         $this->query = (string) $query;
@@ -63,17 +49,11 @@ class ExprMessage implements MessageInterface
         return $this;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getOptions(): OptionsInterface
     {
         return $this->options;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function setOptions(OptionsInterface $options): MessageInterface
     {
         $this->options = $options;
@@ -81,9 +61,6 @@ class ExprMessage implements MessageInterface
         return $this;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function toArray(): array
     {
         return [
@@ -93,9 +70,6 @@ class ExprMessage implements MessageInterface
         ];
     }
 
-    /**
-     * @return array
-     */
     public function jsonSerialize(): array
     {
         return $this->toArray();
