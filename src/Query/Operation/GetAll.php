@@ -3,14 +3,19 @@ declare(strict_types = 1);
 
 namespace TBolier\RethinkQL\Query\Operation;
 
-use TBolier\RethinkQL\Message\MessageInterface;
+use TBolier\RethinkQL\Query\AbstractQuery;
+use TBolier\RethinkQL\Query\Aggregation\AggregationTrait;
 use TBolier\RethinkQL\Query\QueryInterface;
-use TBolier\RethinkQL\Query\Transformation\AbstractTransformationCompound;
+use TBolier\RethinkQL\Query\Transformation\TransformationTrait;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Term\TermType;
 
-class GetAll extends AbstractTransformationCompound
+class GetAll extends AbstractQuery
 {
+    use AggregationTrait;
+    use OperationTrait;
+    use TransformationTrait;
+
     /**
      * @var array
      */
@@ -21,11 +26,6 @@ class GetAll extends AbstractTransformationCompound
      */
     private $query;
 
-    /**
-     * @param RethinkInterface $rethink
-     * @param QueryInterface $query
-     * @param array $keys
-     */
     public function __construct(
         RethinkInterface $rethink,
         QueryInterface $query,
@@ -38,9 +38,6 @@ class GetAll extends AbstractTransformationCompound
         $this->rethink = $rethink;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function toArray(): array
     {
         return [

@@ -52,13 +52,6 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
      */
     private $streamWrapper;
 
-    /**
-     * @param \Closure $streamWrapper
-     * @param HandshakeInterface $handshake
-     * @param string $dbName
-     * @param SerializerInterface $querySerializer
-     * @param SerializerInterface $responseSerializer
-     */
     public function __construct(
         \Closure $streamWrapper,
         HandshakeInterface $handshake,
@@ -73,17 +66,12 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
         $this->responseSerializer = $responseSerializer;
     }
 
-    /**
-     * @param MessageInterface $query
-     * @return void
-     */
     public function changes(MessageInterface $query): void
     {
         // TODO: Implement changes() method.
     }
 
     /**
-     * @param bool $noreplyWait
      * @throws \Exception
      */
     public function close($noreplyWait = true): void
@@ -96,10 +84,9 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
     }
 
     /**
-     * @inheritdoc
      * @throws ConnectionException
      */
-    public function connect(): self
+    public function connect(): Connection
     {
         if ($this->stream !== null && $this->stream->isWritable()) {
             return $this;
@@ -116,7 +103,6 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
     }
 
     /**
-     * @inheritdoc
      * @throws \Exception
      */
     public function reconnect($noreplyWait = true): Connection
@@ -127,7 +113,6 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
     }
 
     /**
-     * @inheritdoc
      * @throws \Exception
      */
     public function continueQuery(int $token): ResponseInterface
@@ -146,8 +131,6 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
     }
 
     /**
-     * @param string $string
-     * @return ResponseInterface
      * @throws ConnectionException
      */
     public function expr(string $string): ResponseInterface
@@ -162,7 +145,6 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
     }
 
     /**
-     * @inheritdoc
      * @throws ConnectionException
      */
     public function rewindFromCursor(MessageInterface $message): ResponseInterface
@@ -171,7 +153,6 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
     }
 
     /**
-     * @inheritdoc
      * @throws ConnectionException
      */
     public function run(MessageInterface $message, $raw = false)
@@ -202,7 +183,6 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
     }
 
     /**
-     * @inheritdoc
      * @throws ConnectionException
      */
     public function runNoReply(MessageInterface $query): void
@@ -213,7 +193,6 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
     }
 
     /**
-     * @inheritdoc
      * @throws \Exception
      */
     public function server(): ResponseInterface
@@ -237,7 +216,6 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
     }
 
     /**
-     * @inheritdoc
      * @throws \Exception
      */
     public function stopQuery(int $token): ResponseInterface
@@ -253,16 +231,12 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
         return $response;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function use(string $name): void
     {
         $this->dbName = $name;
     }
 
     /**
-     * @inheritdoc
      * @throws \Exception
      */
     public function writeQuery(int $token, MessageInterface $message): int
@@ -284,7 +258,6 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
     }
 
     /**
-     * @inheritdoc
      * @throws ConnectionException
      * @throws \Exception
      */
@@ -306,12 +279,6 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
         }
     }
 
-    /**
-     * @param ResponseInterface $response
-     * @param int $token
-     * @param MessageInterface $message
-     * @return Iterable
-     */
     private function createCursorFromResponse(
         ResponseInterface $response,
         int $token,
@@ -321,7 +288,6 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
     }
 
     /**
-     * @return int
      * @throws \Exception
      */
     private function generateToken(): int
@@ -344,9 +310,6 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
     }
 
     /**
-     * @param int $token
-     * @param MessageInterface $message
-     * @return ResponseInterface
      * @throws \RuntimeException
      * @throws ConnectionException
      */
@@ -374,10 +337,6 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
     }
 
     /**
-     * @param ResponseInterface $response
-     * @param int $responseToken
-     * @param int $token
-     * @param MessageInterface $message
      * @throws ConnectionException
      */
     private function validateResponse(

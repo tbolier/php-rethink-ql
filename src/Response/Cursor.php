@@ -39,12 +39,6 @@ class Cursor implements \Iterator, \Countable
      */
     private $token;
 
-    /**
-     * @param ConnectionCursorInterface $connection
-     * @param int $token
-     * @param ResponseInterface $response
-     * @param MessageInterface $message
-     */
     public function __construct(
         ConnectionCursorInterface $connection,
         int $token,
@@ -58,7 +52,6 @@ class Cursor implements \Iterator, \Countable
     }
 
     /**
-     * @inheritdoc
      * @throws \Exception
      */
     public function current()
@@ -77,7 +70,6 @@ class Cursor implements \Iterator, \Countable
     }
 
     /**
-     * @inheritdoc
      * @throws \Exception
      */
     public function next(): void
@@ -87,24 +79,17 @@ class Cursor implements \Iterator, \Countable
         $this->seek();
     }
 
-    /**
-     * @inheritdoc
-     */
     public function key(): int
     {
         return $this->index;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function valid(): bool
     {
         return (!$this->isComplete || ($this->index < $this->size));
     }
 
     /**
-     * @inheritdoc
      * @throws ConnectionException
      */
     public function rewind(): void
@@ -117,17 +102,11 @@ class Cursor implements \Iterator, \Countable
         $this->addResponse($this->connection->rewindFromCursor($this->message));
     }
 
-    /**
-     * @inheritdoc
-     */
     public function count()
     {
         return $this->size;
     }
 
-    /**
-     * @param ResponseInterface $response
-     */
     private function addResponse(ResponseInterface $response)
     {
         $this->index = 0;
@@ -143,7 +122,6 @@ class Cursor implements \Iterator, \Countable
     }
 
     /**
-     * @return void
      * @throws \Exception
      */
     private function seek(): void
@@ -154,7 +132,6 @@ class Cursor implements \Iterator, \Countable
     }
 
     /**
-     * @return void
      * @throws \Exception
      */
     private function request(): void
@@ -170,9 +147,6 @@ class Cursor implements \Iterator, \Countable
         }
     }
 
-    /**
-     * @return void
-     */
     private function close(): void
     {
         if (!$this->isComplete) {

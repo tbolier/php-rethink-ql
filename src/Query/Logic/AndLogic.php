@@ -2,14 +2,16 @@
 
 namespace TBolier\RethinkQL\Query\Logic;
 
-use TBolier\RethinkQL\Message\MessageInterface;
-use TBolier\RethinkQL\Query\Operation\AbstractOperation;
+use TBolier\RethinkQL\Query\AbstractQuery;
+use TBolier\RethinkQL\Query\Operation\OperationTrait;
 use TBolier\RethinkQL\Query\QueryInterface;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Term\TermType;
 
-class AndLogic extends AbstractOperation
+class AndLogic extends AbstractQuery
 {
+    use OperationTrait;
+
     /**
      * @var QueryInterface
      */
@@ -20,11 +22,6 @@ class AndLogic extends AbstractOperation
      */
     private $functionTwo;
 
-    /**
-     * @param RethinkInterface $rethink
-     * @param QueryInterface $functionOne
-     * @param QueryInterface $functionTwo
-     */
     public function __construct(
         RethinkInterface $rethink,
         QueryInterface $functionOne,
@@ -38,9 +35,6 @@ class AndLogic extends AbstractOperation
         $this->functionTwo = $functionTwo;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function toArray(): array
     {
         return

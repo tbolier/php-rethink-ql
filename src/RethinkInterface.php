@@ -1,64 +1,31 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace TBolier\RethinkQL;
 
 use TBolier\RethinkQL\Connection\ConnectionInterface;
-use TBolier\RethinkQL\Query\DatabaseInterface;
-use TBolier\RethinkQL\Query\OrdeningInterface;
-use TBolier\RethinkQL\Query\RowInterface;
-use TBolier\RethinkQL\Query\TableInterface;
+use TBolier\RethinkQL\Query\Database;
+use TBolier\RethinkQL\Query\Ordening;
+use TBolier\RethinkQL\Query\Row;
+use TBolier\RethinkQL\Query\Table;
 
 interface RethinkInterface
 {
-    /**
-     * @return ConnectionInterface
-     */
     public function connection(): ConnectionInterface;
 
-    /**
-     * @param string $name
-     * @return TableInterface
-     */
-    public function table(string $name): TableInterface;
+    public function table(string $name): Table;
 
-    /**
-     * @return DatabaseInterface
-     */
-    public function db(): DatabaseInterface;
+    public function db(): Database;
 
-    /**
-     * @param string $name
-     * @return DatabaseInterface
-     */
-    public function dbCreate(string $name): DatabaseInterface;
+    public function dbCreate(string $name): Database;
 
-    /**
-     * @param string $name
-     * @return DatabaseInterface
-     */
-    public function dbDrop(string $name): DatabaseInterface;
+    public function dbDrop(string $name): Database;
 
-    /**
-     * @return DatabaseInterface
-     */
-    public function dbList(): DatabaseInterface;
+    public function dbList(): Database;
 
-    /**
-     * @param mixed $key
-     * @return OrdeningInterface
-     */
-    public function desc($key): OrdeningInterface;
+    public function desc($key): Ordening;
 
-    /**
-     * @param mixed $key
-     * @return OrdeningInterface
-     */
-    public function asc($key): OrdeningInterface;
+    public function asc($key): Ordening;
 
-    /**
-     * @param string $value
-     * @return RowInterface
-     */
-    public function row(string $value): RowInterface;
+    public function row(string $value): Row;
 }

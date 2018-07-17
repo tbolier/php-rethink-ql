@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace TBolier\RethinkQL\Query;
 
-use TBolier\RethinkQL\Message\MessageInterface;
 use TBolier\RethinkQL\Query\Exception\QueryException;
 use TBolier\RethinkQL\Query\Logic\AndLogic;
 use TBolier\RethinkQL\Query\Logic\EqualLogic;
@@ -18,7 +17,7 @@ use TBolier\RethinkQL\Query\Logic\NotLogic;
 use TBolier\RethinkQL\Query\Logic\OrLogic;
 use TBolier\RethinkQL\RethinkInterface;
 
-class Row extends AbstractQuery implements RowInterface
+class Row extends AbstractQuery
 {
     /**
      * @var QueryInterface
@@ -35,10 +34,6 @@ class Row extends AbstractQuery implements RowInterface
      */
     private $value;
 
-    /**
-     * @param RethinkInterface $rethink
-     * @param string $value
-     */
     public function __construct(
         RethinkInterface $rethink,
         string $value
@@ -50,10 +45,9 @@ class Row extends AbstractQuery implements RowInterface
     }
 
     /**
-     * @inheritdoc
      * @throws QueryException
      */
-    public function eq($value): RowInterface
+    public function eq($value): Row
     {
         if (!\is_scalar($value)) {
             throw new QueryException('Only scalar types are supported for lower than manipulations.');
@@ -74,10 +68,9 @@ class Row extends AbstractQuery implements RowInterface
     }
 
     /**
-     * @inheritdoc
      * @throws QueryException
      */
-    public function ne($value): RowInterface
+    public function ne($value): Row
     {
         if (!\is_scalar($value)) {
             throw new QueryException('Only scalar types are supported for lower than manipulations.');
@@ -98,10 +91,9 @@ class Row extends AbstractQuery implements RowInterface
     }
 
     /**
-     * @inheritdoc
      * @throws QueryException
      */
-    public function lt($value): RowInterface
+    public function lt($value): Row
     {
         if (!\is_scalar($value)) {
             throw new QueryException('Only scalar types are supported for lower than manipulations.');
@@ -122,10 +114,9 @@ class Row extends AbstractQuery implements RowInterface
     }
 
     /**
-     * @inheritdoc
      * @throws QueryException
      */
-    public function le($value): RowInterface
+    public function le($value): Row
     {
         if (!\is_scalar($value)) {
             throw new QueryException('Only scalar types are supported for lower than or equal manipulations.');
@@ -146,10 +137,9 @@ class Row extends AbstractQuery implements RowInterface
     }
 
     /**
-     * @inheritdoc
      * @throws QueryException
      */
-    public function gt($value): RowInterface
+    public function gt($value): Row
     {
         if (!\is_scalar($value)) {
             throw new QueryException('Only scalar types are supported for greater than manipulations.');
@@ -170,10 +160,9 @@ class Row extends AbstractQuery implements RowInterface
     }
 
     /**
-     * @inheritdoc
      * @throws QueryException
      */
-    public function ge($value): RowInterface
+    public function ge($value): Row
     {
         if (!\is_scalar($value)) {
             throw new QueryException('Only scalar types are supported for greater than or equal manipulations.');
@@ -193,11 +182,7 @@ class Row extends AbstractQuery implements RowInterface
         return $this;
     }
 
-    /**
-     * @param RowInterface $row
-     * @return RowInterface
-     */
-    public function and(RowInterface $row): RowInterface
+    public function and(Row $row): Row
     {
         $this->function = new AndLogic(
             $this->rethink,
@@ -213,11 +198,7 @@ class Row extends AbstractQuery implements RowInterface
         return $this;
     }
 
-    /**
-     * @param RowInterface $row
-     * @return RowInterface
-     */
-    public function or(RowInterface $row): RowInterface
+    public function or(Row $row): Row
     {
         $this->function = new OrLogic(
             $this->rethink,
@@ -233,11 +214,7 @@ class Row extends AbstractQuery implements RowInterface
         return $this;
     }
 
-    /**
-     * @param RowInterface $row
-     * @return RowInterface
-     */
-    public function not(): RowInterface
+    public function not(): Row
     {
         $this->function = new NotLogic(
             $this->rethink,
@@ -252,17 +229,11 @@ class Row extends AbstractQuery implements RowInterface
         return $this;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function toArray(): array
     {
         return $this->query->toArray();
     }
 
-    /**
-     * @return QueryInterface
-     */
     public function getFunction(): QueryInterface
     {
         return $this->function;

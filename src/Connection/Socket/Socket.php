@@ -25,7 +25,6 @@ class Socket implements StreamInterface
     private $nullTerminated = false;
 
     /**
-     * @param OptionsInterface $options
      * @throws Exception
      */
     public function __construct(OptionsInterface $options)
@@ -38,9 +37,6 @@ class Socket implements StreamInterface
     }
 
     /**
-     * @param string $remote_socket
-     * @param float $timeout
-     * @param int $timeoutStream
      * @throws Exception
      */
     private function openStream(string $remote_socket, float $timeout, int $timeoutStream): void
@@ -61,10 +57,7 @@ class Socket implements StreamInterface
         stream_set_timeout($this->stream, $timeoutStream);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function __toString()
+    public function __toString(): string
     {
         try {
             return $this->getContents();
@@ -73,79 +66,48 @@ class Socket implements StreamInterface
         }
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function close()
+    public function close(): void
     {
         fclose($this->stream);
         $this->stream = null;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function detach()
+    public function detach(): void
     {
         $this->close();
-
-        return null;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getSize()
+    public function getSize(): ?int
     {
         return null;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function tell()
+    public function tell(): int
     {
         return $this->tellPos;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function eof()
+    public function eof(): bool
     {
         return feof($this->stream);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function isSeekable()
+    public function isSeekable(): bool
     {
         return false;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function seek($offset, $whence = SEEK_SET)
+    public function seek($offset, $whence = SEEK_SET): void
     {
         throw new Exception('Cannot seek a socket stream');
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function rewind()
+    public function rewind(): void
     {
         $this->seek(0);
     }
 
-    /**
-     * Returns whether or not the stream is writable.
-     *
-     * @return bool
-     */
-    public function isWritable()
+    public function isWritable(): bool
     {
         return $this->stream ? true : false;
     }
@@ -197,9 +159,6 @@ class Socket implements StreamInterface
         return $this->stream ? true : false;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function read($length)
     {
         $this->tellPos = 0;
@@ -236,8 +195,6 @@ class Socket implements StreamInterface
     }
 
     /**
-     * @param $length
-     * @return string
      * @throws Exception
      */
     private function getContent($length): string
@@ -256,9 +213,6 @@ class Socket implements StreamInterface
         return $string;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getContents()
     {
         $result = '';
@@ -271,9 +225,6 @@ class Socket implements StreamInterface
         return $result;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getMetadata($key = null)
     {
         $meta = stream_get_meta_data($this->stream);

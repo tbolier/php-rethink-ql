@@ -12,8 +12,5 @@ interface QueryInterface
      */
     public function run();
 
-    /**
-     * @return array
-     */
     public function toArray(): array;
 }

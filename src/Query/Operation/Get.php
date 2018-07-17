@@ -3,7 +3,6 @@ declare(strict_types = 1);
 
 namespace TBolier\RethinkQL\Query\Operation;
 
-use TBolier\RethinkQL\Message\MessageInterface;
 use TBolier\RethinkQL\Query\AbstractQuery;
 use TBolier\RethinkQL\Query\QueryInterface;
 use TBolier\RethinkQL\RethinkInterface;
@@ -21,11 +20,6 @@ class Get extends AbstractQuery
      */
     private $query;
 
-    /**
-     * @param RethinkInterface $rethink
-     * @param QueryInterface $query
-     * @param string|int $key
-     */
     public function __construct(
         RethinkInterface $rethink,
         QueryInterface $query,
@@ -38,9 +32,6 @@ class Get extends AbstractQuery
         $this->rethink = $rethink;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function toArray(): array
     {
         return [

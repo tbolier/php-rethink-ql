@@ -11,9 +11,6 @@ use TBolier\RethinkQL\Query\OptionsInterface;
 
 class QueryNormalizer extends AbstractNormalizer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function normalize($object, $format = null, array $context = [])
     {
         if ($this->isCircularReference($object, $context)) {
@@ -41,25 +38,16 @@ class QueryNormalizer extends AbstractNormalizer
         return $this->serializer->normalize($object->jsonSerialize(), $format, $context);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supportsNormalization($data, $format = null)
     {
         return \is_object($data) && $format === 'json';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supportsDenormalization($data, $type, $format = null)
     {
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function denormalize($data, $class, $format = null, array $context = [])
     {
         throw new LogicException(sprintf('Cannot denormalize with "%s".', __CLASS__));

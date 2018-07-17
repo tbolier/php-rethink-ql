@@ -3,23 +3,23 @@ declare(strict_types=1);
 
 namespace TBolier\RethinkQL\Query\Aggregation;
 
-use TBolier\RethinkQL\Message\MessageInterface;
+use TBolier\RethinkQL\Query\AbstractQuery;
+use TBolier\RethinkQL\Query\Operation\OperationTrait;
 use TBolier\RethinkQL\Query\QueryInterface;
-use TBolier\RethinkQL\Query\Transformation\AbstractTransformationCompound;
+use TBolier\RethinkQL\Query\Transformation\TransformationTrait;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Term\TermType;
 
-class Ungroup extends AbstractTransformationCompound
+class Ungroup extends AbstractQuery
 {
+    use TransformationTrait;
+    use OperationTrait;
+
     /**
      * @var QueryInterface
      */
     private $query;
 
-    /**
-     * @param RethinkInterface $rethink
-     * @param QueryInterface $query
-     */
     public function __construct(
         RethinkInterface $rethink,
         QueryInterface $query
@@ -30,9 +30,6 @@ class Ungroup extends AbstractTransformationCompound
         $this->rethink = $rethink;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function toArray(): array
     {
         return [

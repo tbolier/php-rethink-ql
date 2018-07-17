@@ -3,13 +3,17 @@ declare(strict_types = 1);
 
 namespace TBolier\RethinkQL\Query\Transformation;
 
-use TBolier\RethinkQL\Message\MessageInterface;
+use TBolier\RethinkQL\Query\AbstractQuery;
+use TBolier\RethinkQL\Query\Operation\OperationTrait;
 use TBolier\RethinkQL\Query\QueryInterface;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Term\TermType;
 
-class Skip extends AbstractTransformationCompound
+class Skip extends AbstractQuery
 {
+    use TransformationTrait;
+    use OperationTrait;
+
     /**
      * @var int
      */
@@ -20,11 +24,6 @@ class Skip extends AbstractTransformationCompound
      */
     private $query;
 
-    /**
-     * @param RethinkInterface $rethink
-     * @param QueryInterface $query
-     * @param int $n
-     */
     public function __construct(
         RethinkInterface $rethink,
         QueryInterface $query,
@@ -37,9 +36,6 @@ class Skip extends AbstractTransformationCompound
         $this->rethink = $rethink;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function toArray(): array
     {
         return [

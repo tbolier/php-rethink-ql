@@ -2,15 +2,20 @@
 
 namespace TBolier\RethinkQL\Query\Logic;
 
-use TBolier\RethinkQL\Message\MessageInterface;
 use TBolier\RethinkQL\Query\AbstractQuery;
+use TBolier\RethinkQL\Query\Aggregation\AggregationTrait;
+use TBolier\RethinkQL\Query\Operation\OperationTrait;
 use TBolier\RethinkQL\Query\QueryInterface;
-use TBolier\RethinkQL\Query\Transformation\AbstractTransformationCompound;
+use TBolier\RethinkQL\Query\Transformation\TransformationTrait;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Term\TermType;
 
-class GetFieldLogic extends AbstractTransformationCompound
+class GetFieldLogic extends AbstractQuery
 {
+    use AggregationTrait;
+    use OperationTrait;
+    use TransformationTrait;
+
     /**
      * @var string
      */
@@ -21,11 +26,6 @@ class GetFieldLogic extends AbstractTransformationCompound
      */
     private $query;
 
-    /**
-     * @param RethinkInterface $rethink
-     * @param QueryInterface $query
-     * @param string $field
-     */
     public function __construct(
         RethinkInterface $rethink,
         string $field,
@@ -39,9 +39,6 @@ class GetFieldLogic extends AbstractTransformationCompound
         $this->query = $query;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function toArray(): array
     {
         if ($this->query !== null) {
@@ -49,7 +46,7 @@ class GetFieldLogic extends AbstractTransformationCompound
                 TermType::GET_FIELD,
                 [
                     $this->query->toArray(),
-                    $this->field
+                    $this->field,
                 ],
             ];
         }
@@ -59,9 +56,9 @@ class GetFieldLogic extends AbstractTransformationCompound
             [
                 [
                     TermType::IMPLICIT_VAR,
-                    []
+                    [],
                 ],
-                $this->field
+                $this->field,
             ],
         ];
     }
