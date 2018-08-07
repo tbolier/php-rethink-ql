@@ -5,6 +5,7 @@ namespace TBolier\RethinkQL\Query\Operation;
 
 use TBolier\RethinkQL\Query\AbstractQuery;
 use TBolier\RethinkQL\Query\Aggregation\AggregationTrait;
+use TBolier\RethinkQL\Query\Manipulation\ManipulationTrait;
 use TBolier\RethinkQL\Query\QueryInterface;
 use TBolier\RethinkQL\Query\Transformation\TransformationTrait;
 use TBolier\RethinkQL\RethinkInterface;
@@ -15,6 +16,7 @@ class Filter extends AbstractQuery
     use TransformationTrait;
     use OperationTrait;
     use AggregationTrait;
+    use ManipulationTrait;
 
     /**
      * @var array

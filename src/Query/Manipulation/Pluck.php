@@ -1,25 +1,26 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
-namespace TBolier\RethinkQL\Query\Operation;
+namespace TBolier\RethinkQL\Query\Manipulation;
 
 use TBolier\RethinkQL\Query\AbstractQuery;
-use TBolier\RethinkQL\Query\Manipulation\ManipulationTrait;
+use TBolier\RethinkQL\Query\Aggregation\AggregationTrait;
+use TBolier\RethinkQL\Query\Operation\OperationTrait;
 use TBolier\RethinkQL\Query\QueryInterface;
 use TBolier\RethinkQL\Query\Transformation\TransformationTrait;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Term\TermType;
 
-class FilterByRow extends AbstractQuery
+class Pluck extends AbstractQuery
 {
-    use TransformationTrait;
+    use AggregationTrait;
     use OperationTrait;
-    use ManipulationTrait;
+    use TransformationTrait;
 
     /**
-     * @var QueryInterface
+     * @var array
      */
-    private $functionQuery;
+    private $keys;
 
     /**
      * @var QueryInterface
@@ -29,23 +30,23 @@ class FilterByRow extends AbstractQuery
     public function __construct(
         RethinkInterface $rethink,
         QueryInterface $query,
-        QueryInterface $manipulation
+        array $keys
     ) {
         parent::__construct($rethink);
 
-        $this->query = $query;
-        $this->functionQuery = $manipulation;
+        $this->query   = $query;
+        $this->keys    = $keys;
         $this->rethink = $rethink;
     }
 
     public function toArray(): array
     {
         return [
-            TermType::FILTER,
-            [
-                $this->query->toArray(),
-                $this->functionQuery->toArray(),
-            ],
+            TermType::PLUCK,
+            array_merge(
+                [$this->query->toArray()],
+                array_values($this->keys)
+            ),
         ];
     }
 }
