@@ -70,7 +70,7 @@ class Builder
         return $this->ordering;
     }
 
-    public function row(string $value): Row
+    public function row(?string $value = null): Row
     {
         $this->row = new Row($this->rethink, $value);
 

@@ -36,7 +36,7 @@ class Row extends AbstractQuery
 
     public function __construct(
         RethinkInterface $rethink,
-        string $value
+        ?string $value
     ) {
         parent::__construct($rethink);
 
