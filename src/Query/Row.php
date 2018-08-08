@@ -15,10 +15,13 @@ use TBolier\RethinkQL\Query\Logic\LowerThanOrEqualToLogic;
 use TBolier\RethinkQL\Query\Logic\NotEqualLogic;
 use TBolier\RethinkQL\Query\Logic\NotLogic;
 use TBolier\RethinkQL\Query\Logic\OrLogic;
+use TBolier\RethinkQL\Query\Manipulation\ManipulationTrait;
 use TBolier\RethinkQL\RethinkInterface;
 
 class Row extends AbstractQuery
 {
+    use ManipulationTrait;
+
     /**
      * @var QueryInterface
      */
