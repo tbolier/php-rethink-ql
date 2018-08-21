@@ -18,11 +18,6 @@ class Keys extends AbstractQuery
     use TransformationTrait;
 
     /**
-     * @var array
-     */
-    private $keys;
-
-    /**
      * @var QueryInterface
      */
     private $query;
