@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace TBolier\RethinkQL\IntegrationTest\Manipulation;
 
 use TBolier\RethinkQL\IntegrationTest\Query\AbstractTableTest;
+use TBolier\RethinkQL\Response\ResponseInterface;
 
 class KeysTest extends AbstractTableTest
 {
@@ -14,14 +15,14 @@ class KeysTest extends AbstractTableTest
     {
         $this->insertDocumentWithNumber(1, 1);
 
-        /** @var Cursor $cursor */
-        $cursor = $this->r()
+        /** @var ResponseInterface $response */
+        $response = $this->r()
             ->table('tabletest')
             ->get(1)
             ->keys()
             ->run();
 
-        $this->assertInstanceOf(\Iterator::class, $cursor);
-        $this->assertEquals(1, $cursor->count());
+        $this->assertInstanceOf(ResponseInterface::class, $response);
+        $this->assertCount(4, $response->getData());
     }
 }

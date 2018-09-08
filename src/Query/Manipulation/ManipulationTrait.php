@@ -17,7 +17,7 @@ trait ManipulationTrait
         return new Without($this->rethink, /** @scrutinizer ignore-type */ $this, $keys);
     }
 
-    public function keys(): QueryInterface
+    public function keys(): Keys
     {
         return new Keys($this->rethink, /** @scrutinizer ignore-type */ $this);
     }

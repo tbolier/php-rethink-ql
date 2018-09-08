@@ -14,7 +14,6 @@ use TBolier\RethinkQL\Types\Term\TermType;
 class Keys extends AbstractQuery
 {
     use AggregationTrait;
-    use OperationTrait;
     use TransformationTrait;
 
     /**
@@ -36,7 +35,9 @@ class Keys extends AbstractQuery
     {
         return [
             TermType::KEYS,
-            $this->query->toArray(),
+            [
+                $this->query->toArray()
+            ]
         ];
     }
 }
