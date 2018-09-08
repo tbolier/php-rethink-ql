@@ -69,7 +69,7 @@ class Table extends AbstractQuery
     public function between(
         $min,
         $max,
-        $options = null
+        array $options = null
     ): AbstractQuery {
         return new Between(
             $this->rethink,
