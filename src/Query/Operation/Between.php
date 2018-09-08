@@ -35,7 +35,7 @@ class Between extends AbstractQuery
         QueryInterface $query,
         $min,
         $max,
-        $options = null
+        array $options = null
     ) {
         parent::__construct($rethink);
 
