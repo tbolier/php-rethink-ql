@@ -4,12 +4,18 @@ declare(strict_types = 1);
 namespace TBolier\RethinkQL\Query\Operation;
 
 use TBolier\RethinkQL\Query\AbstractQuery;
+use TBolier\RethinkQL\Query\Aggregation\AggregationTrait;
 use TBolier\RethinkQL\Query\QueryInterface;
+use TBolier\RethinkQL\Query\Transformation\TransformationTrait;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Term\TermType;
 
 class Between extends AbstractQuery
 {
+    use AggregationTrait;
+    use OperationTrait;
+    use TransformationTrait;
+
     /**
      * @var QueryInterface
      */
@@ -26,7 +32,7 @@ class Between extends AbstractQuery
     private $max;
 
     /**
-     * @var string
+     * @var array|null
      */
     private $options;
 

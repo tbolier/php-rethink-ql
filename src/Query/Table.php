@@ -66,18 +66,9 @@ class Table extends AbstractQuery
         return new IndexRename($this->rethink, $this, $oldValue, $newValue);
     }
 
-    public function between(
-        $min,
-        $max,
-        array $options = null
-    ): AbstractQuery {
-        return new Between(
-            $this->rethink,
-            $this,
-            $min,
-            $max,
-            $options
-        );
+    public function between($min, $max, array $options = null): Between
+    {
+        return new Between($this->rethink, $this, $min, $max, $options);
     }
 
     public function toArray(): array
