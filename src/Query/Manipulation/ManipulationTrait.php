@@ -17,11 +17,6 @@ trait ManipulationTrait
         return new Without($this->rethink, /** @scrutinizer ignore-type */ $this, $keys);
     }
 
-    public function hasFields(...$keys)
-    {
-        return new HasFields($this->rethink, /** @scrutinizer ignore-type */ $this, $keys);
-    }
-
     public function keys(): QueryInterface
     {
         return new Keys($this->rethink, /** @scrutinizer ignore-type */ $this);

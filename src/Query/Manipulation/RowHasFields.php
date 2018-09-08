@@ -11,32 +11,21 @@ use TBolier\RethinkQL\Query\Transformation\TransformationTrait;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Term\TermType;
 
-class HasFields extends AbstractQuery
+class RowHasFields extends AbstractQuery
 {
-    use AggregationTrait;
-    use OperationTrait;
-    use TransformationTrait;
-
     /**
      * @var array
      */
     private $keys;
 
-    /**
-     * @var QueryInterface
-     */
-    private $query;
-
     public function __construct(
         RethinkInterface $rethink,
-        QueryInterface $query,
         array $keys
     ) {
         parent::__construct($rethink);
 
-        $this->rethink = $rethink;
-        $this->query = $query;
         $this->keys    = $keys;
+        $this->rethink = $rethink;
     }
 
     public function toArray(): array
@@ -53,7 +42,9 @@ class HasFields extends AbstractQuery
         return [
             TermType::HAS_FIELDS,
             [
-                $this->query->toArray(),
+                [
+                    TermType::IMPLICIT_VAR
+                ],
                 $keysQuery
             ]
         ];

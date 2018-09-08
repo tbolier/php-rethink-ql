@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace TBolier\RethinkQL\Query;
 
 use TBolier\RethinkQL\Query\Aggregation\AggregationTrait;
+use TBolier\RethinkQL\Query\Manipulation\HasFields;
 use TBolier\RethinkQL\Query\Operation\Get;
 use TBolier\RethinkQL\Query\Operation\IndexCreate;
 use TBolier\RethinkQL\Query\Operation\IndexDrop;
@@ -63,6 +64,11 @@ class Table extends AbstractQuery
     public function indexRename(string $oldValue, string $newValue): AbstractQuery
     {
         return new IndexRename($this->rethink, $this, $oldValue, $newValue);
+    }
+
+    public function hasFields(...$keys)
+    {
+        return new HasFields($this->rethink, $this, $keys);
     }
 
     public function toArray(): array

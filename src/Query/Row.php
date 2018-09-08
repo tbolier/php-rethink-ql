@@ -15,6 +15,7 @@ use TBolier\RethinkQL\Query\Logic\NotEqualLogic;
 use TBolier\RethinkQL\Query\Logic\NotLogic;
 use TBolier\RethinkQL\Query\Logic\OrLogic;
 use TBolier\RethinkQL\Query\Manipulation\GetField;
+use TBolier\RethinkQL\Query\Manipulation\RowHasFields;
 use TBolier\RethinkQL\Query\Manipulation\ManipulationTrait;
 use TBolier\RethinkQL\RethinkInterface;
 
@@ -222,6 +223,21 @@ class Row extends AbstractQuery
         $this->function = new NotLogic(
             $this->rethink,
             $this->function
+        );
+
+        $this->query = new FuncLogic(
+            $this->rethink,
+            $this->function
+        );
+
+        return $this;
+    }
+
+    public function hasFields(...$keys)
+    {
+        $this->function = new RowHasFields(
+            $this->rethink,
+            $keys
         );
 
         $this->query = new FuncLogic(
