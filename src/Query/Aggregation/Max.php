@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace TBolier\RethinkQL\Query\Aggregation;
 
 use TBolier\RethinkQL\Query\AbstractQuery;
-use TBolier\RethinkQL\Query\Logic\LogicTrait;
+use TBolier\RethinkQL\Query\Manipulation\LogicTrait;
 use TBolier\RethinkQL\Query\Operation\OperationTrait;
 use TBolier\RethinkQL\Query\QueryInterface;
 use TBolier\RethinkQL\Query\Transformation\TransformationTrait;

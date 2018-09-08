@@ -7,7 +7,6 @@ use TBolier\RethinkQL\Query\Exception\QueryException;
 use TBolier\RethinkQL\Query\Logic\AndLogic;
 use TBolier\RethinkQL\Query\Logic\EqualLogic;
 use TBolier\RethinkQL\Query\Logic\FuncLogic;
-use TBolier\RethinkQL\Query\Logic\GetFieldLogic;
 use TBolier\RethinkQL\Query\Logic\GreaterThanLogic;
 use TBolier\RethinkQL\Query\Logic\GreaterThanOrEqualToLogic;
 use TBolier\RethinkQL\Query\Logic\LowerThanLogic;
@@ -15,6 +14,7 @@ use TBolier\RethinkQL\Query\Logic\LowerThanOrEqualToLogic;
 use TBolier\RethinkQL\Query\Logic\NotEqualLogic;
 use TBolier\RethinkQL\Query\Logic\NotLogic;
 use TBolier\RethinkQL\Query\Logic\OrLogic;
+use TBolier\RethinkQL\Query\Manipulation\GetField;
 use TBolier\RethinkQL\Query\Manipulation\ManipulationTrait;
 use TBolier\RethinkQL\RethinkInterface;
 
@@ -58,7 +58,7 @@ class Row extends AbstractQuery
 
         $this->function = new EqualLogic(
             $this->rethink,
-            new GetFieldLogic($this->rethink, $this->value),
+            new GetField($this->rethink, $this->value),
             $value
         );
 
@@ -81,7 +81,7 @@ class Row extends AbstractQuery
 
         $this->function = new NotEqualLogic(
             $this->rethink,
-            new GetFieldLogic($this->rethink, $this->value),
+            new GetField($this->rethink, $this->value),
             $value
         );
 
@@ -104,7 +104,7 @@ class Row extends AbstractQuery
 
         $this->function = new LowerThanLogic(
             $this->rethink,
-            new GetFieldLogic($this->rethink, $this->value),
+            new GetField($this->rethink, $this->value),
             $value
         );
 
@@ -127,7 +127,7 @@ class Row extends AbstractQuery
 
         $this->function = new LowerThanOrEqualToLogic(
             $this->rethink,
-            new GetFieldLogic($this->rethink, $this->value),
+            new GetField($this->rethink, $this->value),
             $value
         );
 
@@ -150,7 +150,7 @@ class Row extends AbstractQuery
 
         $this->function = new GreaterThanLogic(
             $this->rethink,
-            new GetFieldLogic($this->rethink, $this->value),
+            new GetField($this->rethink, $this->value),
             $value
         );
 
@@ -173,7 +173,7 @@ class Row extends AbstractQuery
 
         $this->function = new GreaterThanOrEqualToLogic(
             $this->rethink,
-            new GetFieldLogic($this->rethink, $this->value),
+            new GetField($this->rethink, $this->value),
             $value
         );
 
