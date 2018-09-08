@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace TBolier\RethinkQL\IntegrationTest\Manipulation;
 
 use TBolier\RethinkQL\IntegrationTest\Query\AbstractTableTest;
+use TBolier\RethinkQL\Response\ResponseInterface;
 
 class ValuesTest extends AbstractTableTest
 {
@@ -12,16 +13,17 @@ class ValuesTest extends AbstractTableTest
      */
     public function testValuesResult()
     {
-        $this->insertDocumentWithNumber(1, 1);
+        $this->insertDocumentWithNumber(1, 777);
 
-        /** @var Cursor $cursor */
-        $cursor = $this->r()
+        /** @var ResponseInterface $cursor */
+        $response = $this->r()
             ->table('tabletest')
             ->get(1)
             ->values()
             ->run();
 
-        $this->assertInstanceOf(\Iterator::class, $cursor);
-        $this->assertEquals(1, $cursor->count());
+        $this->assertInstanceOf(ResponseInterface::class, $response);
+        $this->assertCount(4, $response->getData());
+        $this->assertArraySubset([2 => 777], $response->getData());
     }
 }

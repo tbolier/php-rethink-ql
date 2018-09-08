@@ -22,7 +22,7 @@ trait ManipulationTrait
         return new Keys($this->rethink, /** @scrutinizer ignore-type */ $this);
     }
 
-    public function values(): QueryInterface
+    public function values(): Values
     {
         return new Values($this->rethink, /** @scrutinizer ignore-type */ $this);
     }

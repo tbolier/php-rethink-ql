@@ -41,7 +41,9 @@ class Values extends AbstractQuery
     {
         return [
             TermType::VALUES,
-            $this->query->toArray(),
+            [
+                $this->query->toArray()
+            ],
         ];
     }
 }
