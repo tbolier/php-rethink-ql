@@ -35,18 +35,27 @@ class Pluck extends AbstractQuery
         parent::__construct($rethink);
 
         $this->query   = $query;
-        $this->keys    = $keys;
         $this->rethink = $rethink;
+        $this->keys    = $keys;
     }
 
     public function toArray(): array
     {
+        if (\count($this->keys) === 1) {
+            $keysQuery = implode($this->keys);
+        } else {
+            $keysQuery =  [
+                TermType::MAKE_ARRAY,
+                array_values($this->keys)
+            ];
+        }
+
         return [
             TermType::PLUCK,
-            array_merge(
-                [$this->query->toArray()],
-                array_values($this->keys)
-            ),
+            [
+                $this->query->toArray(),
+                $keysQuery
+            ]
         ];
     }
 }

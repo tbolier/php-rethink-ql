@@ -7,7 +7,7 @@ use TBolier\RethinkQL\Query\QueryInterface;
 
 trait ManipulationTrait
 {
-    public function pluck(...$keys): QueryInterface
+    public function pluck(...$keys): Pluck
     {
         return new Pluck($this->rethink, /** @scrutinizer ignore-type */ $this, $keys);
     }
