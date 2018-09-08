@@ -12,7 +12,7 @@ trait ManipulationTrait
         return new Pluck($this->rethink, /** @scrutinizer ignore-type */ $this, $keys);
     }
 
-    public function without(...$keys)
+    public function without(...$keys): Without
     {
         return new Without($this->rethink, /** @scrutinizer ignore-type */ $this, $keys);
     }

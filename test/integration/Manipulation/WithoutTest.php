@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace TBolier\RethinkQL\IntegrationTest\Manipulation;
 
 use TBolier\RethinkQL\IntegrationTest\Query\AbstractTableTest;
+use TBolier\RethinkQL\Response\ResponseInterface;
 
 class WithoutTest extends AbstractTableTest
 {
@@ -14,14 +15,16 @@ class WithoutTest extends AbstractTableTest
     {
         $this->insertDocumentWithNumber(1, 1);
 
-        /** @var Cursor $cursor */
-        $cursor = $this->r()
+        /** @var ResponseInterface $cursor */
+        $response = $this->r()
             ->table('tabletest')
             ->get(1)
             ->without('title', 'number')
             ->run();
 
-        $this->assertInstanceOf(\Iterator::class, $cursor);
-        $this->assertEquals(1, $cursor->count());
+        $this->assertInstanceOf(ResponseInterface::class, $response);
+        $this->assertCount(2, $response->getData());
+        $this->assertArrayNotHasKey('title', $response->getData());
+        $this->assertArrayNotHasKey('number', $response->getData());
     }
 }
