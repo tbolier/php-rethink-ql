@@ -1,6 +1,6 @@
 <?php
 
-namespace TBolier\RethinkQL\Query\Logic;
+namespace TBolier\RethinkQL\Query\Manipulation;
 
 use TBolier\RethinkQL\Query\AbstractQuery;
 use TBolier\RethinkQL\Query\Aggregation\AggregationTrait;
@@ -10,7 +10,7 @@ use TBolier\RethinkQL\Query\Transformation\TransformationTrait;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Term\TermType;
 
-class GetFieldLogic extends AbstractQuery
+class GetField extends AbstractQuery
 {
     use AggregationTrait;
     use OperationTrait;

@@ -1,22 +1,20 @@
 <?php
 declare(strict_types = 1);
 
-namespace TBolier\RethinkQL\Query\Operation;
+namespace TBolier\RethinkQL\Query\Manipulation;
 
 use TBolier\RethinkQL\Query\AbstractQuery;
-use TBolier\RethinkQL\Query\Manipulation\ManipulationTrait;
+use TBolier\RethinkQL\Query\Aggregation\AggregationTrait;
+use TBolier\RethinkQL\Query\Operation\OperationTrait;
 use TBolier\RethinkQL\Query\QueryInterface;
+use TBolier\RethinkQL\Query\Transformation\TransformationTrait;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Term\TermType;
 
-class Get extends AbstractQuery
+class Keys extends AbstractQuery
 {
-    use ManipulationTrait;
-
-    /**
-     * @var string|int
-     */
-    private $key;
+    use AggregationTrait;
+    use TransformationTrait;
 
     /**
      * @var QueryInterface
@@ -25,27 +23,21 @@ class Get extends AbstractQuery
 
     public function __construct(
         RethinkInterface $rethink,
-        QueryInterface $query,
-        $key
+        QueryInterface $query
     ) {
         parent::__construct($rethink);
 
-        $this->query = $query;
-        $this->key = $key;
+        $this->query   = $query;
         $this->rethink = $rethink;
     }
 
     public function toArray(): array
     {
         return [
-            TermType::GET,
+            TermType::KEYS,
             [
-                $this->query->toArray(),
-                [
-                    TermType::DATUM,
-                    $this->key,
-                ],
-            ],
+                $this->query->toArray()
+            ]
         ];
     }
 }

@@ -37,6 +37,9 @@ abstract class AbstractTestCase extends TestCase
     {
         Mockery::getConfiguration()->allowMockingNonExistentMethods(false);
 
+        // Make sure we destroy a failed previous unit test database schema
+        $this->tearDown();
+
         parent::setUp();
     }
 

@@ -27,5 +27,5 @@ interface RethinkInterface
 
     public function asc($key): Ordening;
 
-    public function row(string $value): Row;
+    public function row(?string $value = null): Row;
 }
