@@ -67,7 +67,7 @@ class Rethink implements RethinkInterface
         return $this->builder->ordening($key)->asc($key);
     }
 
-    public function row(string $value): Row
+    public function row(?string $value = null): Row
     {
         return $this->builder->row($value);
     }

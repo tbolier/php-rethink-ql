@@ -15,7 +15,7 @@ trait OperationTrait
 
     public function filter($value)
     {
-        if ($value instanceof Row) {
+        if (\is_object($value)) {
             return new FilterByRow($this->rethink, /** @scrutinizer ignore-type */ $this, $value);
         }
 
