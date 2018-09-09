@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace TBolier\RethinkQL\Query;
 
 use TBolier\RethinkQL\Query\Aggregation\AggregationTrait;
+use TBolier\RethinkQL\Query\Operation\Between;
 use TBolier\RethinkQL\Query\Manipulation\HasFields;
 use TBolier\RethinkQL\Query\Manipulation\ManipulationTrait;
 use TBolier\RethinkQL\Query\Operation\Get;
@@ -32,7 +33,7 @@ class Table extends AbstractQuery
         parent::__construct($rethink);
 
         $this->rethink = $rethink;
-        
+
 
         $this->query = [
             TermType::TABLE,
@@ -67,6 +68,11 @@ class Table extends AbstractQuery
         return new IndexRename($this->rethink, $this, $oldValue, $newValue);
     }
 
+    public function between($min, $max, array $options = null): Between
+    {
+        return new Between($this->rethink, $this, $min, $max, $options);
+    }
+  
     public function hasFields(...$keys)
     {
         return new HasFields($this->rethink, $this, $keys);
