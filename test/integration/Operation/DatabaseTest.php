@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace TBolier\RethinkQL\IntegrationTest\Query;
+namespace TBolier\RethinkQL\IntegrationTest\Operation;
 
 class DatabaseTest extends AbstractTableTest
 {

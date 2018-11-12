@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace TBolier\RethinkQL\IntegrationTest\Transformation;
 
-use TBolier\RethinkQL\IntegrationTest\Query\AbstractTableTest;
+use TBolier\RethinkQL\IntegrationTest\Operation\AbstractTableTest;
 
 class IsEmptyTest extends AbstractTableTest
 {

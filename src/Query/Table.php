@@ -7,6 +7,7 @@ use TBolier\RethinkQL\Query\Aggregation\AggregationTrait;
 use TBolier\RethinkQL\Query\Operation\Between;
 use TBolier\RethinkQL\Query\Manipulation\HasFields;
 use TBolier\RethinkQL\Query\Manipulation\ManipulationTrait;
+use TBolier\RethinkQL\Query\Operation\Changes;
 use TBolier\RethinkQL\Query\Operation\Get;
 use TBolier\RethinkQL\Query\Operation\IndexCreate;
 use TBolier\RethinkQL\Query\Operation\IndexDrop;
@@ -41,6 +42,11 @@ class Table extends AbstractQuery
                 $name,
             ],
         ];
+    }
+
+    public function changes(): Changes
+    {
+        return new Changes($this->rethink, $this);
     }
 
     public function get($key): Get
