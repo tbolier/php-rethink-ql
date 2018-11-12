@@ -83,7 +83,6 @@ You can find us at Gitter.im in the `rethinkdb-php` room at https://gitter.im/re
 ## Author and collaborators
 
 * **Timon Bolier** - *Author and collaborator* - [tbolier](https://github.com/tbolier)
-* **Marc Geurts** - *Collaborator* - [marcgeurts](https://github.com/marcgeurts)
 * **Michel Maas** - *Collaborator* - [AxaliaN](https://github.com/AxaliaN)
 * **Jérémy** - *Collaborator* - [Th3Mouk](https://github.com/Th3Mouk)
 
