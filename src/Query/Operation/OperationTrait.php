@@ -8,6 +8,11 @@ use TBolier\RethinkQL\Query\QueryInterface;
 
 trait OperationTrait
 {
+    public function changes(array $options = null): Changes
+    {
+        return new Changes($this->rethink, /** @scrutinizer ignore-type */ $this, $options);
+    }
+
     public function delete(): QueryInterface
     {
         return new Delete($this->rethink, /** @scrutinizer ignore-type */ $this);

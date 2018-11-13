@@ -88,13 +88,38 @@ class ChangesTest extends AbstractTableTest
         $this->insertDocument(1);
         $this->r()->table('tabletest')->filter(['id' => 1])->update(['description' => 'cool!'])->run();
 
-        $i = 1;
         $old_val = $new_val = [];
         $change = $feed->current();
         extract($change);
 
         $this->assertEmpty($old_val);
-        $this->assertEquals($i, $new_val['id']);
+        $this->assertEquals(1, $new_val['id']);
         $this->assertEquals('cool!', $new_val['description']);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function testChangesCreateWithFilter(): void
+    {
+        /** @var Cursor $feed */
+        $feed = $this->r()
+            ->table('tabletest')
+            ->filter(['id' => 4])
+            ->changes()
+            ->run();
+
+        $this->insertDocument(1);
+        $this->insertDocument(2);
+        $this->insertDocument(3);
+        $this->insertDocument(4);
+        $this->insertDocument(5);
+
+        $old_val = $new_val = [];
+        $change = $feed->current();
+        extract($change);
+
+        $this->assertEmpty($old_val);
+        $this->assertEquals(4, $new_val['id']);
     }
 }
