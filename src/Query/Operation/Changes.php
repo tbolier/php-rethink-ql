@@ -32,8 +32,6 @@ class Changes extends AbstractQuery
         $this->options = $options;
     }
 
-    // [1,[152,[[15,[[14,["booking"]],"etabs"]]]],{"binary_format":"raw","time_format":"raw","profile":false}]
-    // [1,[152,[[15,[[14,["test"]],"tabletest"]]],{"squash":true}],{"binary_format":"raw","time_format":"raw","profile":false}]
     public function toArray(): array
     {
         $query = [
@@ -43,8 +41,8 @@ class Changes extends AbstractQuery
             ],
         ];
 
-        if ($this->options) {
-            array_push($query, $this->options);
+        if (!empty($this->options)) {
+            $query[] = $this->options;
         }
 
         return $query;

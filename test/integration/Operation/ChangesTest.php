@@ -27,9 +27,9 @@ class ChangesTest extends AbstractTableTest
 
         /** @var ResponseInterface $res */
         $i = 1;
-        $old_val = $new_val = [];
         foreach ($feed as $change) {
-            extract($change);
+            $old_val = $change['old_val'];
+            $new_val = $change['new_val'];
 
             $this->assertEmpty($old_val);
             $this->assertEquals($i, $new_val['id']);
@@ -58,19 +58,19 @@ class ChangesTest extends AbstractTableTest
         $this->r()->table('tabletest')->filter(['id' => 777])->update(['description' => 'cool!'])->run();
 
         $i = 777;
-        $old_val = $new_val = [];
         foreach ($feed as $change) {
-            extract($change);
+            $old_val = $change['old_val'];
+            $new_val = $change['new_val'];
 
             if ($old_val !== null) {
                 $this->assertEquals('A document description.', $old_val['description']);
                 $this->assertEquals('cool!', $new_val['description']);
 
                 break;
-            } else {
-                $this->assertEmpty($old_val);
-                $this->assertEquals($i, $new_val['id']);
             }
+
+            $this->assertEmpty($old_val);
+            $this->assertEquals($i, $new_val['id']);
         }
     }
 
@@ -88,9 +88,9 @@ class ChangesTest extends AbstractTableTest
         $this->insertDocument(1);
         $this->r()->table('tabletest')->filter(['id' => 1])->update(['description' => 'cool!'])->run();
 
-        $old_val = $new_val = [];
         $change = $feed->current();
-        extract($change);
+        $old_val = $change['old_val'];
+        $new_val = $change['new_val'];
 
         $this->assertEmpty($old_val);
         $this->assertEquals(1, $new_val['id']);
@@ -115,9 +115,9 @@ class ChangesTest extends AbstractTableTest
         $this->insertDocument(4);
         $this->insertDocument(5);
 
-        $old_val = $new_val = [];
         $change = $feed->current();
-        extract($change);
+        $old_val = $change['old_val'];
+        $new_val = $change['new_val'];
 
         $this->assertEmpty($old_val);
         $this->assertEquals(4, $new_val['id']);
