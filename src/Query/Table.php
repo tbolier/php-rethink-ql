@@ -44,9 +44,9 @@ class Table extends AbstractQuery
         ];
     }
 
-    public function changes(): Changes
+    public function changes(array $options = null): Changes
     {
-        return new Changes($this->rethink, $this);
+        return new Changes($this->rethink, $this, $options);
     }
 
     public function get($key): Get

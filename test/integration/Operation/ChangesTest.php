@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace TBolier\RethinkQL\IntegrationTest\Operation;
 
+use TBolier\RethinkQL\Response\Cursor;
 use TBolier\RethinkQL\Response\ResponseInterface;
 
 class ChangesTest extends AbstractTableTest
@@ -10,10 +11,9 @@ class ChangesTest extends AbstractTableTest
     /**
      * @throws \Exception
      */
-    public function testChangesCreate()
+    public function testChangesCreate(): void
     {
-        set_time_limit(5);
-
+        /** @var Cursor $feed */
         $feed = $this->r()
             ->table('tabletest')
             ->changes()
@@ -45,10 +45,9 @@ class ChangesTest extends AbstractTableTest
     /**
      * @throws \Exception
      */
-    public function testChangesUpdates()
+    public function testChangesUpdates(): void
     {
-        set_time_limit(5);
-
+        /** @var Cursor $feed */
         $feed = $this->r()
             ->table('tabletest')
             ->changes()
@@ -58,7 +57,6 @@ class ChangesTest extends AbstractTableTest
 
         $this->r()->table('tabletest')->filter(['id' => 777])->update(['description' => 'cool!'])->run();
 
-        /** @var ResponseInterface $res */
         $i = 777;
         $old_val = $new_val = [];
         foreach ($feed as $change) {
@@ -74,5 +72,29 @@ class ChangesTest extends AbstractTableTest
                 $this->assertEquals($i, $new_val['id']);
             }
         }
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function testChangesWithOptions(): void
+    {
+        /** @var Cursor $feed */
+        $feed = $this->r()
+            ->table('tabletest')
+            ->changes(['squash' => true])
+            ->run();
+
+        $this->insertDocument(1);
+        $this->r()->table('tabletest')->filter(['id' => 1])->update(['description' => 'cool!'])->run();
+
+        $i = 1;
+        $old_val = $new_val = [];
+        $change = $feed->current();
+        extract($change);
+
+        $this->assertEmpty($old_val);
+        $this->assertEquals($i, $new_val['id']);
+        $this->assertEquals('cool!', $new_val['description']);
     }
 }
