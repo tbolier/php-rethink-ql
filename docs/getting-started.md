@@ -1,5 +1,7 @@
 # Getting started
 
+*Work in progress document.*
+
 Multiple connections can be injected into the connection `Registry`.
 Create the Rethink driver object by injecting a `Connection` object into it.
 
@@ -32,50 +34,8 @@ $r->use('demoDB-2');
 
 The driver class `Rethink` has an API Interface that supports the ReQL domain-specific language (DSL).
 
-A create table example:
-```php
-$r->db()
-  ->tableCreate('Table')
-  ->run();
-```
+## Examples
 
-An insert example:            
-```php
-$r->table('tableName')
-  ->insert([
-      [
-          'documentId' => 1,
-          'title' => 'Test document',
-          'description' => 'My first document.'  
-      ],    
-  ])
-  ->run();
-```
+### Operations
 
-An update example:            
-```php
-$r->table('tableName')
-  ->filter([
-      [
-          'title' => 'Test document',
-      ],    
-  ])
-  ->update([
-      [
-          'title' => 'Updated document',
-      ],    
-  ])
-  ->run();
-```
-
-A filter and count example:
-```php
-$r->table('tableName')
-  ->filter([
-      [
-          'title' => 'Test document',
-      ],
-  ])
-  ->count()
-  ->run();
-```
+Examples on ReQL operations can be [found here](examples/operations.md).
