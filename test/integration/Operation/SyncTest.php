@@ -3,7 +3,6 @@ declare(strict_types = 1);
 
 namespace TBolier\RethinkQL\IntegrationTest\Operation;
 
-use TBolier\RethinkQL\IntegrationTest\Query\AbstractTableTest;
 use TBolier\RethinkQL\Response\ResponseInterface;
 
 class SyncTest extends AbstractTableTest
