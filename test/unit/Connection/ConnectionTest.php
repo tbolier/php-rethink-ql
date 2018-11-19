@@ -36,6 +36,15 @@ class ConnectionTest extends ConnectionTestCase
         $this->connection->connect();
     }
 
+    /**
+     * @expectedException \TBolier\RethinkQL\Connection\ConnectionException
+     * @expectedExceptionMessage No open stream, please connect first
+     */
+    public function testQueryWithoutConnection(): void
+    {
+        $this->connection->writeQuery(1223456789, \Mockery::mock(MessageInterface::class));
+    }
+
     public function testExpr()
     {
         $this->connect();
@@ -113,22 +122,6 @@ class ConnectionTest extends ConnectionTestCase
         } catch (\Exception $e) {
             $this->fail($e->getMessage());
         }
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function testChanges()
-    {
-        $message = \Mockery::mock(MessageInterface::class);
-
-        try {
-            $this->connection->changes($message);
-        } catch (\Exception $e) {
-            $this->fail($e->getMessage());
-        }
-
-        $this->assertTrue(true);
     }
 
     /**

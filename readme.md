@@ -54,6 +54,9 @@ $connections = [
 $registry = new Registry($connections);
 
 $r = new Rethink($registry->getConnection('default_connection'));
+
+// Now you can connect to RethinkDB.
+$r->connection()->connect();
 ```
 
 The driver class `Rethink` has a default database defined in the connection options. However you can always switch database if needed.
