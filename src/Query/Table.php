@@ -14,6 +14,7 @@ use TBolier\RethinkQL\Query\Operation\IndexDrop;
 use TBolier\RethinkQL\Query\Operation\IndexList;
 use TBolier\RethinkQL\Query\Operation\IndexRename;
 use TBolier\RethinkQL\Query\Operation\OperationTrait;
+use TBolier\RethinkQL\Query\Operation\Sync;
 use TBolier\RethinkQL\Query\Transformation\TransformationTrait;
 use TBolier\RethinkQL\RethinkInterface;
 use TBolier\RethinkQL\Types\Term\TermType;
@@ -82,6 +83,11 @@ class Table extends AbstractQuery
     public function hasFields(...$keys)
     {
         return new HasFields($this->rethink, $this, $keys);
+    }
+
+    public function sync()
+    {
+        return new Sync($this->rethink, $this);
     }
 
     public function toArray(): array

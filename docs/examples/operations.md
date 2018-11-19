@@ -1,22 +1,58 @@
 # ReQL operation examples
 
-*Work in progress document.*
+## between
+
+Insert three documents, select `between` 1 and 2, assert the result.
+
+```php
+// We can do our operations meanwhile.
+$res = $r
+    ->table('tabletest')
+    ->insert([
+        [
+            'id' => 1,
+            'title' => 'Test document 1',
+            'description' => 'A document description.',
+        ],
+        [
+            'id' => 2,
+            'title' => 'Test document 2',
+            'description' => 'A document description.',
+        ],
+        [
+            'id' => 3,
+            'title' => 'Test document 3',
+            'description' => 'A document description.',
+        ],
+    ])
+    ->run();
+
+/** @var Cursor $cursor */
+$cursor = $r
+    ->table('tabletest')
+    ->between(1, 2)
+    ->run();
+
+echo $cursor->count() === 2 ? 'equals' : 'different';
+foreach ($cursor as $document) {
+    print_r($document);
+}
+```
 
 ## changes
-
-Insert five documents and consume the changefeed.
+Insert five documents and consume the `changes` afterwards.
 ```php
 // In this example we set the time limit to 5 seconds before the process is terminated.
 set_time_limit(5);
 
 // The feed is an iterable cursor.
-$feed = $this->r()
+$feed = $r
     ->table('tabletest')
     ->changes()
     ->run();
 
 // We can do our operations meanwhile.
-$res = $this->r()
+$res = $r
     ->table('tabletest')
     ->insert([
         [
@@ -25,7 +61,7 @@ $res = $this->r()
             'description' => 'A document description.',
         ],
         [
-            'id' => 2,
+            'id' => 1,
             'title' => 'Test document 1',
             'description' => 'A document description.',
         ],
@@ -43,12 +79,12 @@ foreach ($feed as $change) {
 Insert one document, update it, and consume the change feed with a squashed cursor.
 For all possible options, please visit the Java documentation [here](https://rethinkdb.com/api/java/changes/).
 ```php
-$feed = $this->r()
+$feed = $r
     ->table('tabletest')
     ->changes(['squash' => true])
     ->run();
 
-$res = $this->r()
+$res = $r
     ->table('tabletest')
     ->insert([
         [
@@ -59,7 +95,7 @@ $res = $this->r()
     ])
     ->run();
 
-$this->r()
+$r
     ->table('tabletest')
     ->filter(['id' => 1])
     ->update(['description' => 'cool!'])
@@ -76,36 +112,52 @@ $r->db()
   ->run();
 ```
 
-## insert           
+## insert     
+Insert one or more documents.      
 ```php
 $r->table('tableName')
   ->insert([
+      'documentId' => 1,
+      'title' => 'Test document 1',
+      'description' => 'A document description.'
+  ])
+  ->run();
+
+$r->table('tableName')
+  ->insert([
       [
-          'documentId' => 1,
-          'title' => 'Test document',
-          'description' => 'My first document.'  
-      ],    
+          'documentId' => 2,
+          'title' => 'Test document 2',
+          'description' => 'A document description.'  
+      ],
+      [
+          'documentId' => 3,
+          'title' => 'Test document 3',
+          'description' => 'A document description.'  
+      ],  
   ])
   ->run();
 ```
 
-## update           
+## update
+Update one or more documents.
 ```php
 $r->table('tableName')
   ->filter([
       [
-          'title' => 'Test document',
+          'title' => 'A document description.',
       ],    
   ])
   ->update([
       [
-          'title' => 'Updated document',
+          'title' => 'Updated document description.',
       ],    
   ])
   ->run();
 ```
 
 ## filter
+Filter and count the results.
 ```php
 $r->table('tableName')
   ->filter([
@@ -114,5 +166,14 @@ $r->table('tableName')
       ],
   ])
   ->count()
+  ->run();
+```
+
+## sync
+Save writes to permanent storage.
+
+```php
+$r->table('tableName')
+  ->sync()
   ->run();
 ```
