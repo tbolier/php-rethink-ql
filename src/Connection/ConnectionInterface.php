@@ -8,8 +8,6 @@ use TBolier\RethinkQL\Response\ResponseInterface;
 
 interface ConnectionInterface
 {
-    public function changes(MessageInterface $query): void;
-
     public function close($noreplyWait = true): void;
 
     public function connect(): Connection;

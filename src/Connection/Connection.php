@@ -23,30 +23,37 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
      * @var int[]
      */
     private $activeTokens;
+
     /**
      * @var string
      */
     private $dbName;
+
     /**
      * @var HandshakeInterface
      */
     private $handshake;
+
     /**
      * @var bool
      */
     private $noReply = false;
+
     /**
      * @var SerializerInterface
      */
     private $querySerializer;
+
     /**
      * @var SerializerInterface
      */
     private $responseSerializer;
+
     /**
      * @var StreamInterface
      */
     private $stream;
+
     /**
      * @var \Closure
      */
@@ -64,11 +71,6 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
         $this->handshake = $handshake;
         $this->querySerializer = $querySerializer;
         $this->responseSerializer = $responseSerializer;
-    }
-
-    public function changes(MessageInterface $query): void
-    {
-        // TODO: Implement changes() method.
     }
 
     /**
@@ -241,6 +243,10 @@ class Connection implements ConnectionInterface, ConnectionCursorInterface
      */
     public function writeQuery(int $token, MessageInterface $message): int
     {
+        if (!$this->stream) {
+            throw new ConnectionException('No open stream, please connect first');
+        }
+
         if ($this->dbName) {
             $message->setOptions((new QueryOptions())->setDb($this->dbName));
         }
