@@ -19,6 +19,7 @@ declare(strict_types = 1);
 namespace TBolier\RethinkQL\Connection\Socket;
 
 use Psr\Http\Message\StreamInterface;
+use TBolier\RethinkQL\Connection\ConnectionException;
 
 class Handshake implements HandshakeInterface
 {
@@ -117,10 +118,8 @@ class Handshake implements HandshakeInterface
 
         switch ($this->state) {
             case 1:
-                return $this->verifyProtocol($response);
+                return $this->createAuthenticationMessage($this->verifyProtocol($response));
             case 2:
-                return $this->createAuthenticationMessage($response);
-            case 3:
                 return $this->verifyAuthentication($response);
             default:
                 throw new Exception('Illegal handshake state');
@@ -162,7 +161,9 @@ class Handshake implements HandshakeInterface
 
     private function verifyProtocol(?string $response): string
     {
-        if (strpos($response, 'ERROR') === 0) {
+        $reply = explode("\x00", $response);
+
+        if (strpos($reply[0], 'ERROR') === 0) {
             throw new Exception(
                 'Received an unexpected reply. You may be attempting to connect to '
                 . 'a RethinkDB server that is too old for this driver. The minimum '
@@ -170,7 +171,7 @@ class Handshake implements HandshakeInterface
             );
         }
 
-        $json = json_decode($response, true);
+        $json = json_decode($reply[0], true);
         if ($json['success'] === false) {
             throw new Exception('Handshake failed: '.$json["error"]);
         }
@@ -179,9 +180,7 @@ class Handshake implements HandshakeInterface
             throw new Exception('Unsupported protocol version.');
         }
 
-        $this->state = 2;
-
-        return '';
+        return $reply[1];
     }
 
     /**
@@ -222,7 +221,7 @@ class Handshake implements HandshakeInterface
 
         $this->serverSignature = hash_hmac('sha256', $authMessage, $serverKey, true);
 
-        $this->state = 3;
+        $this->state = 2;
 
         return
             json_encode(
@@ -249,8 +248,6 @@ class Handshake implements HandshakeInterface
         }
 
         $this->checkSignature(base64_decode($authentication['v']));
-
-        $this->state = 4;
 
         return 'successful';
     }

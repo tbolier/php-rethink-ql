@@ -166,20 +166,25 @@ class Socket implements StreamInterface
 
         if ($length === -1) {
             while (true) {
-                $char = $this->getContent(1);
+                $char = $this->getContent($length);
 
                 // skip initial null-terminated byte
                 if ($s === '' && $char === \chr(0)) {
                     continue;
                 }
 
+                $s .= $char;
+
                 // reach a null-terminated byte, stop the stream.
-                if ($char === '' || $char === \chr(0)) {
+                $lastChar = substr($char, -1);
+                if ($lastChar === '' || $lastChar === \chr(0)) {
                     $this->nullTerminated = true;
+
+                    $s = substr($s, 0, -1);
+
                     break;
                 }
 
-                $s .= $char;
                 $this->tellPos += $length - \strlen($s);
             }
 
