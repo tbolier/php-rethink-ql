@@ -12,6 +12,7 @@ use TBolier\RethinkQL\Types\Term\TermType;
 class Get extends AbstractQuery
 {
     use ManipulationTrait;
+    use OperationTrait;
 
     /**
      * @var string|int
