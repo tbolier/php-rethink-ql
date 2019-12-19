@@ -117,12 +117,16 @@ class CursorTest extends AbstractTableTest
 
     /**
      * @param array $data
-     * @return ResponseInterface
+     * @return ResponseInterface|null
      * @throws \Exception
      */
-    private function insertBigDocuments(array $data): ResponseInterface
+    private function insertBigDocuments(array $data): ?ResponseInterface
     {
+<<<<<<< Updated upstream:test/integration/Operation/CursorTest.php
         $documents = [];
+=======
+        $res = null;
+>>>>>>> Stashed changes:test/integration/Query/CursorTest.php
         for ($i = 1; $i <= 100; $i++) {
             $documents = [];
 

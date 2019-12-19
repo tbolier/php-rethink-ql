@@ -8,6 +8,19 @@ use TBolier\RethinkQL\Response\ResponseInterface;
 
 interface ConnectionInterface
 {
+<<<<<<< Updated upstream
+=======
+    /**
+     * @param MessageInterface $query
+     * @return void
+     */
+    public function changes(MessageInterface $query): void;
+
+    /**
+     * @param bool $noreplyWait
+     * @return void
+     */
+>>>>>>> Stashed changes
     public function close($noreplyWait = true): void;
 
     public function connect(): Connection;
