@@ -18,11 +18,13 @@ build:
         before:
           - 'source /etc/lsb-release && echo "deb http://download.rethinkdb.com/apt $DISTRIB_CODENAME main" | sudo tee /etc/apt/sources.list.d/rethinkdb.list'
           - 'wget -qO- https://download.rethinkdb.com/apt/pubkey.gpg | sudo apt-key add -'
-          - 'sudo apt-get update -y'
-          - 'sudo apt-get install rethinkdb -y'
+          - 'sudo apt-get install apt-transport-https ca-certificates -y'
+          - 'sudo apt-get install libprotobuf8 -f'
+          - 'wget https://download.rethinkdb.com/apt/pool/trusty/main/r/rethinkdb/rethinkdb_2.3.6~0trusty_amd64.deb'
+          - 'sudo dpkg --install rethinkdb_2.3.6~0trusty_amd64.deb'
           - 'sudo cp /etc/rethinkdb/default.conf.sample /etc/rethinkdb/instances.d/instance1.conf'
-          - 'sudo /etc/init.d/rethinkdb start'
-        # Overwrites inferred commands
+          - 'sudo service rethinkdb start'
+      # Overwrites inferred commands
         override: []
         # Runs after inferred commands
         after: []
@@ -49,7 +51,7 @@ build_failure_conditions:
   - 'issues.label("coding-style").new.exists'
 
   # No critical issue is present
-  - 'issues.severity(= MINOR).exists'
+  #  - 'issues.severity(= MINOR).exists'
 
   # No new critical issue is introduced (existing ones are tolerated)
   - 'issues.severity(= MINOR).new.exists'
